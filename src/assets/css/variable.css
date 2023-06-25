@@ -1,0 +1,11 @@
+/* css全域變數設定檔 */
+
+:root {
+    --primary: #FFF;
+    --secondary: #C5D0E6;
+    --background-main: #FAFAFA;
+    --background-secondary: #3B3B3B;
+    --black: #0F1419;
+    --active: #FFA500;
+    --button-default: #800080;
+}

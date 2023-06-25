@@ -1,31 +1,23 @@
 {
-  "name": "connectufront",
+  "name": "vite-project",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vue-tsc && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@mdi/font": "^7.2.96",
-    "@splinetool/runtime": "^0.9.369",
-    "axios": "^1.4.0",
     "css-loader": "^6.8.1",
     "material-icons": "^1.13.8",
     "normalize.css": "^8.0.1",
-    "roboto-fontface": "^0.10.0",
     "style-loader": "^3.3.3",
-    "vite-plugin-vuetify": "^1.0.2",
     "vue": "^3.2.47",
-    "vue-router": "^4.2.2",
-    "webfontloader": "^1.6.28"
+    "vue-router": "^4.2.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.1.0",
-    "typescript": "^5.0.2",
-    "vite": "^4.3.9",
-    "vue-tsc": "^1.4.2"
+    "vite": "^4.3.2"
   }
 }
