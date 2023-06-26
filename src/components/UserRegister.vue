@@ -130,6 +130,11 @@ export default {
         });
 
         this.RegisteredResponse = response.data.msg; // 把註冊響應的數據保存到 RegisteredResponse 變量中
+        if (response.data.msg == "用戶創建成功") {
+          setTimeout(() => {
+            this.$router.push("/index");
+          }, 3000);
+        }
         console.log("Registered:", response.data.msg + response.data.code); // 在控制台打印 RegisteredResponse
       } catch (error) {
         console.log(error);
@@ -141,6 +146,11 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
+body,
+html {
+  font-family: "Roboto", sans-serif;
+}
 /* 註冊頁面的全局樣式 */
 .register-container {
   height: 100vh;
@@ -170,11 +180,7 @@ export default {
   color: red;
 }
 
-@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
-body,
-html {
-  font-family: "Roboto", sans-serif;
-}
+
 
 .button {
     text-transform: capitalize;

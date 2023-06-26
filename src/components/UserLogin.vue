@@ -135,7 +135,9 @@ export default {
         });
         this.loginResponse = response.data.msg; // 把登入響應的數據保存到 loginResponse 變量中
         if (response.data.msg == "登入成功") {
-          this.$router.push("/index");
+          setTimeout(() => {
+            this.$router.push("/index");
+          }, 3000);
         }
         console.log("Logged in: " + response.data.msg + response.data.code); // 在控制台打印 loginResponse
       } catch (error) {
@@ -202,6 +204,11 @@ export default {
 </script>
 
 <style scoped>
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
+body,
+html {
+  font-family: "Roboto", sans-serif;
+}
 /* 登入頁面的全局樣式 */
 .login-container {
   height: 100vh;
@@ -238,9 +245,5 @@ export default {
   text-transform: none;
 }
 
-@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
-body,
-html {
-  font-family: "Roboto", sans-serif;
-}
+
 </style>
