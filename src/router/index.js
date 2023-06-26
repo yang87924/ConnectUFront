@@ -44,7 +44,7 @@ const routes = [
             name: 'PostList',
             component: PostList,
             meta: {
-              showHeader: false,
+              showHeader: true,
             }
         },
         {
