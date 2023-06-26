@@ -1,6 +1,15 @@
 <template>
   <!-- 主要應用元件 -->
   <v-app>
+       <!-- 顶部应用栏 -->
+       <v-app-bar color="dark" dark>
+      <v-toolbar-title> ConnectU </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <!-- 登录按钮，点击跳转到 "/login" 路由 -->
+      <v-btn text to="/UserLogin"> Login </v-btn>
+      <!-- 注册按钮，点击跳转到 "/register" 路由 -->
+      <v-btn text to="/UserRegister"> Register </v-btn>
+    </v-app-bar>
     <!-- 主要內容 -->
     <v-main class="register-container">
       <!-- 容器元件，包含和排列子元件 -->
@@ -44,7 +53,7 @@
               <!-- 返回登入頁面 -->
               <p class="forgot-password text-right">
                 已經註冊過了?
-                <router-link to="/login">登入</router-link>
+                <router-link to="/UserLogin">登入</router-link>
               </p>
               <!-- 錯誤信息提示 -->
               <v-alert
@@ -160,4 +169,15 @@ export default {
 .error {
   color: red;
 }
+
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
+body,
+html {
+  font-family: "Roboto", sans-serif;
+}
+
+.button {
+    text-transform: capitalize;
+}
+
 </style>

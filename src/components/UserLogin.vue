@@ -1,6 +1,15 @@
 <template>
   <!-- 主要應用元件 -->
   <v-app>
+     <!-- 顶部应用栏 -->
+     <v-app-bar color="dark" dark>
+      <v-toolbar-title> ConnectU </v-toolbar-title>
+      <v-spacer></v-spacer>
+      <!-- 登录按钮，点击跳转到 "/login" 路由 -->
+      <v-btn text to="/UserLogin"> Login </v-btn>
+      <!-- 注册按钮，点击跳转到 "/register" 路由 -->
+      <v-btn text to="/UserRegister"> Register </v-btn>
+    </v-app-bar>
     <!-- 主要內容 -->
     <v-main class="login-container">
       <!-- 容器元件，包含和排列子元件 -->
@@ -125,9 +134,9 @@ export default {
           password: this.password,
         });
         this.loginResponse = response.data.msg; // 把登入響應的數據保存到 loginResponse 變量中
-        // if (response.data.msg == "登入成功") {
-        //   this.$router.push("/HomePage");
-        // }
+        if (response.data.msg == "登入成功") {
+          this.$router.push("/index");
+        }
         console.log("Logged in: " + response.data.msg + response.data.code); // 在控制台打印 loginResponse
       } catch (error) {
         // 捕獲並處理錯誤
@@ -227,5 +236,11 @@ export default {
 
 .v-btn {
   text-transform: none;
+}
+
+@import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
+body,
+html {
+  font-family: "Roboto", sans-serif;
 }
 </style>

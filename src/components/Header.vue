@@ -44,9 +44,13 @@
             <div class="user-name">
                 AR. Jakir
             </div>
-            <div class="arrow-icon">
+            <li class="nav-item flex-center" :class="{ 'active': $route.path === '/UserLogin' }">
+                <router-link to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }">
+            <div class="arrow-icon" >
                 <span class="material-icons-round">arrow_drop_down</span>
             </div>
+                </router-link>
+            </li>
         </div>
     </div>
     <!-- <div class="container">

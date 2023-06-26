@@ -6,6 +6,8 @@ import NewPost from '../view/NewPost/NewPost.vue'
 import PostList from '../view/PostList/PostList.vue'
 import ProfilePage from '../view/ProfilePage/ProfilePage.vue'
 import ArticlePage from '../view/ArticlePage/ArticlePage.vue'
+import UserLogin from '../components/UserLogin.vue'
+import UserRegister from '../components/UserRegister.vue'
 
 const routes = [
   {
@@ -13,6 +15,19 @@ const routes = [
     path: '/test',
     name: 'Test',
     component: Test,
+  },
+
+  {
+    // 登入頁
+    path: '/UserLogin',
+    name: 'UserLogin',
+    component: UserLogin,
+  },
+  {
+    // 注冊頁
+    path: '/UserRegister',
+    name: 'UserRegister',
+    component: UserRegister,
   },
   {
     path: '/',
