@@ -38,17 +38,20 @@
                     <button class="profile-button">訂閱</button>
                 </div>
             </div>
-            <ul class="nav flex-between">
-                <li class="nav-item active">文章</li>
-                <li class="nav-item">動態</li>
-                <li class="nav-item">收藏</li>
-            </ul>
+                <ul class="nav flex-between">
+                    <li class="nav-item" :class="{ active: activeTab === '文章' }" @click="activeTab = '文章'">文章</li>
+                    <li class="nav-item" :class="{ active: activeTab === '動態' }" @click="activeTab = '動態'">動態</li>
+                    <li class="nav-item" :class="{ active: activeTab === '收藏' }" @click="activeTab = '收藏'">收藏</li>
+                </ul>
+
+                <div v-if="activeTab === '文章'">
             <div class="article-box flex-start">
+    
                 <div class="img-box">
                     <img src="../../assets/img/profile/article_img.svg" alt="文章縮圖">
                 </div>
                 <div class="article-content">
-                    <div class="title">關於創新鏈的區塊鏈開發者最佳實踐!!</div>
+                    <div class="title">{{ title }}</div>
                     <div class="tags flex-start">
                         <div class="tag">finance</div>
                         <div class="tag">bitcoin</div>
@@ -74,55 +77,64 @@
             </div>
         </div>
     </div>
+    <div v-if="activeTab === '動態'">
+      <!-- 顯示動態內容 -->
+    </div>
+
+    <div v-if="activeTab === '收藏'">
+      <!-- 顯示收藏內容 -->
+    </div>
+    </div>
 </template>
 <script>
 
 import axios from 'axios';
 
 export default {
-  data() {
-    return {
-      userName: '', // 使用者名稱
-      avatar: '', // 大頭貼圖片來源
-    };
-  },
-    
-  created() {
-    // const storeduserId = localStorage.getItem('userId');
+    data() {
+        return {
+            userName: '', // 使用者名稱
+            avatar: '', // 大頭貼圖片來源
+            activeTab: '文章', // 文章/動態/收藏 標籤切換 預設讀取文章
+            title: '', // 文章標題
+        };
+    },
 
+    created() {
 
-    
-  // 在組件創建時使用 Axios，並傳遞使用者 ID
-  axios.post('/users/getUserId')
-    .then(response => {
-      console.log(response.data);
-      this.userName = response.data.userName;
+        // 在組件創建時使用 Axios，並傳遞使用者 ID
+        axios.post('/users/getUserId')
+            .then(response => {
+                console.log(response.data);
+                this.userName = response.data.userName;
 
-    //先放置 圖片
-    //   this.avatar = response.data.avatar;
-    })
-    .catch(error => {
-      console.log(error);
-      // 處理錯誤
-    });
+                //先放置 圖片
+                //   this.avatar = response.data.avatar;
+            })
+            .catch(error => {
+                console.log(error);
+                // 處理錯誤
+            });
 
+        // 查詢使用者文章的API
+        axios.get('/threads/userThread')
+            .then(response => {
+                console.log('文章資料：', response.data.data);
+                // console.log(response.data);
+                if (response.data.data && response.data.data.length > 0) {
+                    this.title = response.data.data[0].title;
 
-    // // 在組件創建時使用 Axios，並傳遞使用者 ID
-    // axios.get(`/users/${storeduserId}`)
-    //   .then(response => {
-    //     console.log(response.data);
-    //     console.log(response.data.userName);
-    //     console.log("eeeeee");
-    //     // 處理回應資料
-    //     this.userName = response.data.data.userName;
-    //     this.avatar = response.data.data.avatar;
-    //     console.log(this.avatar);
-    // })
-    //   .catch(error => {
-    //     console.log(error);
-    //     // 處理錯誤
-    //   });
-  }
+                    this.activeTab = '文章';
+                } else {
+                    console.log('回應資料無效或沒有文章資料');
+                    this.title = '找不到文章';
+                }
+            })
+            .catch(error => {
+                console.log('發生錯誤：', error);
+                this.title = '找不到文章';
+            });
+    }
 }
 </script>
 <style lang="css" scoped>
