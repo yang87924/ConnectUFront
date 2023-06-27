@@ -22,30 +22,44 @@
                             <span class="slogan">
                                 你好，世界
                             </span>
-                            <button class="edit">
+                            <!-- <button class="edit">
                                 <span class="material-icons">edit</span>
-                            </button>
+                            </button> -->
                         </div>
+                        
                         <div class="button-box flex-center">
                             <button class="profile-button">建立新文章</button>
                             <button class="profile-button">發佈動態</button>
                         </div>
                     </div>
                 </div>
-                <div class="data-right flex-end">
-                    <button class="profile-button">追蹤</button>
-                    <button class="profile-button">粉絲</button>
-                    <button class="profile-button">訂閱</button>
-                </div>
+                <div class="edit-box flex-top">
+                            <button class="profile-button">編輯個人檔案</button>
+                        </div>
+                        <div class="data-right flex-right">
+    <button class="profile-button">追蹤</button>
+    <div class="count-box">
+        <div>11</div>
+    </div>
+    <button class="profile-button">粉絲</button>
+    <div class="count-box">
+        <div>33</div>
+    </div>
+    <button class="profile-button">訂閱</button>
+    <div class="count-box">
+        <div>44</div>
+    </div>
+</div>
+                
             </div>
                 <ul class="nav flex-between">
-                    <li class="nav-item" :class="{ active: activeTab === '文章' }" @click="activeTab = '文章'">文章</li>
-                    <li class="nav-item" :class="{ active: activeTab === '動態' }" @click="activeTab = '動態'">動態</li>
-                    <li class="nav-item" :class="{ active: activeTab === '收藏' }" @click="activeTab = '收藏'">收藏</li>
+                    <button class="nav-item" :class="{ active: activeTab === '文章' }" @click="activeTab = '文章'">文章</button>
+                    <button class="nav-item" :class="{ active: activeTab === '動態' }" @click="activeTab = '動態'">動態</button>
+                    <button class="nav-item" :class="{ active: activeTab === '收藏' }" @click="activeTab = '收藏'">收藏</button>
                 </ul>
 
                 <div v-if="activeTab === '文章'">
-            <div class="article-box flex-start">
+                <div class="article-box flex-start">
     
                 <div class="img-box">
                     <img src="../../assets/img/profile/article_img.svg" alt="文章縮圖">
@@ -157,6 +171,12 @@ export default {
     align-items: center;
 }
 
+.flex-top {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
 .flex-start {
     display: flex;
     justify-content: start;
@@ -171,6 +191,10 @@ export default {
 
 .main-content {
     width: fit-content;
+}
+
+.edit-box {
+    position: relative;
 }
 
 /* banner */
@@ -246,8 +270,19 @@ export default {
 }
 
 .data-right {
-    flex: 1;
-    margin-bottom: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+
+.count-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 15px;
 }
 
 .profile-button {
@@ -287,6 +322,7 @@ export default {
 .active {
     color: var(--active);
 }
+
 
 /* article-box */
 .article-box {
