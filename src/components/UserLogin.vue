@@ -129,12 +129,14 @@ export default {
     async login() {
       try {
         // 發送登入請求
-        const response = await axios.post("http://localhost/users/login", {
+        const response = await axios.post("http://localhost:8080/users/login", {
           email: this.email,
           password: this.password,
         });
         this.loginResponse = response.data.msg; // 把登入響應的數據保存到 loginResponse 變量中
         if (response.data.msg == "登入成功") {
+          localStorage.setItem("userId", response.data.data.userId);
+          console.log(localStorage.getItem("userId"));
           setTimeout(() => {
             this.$router.push("/index");
           }, 3000);
