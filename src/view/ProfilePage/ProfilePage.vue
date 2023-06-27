@@ -96,6 +96,10 @@ export default {
   axios.post('/users/getUserId')
     .then(response => {
       console.log(response.data);
+      this.userName = response.data.userName;
+
+    //先放置 圖片
+    //   this.avatar = response.data.avatar;
     })
     .catch(error => {
       console.log(error);
