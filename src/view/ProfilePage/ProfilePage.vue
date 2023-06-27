@@ -104,7 +104,7 @@ export default {
 
 
     // 在組件創建時使用 Axios，並傳遞使用者 ID
-    axios.get(`http://localhost:8080/users/${storeduserId}`)
+    axios.get(`/users/${storeduserId}`)
       .then(response => {
         console.log(response.data);
         console.log(response.data.userName);

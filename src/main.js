@@ -6,6 +6,10 @@ import { createVuetify } from 'vuetify'
 import 'vuetify/styles'
 import App from './App.vue';
 import router from './router';
+import axios from 'axios';
+
+axios.defaults.withCredentials = true
+axios.defaults.baseURL = 'http://localhost:8080';
 //第三方登入icon
 import '@mdi/font/css/materialdesignicons.css'
 

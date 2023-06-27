@@ -123,7 +123,7 @@ export default {
 
       // 發送註冊請求
       try {
-        const response = await axios.post("http://localhost/users", {
+        const response = await axios.post("/users", {
           userName: this.userName,
           email: this.email,
           password: this.password,
