@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="user-name">
-                AR. Jakir
+                {{userName}}
             </div>
             <li class="nav-item flex-center" :class="{ 'active': $route.path === '/UserLogin' }">
                 <router-link to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }">
@@ -76,8 +76,53 @@
     </div> -->
 </template>
 <script>
-export default {
 
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      userName: '', // 使用者名稱
+      avatar: '', // 大頭貼圖片來源
+    };
+  },
+    
+  created() {
+    // const storeduserId = localStorage.getItem('userId');
+
+
+    
+  // 在組件創建時使用 Axios，並傳遞使用者 ID
+  axios.post('/users/getUserId')
+    .then(response => {
+      console.log(response.data);
+      this.userName = response.data.userName;
+
+    //先放置 圖片
+    //   this.avatar = response.data.avatar;
+    })
+    .catch(error => {
+      console.log(error);
+      // 處理錯誤
+    });
+
+
+    // // 在組件創建時使用 Axios，並傳遞使用者 ID
+    // axios.get(`/users/${storeduserId}`)
+    //   .then(response => {
+    //     console.log(response.data);
+    //     console.log(response.data.userName);
+    //     console.log("eeeeee");
+    //     // 處理回應資料
+    //     this.userName = response.data.data.userName;
+    //     this.avatar = response.data.data.avatar;
+    //     console.log(this.avatar);
+    // })
+    //   .catch(error => {
+    //     console.log(error);
+    //     // 處理錯誤
+    //   });
+  }
 }
 </script>
 <style lang="css" scoped>
