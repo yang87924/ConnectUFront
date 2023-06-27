@@ -1,8 +1,8 @@
 <template>
   <!-- 主要應用元件 -->
   <v-app>
-     <!-- 顶部应用栏 -->
-     <v-app-bar color="dark" dark>
+    <!-- 顶部应用栏 -->
+    <v-app-bar color="dark" dark>
       <v-toolbar-title> ConnectU </v-toolbar-title>
       <v-spacer></v-spacer>
       <!-- 登录按钮，点击跳转到 "/login" 路由 -->
@@ -59,16 +59,7 @@
             <!-- 其他登入選項 -->
             <div class="login-options">
               <!-- Google 登入按鈕 -->
-              <v-btn
-                block
-                color="white"
-                dark
-                class="my-2 d-flex justify-center"
-                @click="loginWithGoogle"
-              >
-                <v-icon left>mdi-google</v-icon>
-                以Google帳號登入
-              </v-btn>
+              <div id="g_id_onload"></div>
 
               <!-- Facebook 登入按鈕 -->
               <v-btn
@@ -96,10 +87,10 @@
             </div>
           </v-col>
           <!-- Grid系統的列元件，呈現圖像部分 -->
-          <v-col cols="6" class="login-image align-self-start custom-class">
-            <spline-component />
+          <!-- <v-col cols="6" class="login-image align-self-start custom-class">
+            <spline-component /> -->
             <!-- SplineComponent元件，用於顯示3D圖像 -->
-          </v-col>
+          <!-- </v-col> -->
         </v-row>
       </v-container>
     </v-main>
@@ -108,7 +99,6 @@
 
 
 <script>
-// 引入SplineComponent元件和axios庫
 import SplineComponent from "./SplineComponent.vue";
 import axios from "axios";
 
@@ -118,92 +108,70 @@ export default {
   },
   data() {
     return {
-      email: "", // 綁定並儲存電子郵件輸入框的數據
-      password: "", // 綁定並儲存密碼輸入框的數據
-      errorMessage: "", // 用於顯示錯誤訊息
-      loginResponse: "", // 新增的用於保存登入響應的數據的變量
+      email: "",
+      password: "",
+      loginResponse: "",
     };
   },
-
   methods: {
     async login() {
       try {
-        // 發送登入請求
-        const response = await axios.post("http://localhost:8080/users/login", {
+        const response = await axios.post("/users/login", {
           email: this.email,
           password: this.password,
         });
-        this.loginResponse = response.data.msg; // 把登入響應的數據保存到 loginResponse 變量中
+        this.loginResponse = response.data.msg;
         if (response.data.msg == "登入成功") {
-          localStorage.setItem("userId", response.data.data.userId);
-          console.log(localStorage.getItem("userId"));
           setTimeout(() => {
             this.$router.push("/index");
           }, 3000);
         }
-        console.log("Logged in: " + response.data.msg + response.data.code); // 在控制台打印 loginResponse
+        console.log("Logged in: " + response.data.msg + response.data.code);
       } catch (error) {
-        // 捕獲並處理錯誤
-        this.errorMessage = error.message;
+        this.loginResponse = error.message;
       }
     },
-    //第三方google登入
-    loginWithGoogle() {
-      // eslint-disable-next-line no-undef
-      gapi.load("auth2", () => {
-        // eslint-disable-next-line no-undef
-        const auth2 = gapi.auth2.init({
-          client_id:
-            "699569603913-tatuu7bhl3rntun7m5qt75olhivifnvl.apps.googleusercontent.com",
-        });
-        auth2.signIn().then((googleUser) => {
-          var id_token = googleUser.getAuthResponse().id_token;
-          var data = {
-            credential: id_token,
-          };
-          axios
-            .post("/users/google", data)
-            .then((response) => {
-              console.log(response);
-            })
-            .catch((error) => {
-              console.error("Error:", error);
-            });
-        });
-      });
-    },
 
-    //第三方facebook登入
-    // async loginWithFacebook() {
-    //   try {
-    //     const response = await axios.get(
-    //       "http://localhost/users/login/facebook"
-    //     );
-    //     console.log(
-    //       "Logged in with Facebook:",
-    //       response.data.msg + response.data.code
-    //     );
-    //   } catch (error) {
-    //     this.errorMessage = error.message;
-    //   }
-    // },
-    //第三方twitter登入
-    // async loginWithTwitter() {
-    //   try {
-    //     const response = await axios.get(
-    //       "http://localhost/users/login/twitter"
-    //     );
-    //     console.log(
-    //       "Logged in with Twitter:",
-    //       response.data.msg + response.data.code
-    //     );
-    //   } catch (error) {
-    //     this.errorMessage = error.message;
-    //   }
-    // },
+    //第三方登入google
+    async handleCredentialResponse(response) {
+  console.log(response);
+  const id_token = response.credential;
+  let formData = new FormData();   // 建立新的 FormData 實例
+  formData.append('credential', id_token);  // 將資料附加到 formData 上
+
+  try {
+    const response = await axios.post("/users/google", formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'  
+      }
+    });
+    console.log(response);
+    if (response.data.msg === "登入成功") {
+      // 登入成功後，跳轉到 /index 頁面
+      this.$router.push("/index");
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+}
   },
+  mounted() {
+  window.googleSignInPromise.then(() => {
+    google.accounts.id.initialize({
+      client_id:
+        '1042407337082-72sipavf4mejlbvb3r5surhov8el6m60.apps.googleusercontent.com',
+      callback: this.handleCredentialResponse,
+    });
+    google.accounts.id.renderButton(
+      document.getElementById("g_id_onload"), 
+      { theme: "outline", size: "large" } 
+    );
+    google.accounts.id.prompt(); 
+  });
+}
 };
 </script>
+
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
@@ -246,6 +214,4 @@ html {
 .v-btn {
   text-transform: none;
 }
-
-
 </style>

@@ -17,4 +17,14 @@ const vuetify = createVuetify({
   // 这里可以添加 Vuetify 配置项
 })
 
+// 第三方登入google 的promise
+window.googleSignInPromise = new Promise((resolve) => {
+  window.onGoogleLibraryLoad = () => {
+    resolve();
+  };
+});
+
+
+
+
 createApp(App).use(router).use(vuetify).mount('#app')
