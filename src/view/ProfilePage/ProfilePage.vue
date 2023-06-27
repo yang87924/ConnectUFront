@@ -92,32 +92,32 @@ export default {
 
 
     
-//   // 在組件創建時使用 Axios，並傳遞使用者 ID
-//   axios.post('http://localhost:8080/users/getUserId')
-//     .then(response => {
-//       console.log(response.data);
-//     })
-//     .catch(error => {
-//       console.log(error);
-//       // 處理錯誤
-//     });
-
-
-    // 在組件創建時使用 Axios，並傳遞使用者 ID
-    axios.get(`/users/${storeduserId}`)
-      .then(response => {
-        console.log(response.data);
-        console.log(response.data.userName);
-        console.log("eeeeee");
-        // 處理回應資料
-        this.userName = response.data.data.userName;
-        this.avatar = response.data.data.avatar;
-        console.log(this.avatar);
+  // 在組件創建時使用 Axios，並傳遞使用者 ID
+  axios.post('/users/getUserId')
+    .then(response => {
+      console.log(response.data);
     })
-      .catch(error => {
-        console.log(error);
-        // 處理錯誤
-      });
+    .catch(error => {
+      console.log(error);
+      // 處理錯誤
+    });
+
+
+    // // 在組件創建時使用 Axios，並傳遞使用者 ID
+    // axios.get(`/users/${storeduserId}`)
+    //   .then(response => {
+    //     console.log(response.data);
+    //     console.log(response.data.userName);
+    //     console.log("eeeeee");
+    //     // 處理回應資料
+    //     this.userName = response.data.data.userName;
+    //     this.avatar = response.data.data.avatar;
+    //     console.log(this.avatar);
+    // })
+    //   .catch(error => {
+    //     console.log(error);
+    //     // 處理錯誤
+    //   });
   }
 }
 </script>
