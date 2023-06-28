@@ -4,9 +4,7 @@
             <div class="banner-box">
                 <img src="../../assets/img/profile/background.svg" alt="">
                 <div class="setting">
-                    <router-link to="/index">
-                        <span class="material-icons">settings</span>
-                    </router-link>
+                    <button class="edit-button" @click="toggleFanList">編輯個人檔案</button>
                 </div>
             </div>
             <div class="profile-box flex-between">
@@ -28,8 +26,12 @@
                         </div>
                         
                         <div class="button-box flex-center">
+                            <router-link to="/newpost">
                             <button class="profile-button">建立新文章</button>
+                            </router-link>
+                            <router-link to="/postlist">
                             <button class="profile-button">發佈動態</button>
+                            </router-link>
                         </div>
                     </div>
                 </div>
@@ -39,7 +41,7 @@
                                    
                         
 <div class="countbar">
-        <button class="profile-button" @click="toggleFanList">追蹤：555</button>
+        <button class="fans-button" @click="toggleFanList">追蹤：555</button>
         <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
             <div class="fan-list-container">
                 <h2 class="fan-list-title">追蹤列表</h2>
@@ -52,7 +54,7 @@
             </div>
         </div>
 
-        <button class="profile-button" @click="toggleFanList">粉絲：222</button>
+        <button class="fans-button" @click="toggleFanList">粉絲：222</button>
         <div v-if="showFanList" class="fan-list">
             <div class="fan-list-container">
                 <h2 class="fan-list-title">粉絲列表</h2>
@@ -65,7 +67,7 @@
             </div>
         </div>
         
-        <button class="profile-button" @click="toggleFanList">訂閱：123</button>
+        <button class="fans-button" @click="toggleFanList">訂閱：123</button>
         <div v-if="showFanList" class="fan-list">
             <div class="fan-list-container">
                 <h2 class="fan-list-title">訂閱列表</h2>
@@ -410,6 +412,23 @@ export default {
     justify-content: center;
     align-items: center;
     margin: 0 15px;
+}
+
+.edit-button {
+    padding: 8px 16px;
+    border: 4px solid lightgrey;
+    border-radius: 18.19px;
+    background-color: gray;
+    color: #FFF;
+}
+
+.fans-button {
+    padding: 8px 16px;
+    border: 4px solid gray;
+    border-radius: 18.19px;
+    background-color: white;
+    color: black;
+    margin-right: 30px;
 }
 
 .profile-button {
