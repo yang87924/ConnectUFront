@@ -33,16 +33,16 @@
                         </div>
                     </div>
                 </div>
-                <div class="edit-box flex-top">
+                <!-- <div class="edit-box">
                             <button class="profile-button">編輯個人檔案</button>
-                
+                        </div> -->
                                    
                         
 <div class="countbar">
-        <button class="profile-button" @click="toggleFanList">追蹤</button>
-        <div v-if="showFanList" class="fan-list">
+        <button class="profile-button" @click="toggleFanList">追蹤：555</button>
+        <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
             <div class="fan-list-container">
-                <h2 class="fan-list-title">粉絲列表</h2>
+                <h2 class="fan-list-title">追蹤列表</h2>
                 <ul class="fan-list-items">
                     <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
                         <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
@@ -52,7 +52,7 @@
             </div>
         </div>
 
-        <button class="profile-button" @click="toggleFanList">追蹤</button>
+        <button class="profile-button" @click="toggleFanList">粉絲：222</button>
         <div v-if="showFanList" class="fan-list">
             <div class="fan-list-container">
                 <h2 class="fan-list-title">粉絲列表</h2>
@@ -65,10 +65,10 @@
             </div>
         </div>
         
-        <button class="profile-button" @click="toggleFanList">追蹤</button>
+        <button class="profile-button" @click="toggleFanList">訂閱：123</button>
         <div v-if="showFanList" class="fan-list">
             <div class="fan-list-container">
-                <h2 class="fan-list-title">粉絲列表</h2>
+                <h2 class="fan-list-title">訂閱列表</h2>
                 <ul class="fan-list-items">
                     <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
                         <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
@@ -79,7 +79,7 @@
         </div>
 </div>
                 
-</div>
+
             </div>
                 <ul class="nav flex-between">
                     <button class="nav-item" :class="{ active: activeTab === '文章' }" @click="activeTab = '文章'">文章</button>
@@ -132,8 +132,14 @@
 <script>
 
 import axios from 'axios';
+import VueClickOutside from 'v-click-outside';
 
 export default {
+
+    directives: {
+    ClickOutside: VueClickOutside.directive
+  },
+
     data() {
         return {
             userName: '', // 使用者名稱
@@ -142,9 +148,9 @@ export default {
             title: '', // 文章標題
 
             fans: [
-        { id: 1, name: '粉丝1', avatar: 'avatar1.jpg' },
-        { id: 2, name: '粉丝2', avatar: 'avatar2.jpg' },
-        { id: 3, name: '粉丝3', avatar: 'avatar3.jpg' },
+        { id: 1, name: '粉絲1', avatar: 'avatar1.jpg' },
+        { id: 2, name: '粉絲2', avatar: 'avatar2.jpg' },
+        { id: 3, name: '粉絲3', avatar: 'avatar3.jpg' },
         // 迭代数据中可以包含更多粉丝项
       ],
       showFanList: false ,// 控制粉丝列表的显示状态
@@ -158,6 +164,9 @@ export default {
     methods: {
     toggleFanList() {
       this.showFanList = !this.showFanList;
+    },
+    hideFanList() {
+      this.showFanList = false;
     }
   },    
 
@@ -212,6 +221,12 @@ export default {
 </script>
 <style lang="css" scoped>
 
+.countbar {
+    margin-top: -260px;
+    display: flex;
+
+}
+
 /* 粉丝列表容器样式 */
 .fan-list {
   position: fixed;
@@ -224,10 +239,14 @@ export default {
   z-index: 9999;
 }
 
-/* 粉丝列表容器宽度样式 */
+/* 粉丝列表容器宽度样式 */  
 .fan-list-container {
-  max-width: 400px;
-  padding: 20px;
+  width: 600px;
+  margin: 0 auto; /* 添加此行，使用margin: 0 auto; 将内容水平置中 */
+    padding: 20px;
+    display: flex; /* 添加此行，使用flex布局 */
+    flex-direction: column; /* 添加此行，使内容垂直方向上居中 */
+    align-items: center; /* 添加此行，使内容水平方向上居中 */
 }
 
 /* 粉丝列表标题样式 */
@@ -241,7 +260,8 @@ export default {
 .fan-list-item {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 100px;
+  
 }
 
 /* 粉丝头像样式 */

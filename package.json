@@ -17,6 +17,7 @@
     "normalize.css": "^8.0.1",
     "roboto-fontface": "^0.10.0",
     "style-loader": "^3.3.3",
+    "v-click-outside": "^3.2.0",
     "vite-plugin-vuetify": "^1.0.2",
     "vue": "^3.2.47",
     "vue-router": "^4.2.2",
