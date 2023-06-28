@@ -35,22 +35,51 @@
                 </div>
                 <div class="edit-box flex-top">
                             <button class="profile-button">編輯個人檔案</button>
-                        </div>
-                        <div class="data-right flex-right">
-    <button class="profile-button">追蹤</button>
-    <div class="count-box">
-        <div>11</div>
-    </div>
-    <button class="profile-button">粉絲</button>
-    <div class="count-box">
-        <div>33</div>
-    </div>
-    <button class="profile-button">訂閱</button>
-    <div class="count-box">
-        <div>44</div>
-    </div>
+                
+                                   
+                        
+<div class="countbar">
+        <button class="profile-button" @click="toggleFanList">追蹤</button>
+        <div v-if="showFanList" class="fan-list">
+            <div class="fan-list-container">
+                <h2 class="fan-list-title">粉絲列表</h2>
+                <ul class="fan-list-items">
+                    <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
+                        <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
+                        <span class="fan-name">{{ fan.name }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="profile-button" @click="toggleFanList">追蹤</button>
+        <div v-if="showFanList" class="fan-list">
+            <div class="fan-list-container">
+                <h2 class="fan-list-title">粉絲列表</h2>
+                <ul class="fan-list-items">
+                    <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
+                        <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
+                        <span class="fan-name">{{ fan.name }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <button class="profile-button" @click="toggleFanList">追蹤</button>
+        <div v-if="showFanList" class="fan-list">
+            <div class="fan-list-container">
+                <h2 class="fan-list-title">粉絲列表</h2>
+                <ul class="fan-list-items">
+                    <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
+                        <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
+                        <span class="fan-name">{{ fan.name }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
 </div>
                 
+</div>
             </div>
                 <ul class="nav flex-between">
                     <button class="nav-item" :class="{ active: activeTab === '文章' }" @click="activeTab = '文章'">文章</button>
@@ -111,8 +140,38 @@ export default {
             avatar: '', // 大頭貼圖片來源
             activeTab: '文章', // 文章/動態/收藏 標籤切換 預設讀取文章
             title: '', // 文章標題
+
+            fans: [
+        { id: 1, name: '粉丝1', avatar: 'avatar1.jpg' },
+        { id: 2, name: '粉丝2', avatar: 'avatar2.jpg' },
+        { id: 3, name: '粉丝3', avatar: 'avatar3.jpg' },
+        // 迭代数据中可以包含更多粉丝项
+      ],
+      showFanList: false ,// 控制粉丝列表的显示状态
+
+            showFollowers: false,
+            showFans: false,
+            showSubscribers: false,
         };
     },
+
+    methods: {
+    toggleFanList() {
+      this.showFanList = !this.showFanList;
+    }
+  },    
+
+
+    // mounted() {
+    //     document.addEventListener('click', (event) => {
+    // const fanListContainer = document.querySelector('.fan-list');
+    // const isClickedInside = fanListContainer.contains(event.target);
+    // if (!isClickedInside) {
+    //   this.$nextTick(() => {
+    //     this.showFanList = false;
+    //     });}
+    // });},
+
 
     created() {
 
@@ -152,6 +211,54 @@ export default {
 }
 </script>
 <style lang="css" scoped>
+
+/* 粉丝列表容器样式 */
+.fan-list {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  z-index: 9999;
+}
+
+/* 粉丝列表容器宽度样式 */
+.fan-list-container {
+  max-width: 400px;
+  padding: 20px;
+}
+
+/* 粉丝列表标题样式 */
+.fan-list-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* 粉丝列表项样式 */
+.fan-list-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* 粉丝头像样式 */
+.fan-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* 粉丝姓名样式 */
+.fan-name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
 .container {
     display: flex;
     justify-content: center;
