@@ -4,7 +4,7 @@
             <div class="banner-box">
                 <img src="../../assets/img/profile/background.svg" alt="">
                 <div class="setting">
-                    <button class="edit-button" @click="toggleFanList">編輯個人檔案</button>
+                    <button class="edit-button" @click="toggleEditList">編輯個人檔案</button>
                 </div>
             </div>
             <div class="profile-box flex-between">
@@ -38,6 +38,7 @@
                 <!-- <div class="edit-box">
                             <button class="profile-button">編輯個人檔案</button>
                         </div> -->
+
                                    
                         
 <div class="countbar">
@@ -130,6 +131,10 @@
       <!-- 顯示收藏內容 -->
     </div>
     </div>
+
+    
+
+    
 </template>
 <script>
 
@@ -173,17 +178,6 @@ export default {
   },    
 
 
-    // mounted() {
-    //     document.addEventListener('click', (event) => {
-    // const fanListContainer = document.querySelector('.fan-list');
-    // const isClickedInside = fanListContainer.contains(event.target);
-    // if (!isClickedInside) {
-    //   this.$nextTick(() => {
-    //     this.showFanList = false;
-    //     });}
-    // });},
-
-
     created() {
 
         // 在組件創建時使用 Axios，並傳遞使用者 ID
@@ -191,6 +185,7 @@ export default {
             .then(response => {
                 console.log(response.data);
                 this.userName = response.data.userName;
+                this.avatar = response.data.avatar;
 
                 //先放置 圖片
                 //   this.avatar = response.data.avatar;
@@ -227,6 +222,58 @@ export default {
     margin-top: -260px;
     display: flex;
 
+}
+
+
+/* 粉丝列表容器样式 */
+.edit-list {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  z-index: 9999;
+}
+
+/* 粉丝列表容器宽度样式 */  
+.edit-container {
+  width: 600px;
+  margin: 0 auto; /* 添加此行，使用margin: 0 auto; 将内容水平置中 */
+    padding: 20px;
+    display: flex; /* 添加此行，使用flex布局 */
+    flex-direction: column; /* 添加此行，使内容垂直方向上居中 */
+    align-items: center; /* 添加此行，使内容水平方向上居中 */
+}
+
+/* 粉丝列表标题样式 */
+.edit-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* 粉丝列表项样式 */
+.edit-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 100px;
+  
+}
+
+/* 粉丝头像样式 */
+.edit-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* 粉丝姓名样式 */
+.edit-name {
+  font-size: 14px;
+  font-weight: bold;
 }
 
 /* 粉丝列表容器样式 */
@@ -333,15 +380,17 @@ export default {
 }
 
 .photo-box {
-    position: absolute;
-    top: -251.52px;
-    left: 48.72px;
-    width: 291.5px;
-    height: 291.5px;
-    border-radius: 50%;
-    background-color: #EFD7C7;
+  position: absolute;
+  top: -251.52px;
+  left: 48.72px;
+  width: 291.5px;
+  height: 291.5px;
+  border-radius: 50%;
+  background-color: #EFD7C7;
+  background-image: url('path/to/your/profile-picture.jpg');
+  background-size: cover;
+  background-position: center;
 }
-
 .setting {
     position: absolute;
     top: 13px;
