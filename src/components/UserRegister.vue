@@ -2,7 +2,7 @@
   <!-- 主要應用元件 -->
   <v-app>
     <!-- 顶部应用栏 -->
-    <v-app-bar color="dark" dark>
+    <v-app-bar color="purple" dark>
       <v-toolbar-title> ConnectU </v-toolbar-title>
       <v-spacer></v-spacer>
       <!-- 登录按钮，点击跳转到 "/login" 路由 -->
@@ -51,10 +51,10 @@
             </v-form>
           </v-col>
           <!-- Grid系統的列元件，呈現圖像部分 -->
-          <v-col cols="6" class="login-image align-self-start custom-class">
+          <v-col cols="6" class="login-image align-self-start custom-class" align="center" justify="center">
             <spline-component />
-            <!-- SplineComponent元件，用於顯示3D圖像 -->
           </v-col>
+
         </v-row>
       </v-container>
     </v-main>
@@ -137,10 +137,31 @@ html {
 /* 註冊頁面的全局樣式 */
 .register-container {
   height: 100vh;
+  display: flex;
+  /* 这使其成为一个flex容器 */
+  justify-content: center;
+  /* 这将水平居中其所有子元素 */
+  align-items: center;
+  /* 这将垂直居中其所有子元素 */
 }
 
 .register-content {
   width: 800px;
+  display: flex;
+  /* 这使其成为一个flex容器 */
+  justify-content: center;
+  /* 这将水平居中其所有子元素 */
+  align-items: center;
+  /* 这将垂直居中其所有子元素 */
+  flex-direction: column;
+  /* 这将使子元素以列方式排列 */
+  /* 添加边框 */
+  border: 1px solid #cccccc;
+  /* 1px宽，灰色的边框 */
+  border-radius: 8px;
+  /* 圆角边框 */
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .register-form {
@@ -154,13 +175,17 @@ html {
 
 /* SplineComponent 組件中的圖像的樣式 */
 .spline-component img {
-  height: 100%;
-  object-fit: cover;
+  display: flex;
+  /* 这使其成为一个flex容器 */
+  justify-content: center;
+  /* 这将水平居中其所有子元素 */
+  align-items: center;
+  /* 这将垂直居中其所有子元素 */
 }
 
 .custom-class {
-  height: 500px;
-  width: 600px;
+  align-items: center;
+  justify-content: center;
 }
 
 .error {
@@ -169,5 +194,4 @@ html {
 
 .button {
   text-transform: capitalize;
-}
-</style>
+}</style>

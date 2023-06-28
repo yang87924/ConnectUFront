@@ -44,10 +44,7 @@
             <!-- 其他登入選項 -->
             <div class="login-options">
               <!-- Google 登入按鈕 -->
-            <!-- Google 登入按鈕 -->
-<div id="g_id_onload" class="my-2 google-btn"></div>
-
-
+              <div id="g_id_onload" class="my-2 google-btn"></div>
               <!-- Facebook 登入按鈕 -->
               <v-btn block color="white" dark class="my-2 d-flex justify-center" @click="loginWithFacebook">
                 <v-icon left>mdi-facebook</v-icon>
@@ -62,9 +59,9 @@
             </div>
           </v-col>
           <!-- Grid系統的列元件，呈現圖像部分 -->
-           <v-col cols="6" class="login-image align-self-start custom-class">
+          <v-col cols="6" class="login-image align-self-start custom-class">
             <spline-component />
-          <!-- SplineComponent元件，用於顯示3D圖像 -->
+            <!-- SplineComponent元件，用於顯示3D圖像 -->
           </v-col>
         </v-row>
       </v-container>
@@ -86,7 +83,7 @@ export default {
       email: "",
       password: "",
       loginResponse: "",
-      loginAlertType: "error", 
+      loginAlertType: "error",
       loading: false,
     };
   },
@@ -106,9 +103,9 @@ export default {
             this.loading = false; // 登入结束，设置 loading 为 false
             this.$router.push("/index");
           }, 1000);
-        }else {
-        this.loading = false; // 登入失败，设置 loading 为 false
-      }
+        } else {
+          this.loading = false; // 登入失败，设置 loading 为 false
+        }
         console.log("Logged in: " + response.data.msg + response.data.code);
       } catch (error) {
         this.loading = false; // 登入失败，设置 loading 为 false
@@ -160,7 +157,7 @@ export default {
       document.getElementById("g_id_onload").firstChild.style.display = 'flex';
       google.accounts.id.prompt();
     });
-}
+  }
 
 };
 </script>
@@ -168,6 +165,7 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
+
 body,
 html {
   font-family: "Roboto", sans-serif;
@@ -176,12 +174,25 @@ html {
 /* 登入頁面的全局樣式 */
 .login-container {
   height: 100vh;
+  display: flex; /* 这使其成为一个flex容器 */
+  justify-content: center; /* 这将水平居中其所有子元素 */
+  align-items: center; /* 这将垂直居中其所有子元素 */
 }
 
 /* 登入內容的樣式 */
 .login-content {
   width: 800px;
+  display: flex; /* 这使其成为一个flex容器 */
+  justify-content: center; /* 这将水平居中其所有子元素 */
+  align-items: center; /* 这将垂直居中其所有子元素 */
+  flex-direction: column; /* 这将使子元素以列方式排列 */
+    /* 添加边框 */
+    border: 1px solid #cccccc; /* 1px宽，灰色的边框 */
+  border-radius: 8px; /* 圆角边框 */
+  padding: 20px; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
 
 /* 登入表單的樣式 */
 .login-form {
@@ -189,10 +200,10 @@ html {
 }
 
 /* SplineComponent 組件中的圖像的樣式 */
-.spline-component img {
-  height: 100%;
-  object-fit: cover;
-  /* 讓圖像保持原始比例並覆蓋整個容器 */
+.login-image {
+  display: flex; /* 这使其成为一个flex容器 */
+  justify-content: center; /* 这将水平居中其所有子元素 */
+  align-items: center; /* 这将垂直居中其所有子元素 */
 }
 
 .custom-class {
@@ -215,12 +226,12 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%; /* 设置按钮宽度与 Facebook 按钮相同 */
+  width: 100%;
+  /* 设置按钮宽度与 Facebook 按钮相同 */
 }
 
 /* Google 按钮的图标样式 */
 .google-btn img {
   margin-right: 8px;
 }
-
 </style>
