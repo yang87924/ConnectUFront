@@ -1,9 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title></title>
-</head>
-<body>
 	<template lang="">
 		<div class="container">
 			<div class="main-content">
@@ -593,5 +587,3 @@
 	   color: var(--secondary);
 	}
 	</style>
-</body>
-</html>
