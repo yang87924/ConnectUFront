@@ -1,8 +1,8 @@
 <template>
   <!-- 主要應用元件 -->
-  <v-app>
+  <v-app style="background-image: url(/background.jpg);">
     <!-- 顶部应用栏 -->
-    <v-app-bar color="dark" dark>
+    <v-app-bar color="purple" dark>
       <v-toolbar-title> ConnectU </v-toolbar-title>
       <v-spacer></v-spacer>
       <!-- 登录按钮，点击跳转到 "/login" 路由 -->
@@ -23,36 +23,68 @@
             <h3>歡迎回來！</h3>
             <v-form>
               <!-- 電子郵件輸入框 -->
-              <v-text-field v-model="email" label="Email" outlined></v-text-field>
+              <v-text-field
+                v-model="email"
+                label="Email"
+                outlined
+              ></v-text-field>
               <!-- 密碼輸入框 -->
-              <v-text-field v-model="password" label="Password" type="password" outlined></v-text-field>
+              <v-text-field
+                v-model="password"
+                label="Password"
+                type="password"
+                outlined
+              ></v-text-field>
               <a href="">忘記密碼？</a>
               <!-- 忘記密碼連結 -->
               <!-- 錯誤訊息提示 -->
-              <v-alert :type="loginAlertType" :color="loginAlertType === 'error' ? 'red' : 'green'"
-                :icon="loginAlertType === 'error' ? 'mdi-alert-circle' : '$success'" class="custom-alert"
-                v-if="loginResponse" dense text>
+              <v-alert
+                :type="loginAlertType"
+                :color="loginAlertType === 'error' ? 'red' : 'green'"
+                :icon="
+                  loginAlertType === 'error' ? 'mdi-alert-circle' : '$success'
+                "
+                class="custom-alert"
+                v-if="loginResponse"
+                dense
+                text
+              >
                 {{ loginResponse }}
               </v-alert>
               <!-- 登入按鈕，點擊時觸發 login 方法 -->
               <v-btn block color="purple" dark class="my-2" @click="login">
-                <v-progress-circular v-if="loading" indeterminate color="White"></v-progress-circular>
+                <v-progress-circular
+                  v-if="loading"
+                  indeterminate
+                  color="White"
+                ></v-progress-circular>
                 <span v-if="!loading">登入</span>
               </v-btn>
-
             </v-form>
             <!-- 其他登入選項 -->
             <div class="login-options">
               <!-- Google 登入按鈕 -->
               <div id="g_id_onload" class="my-2 google-btn"></div>
               <!-- Facebook 登入按鈕 -->
-              <v-btn block color="white" dark class="my-2 d-flex justify-center" @click="loginWithFacebook">
+              <v-btn
+                block
+                color="white"
+                dark
+                class="my-2 d-flex justify-center"
+                @click="loginWithFacebook"
+              >
                 <v-icon left>mdi-facebook</v-icon>
                 以Facebook帳號登入
               </v-btn>
 
               <!-- Twitter 登入按鈕 -->
-              <v-btn block color="white" dark class="my-2 d-flex justify-center" @click="loginWithTwitter">
+              <v-btn
+                block
+                color="white"
+                dark
+                class="my-2 d-flex justify-center"
+                @click="loginWithTwitter"
+              >
                 <v-icon left>mdi-twitter</v-icon>
                 以Twitter帳號登入
               </v-btn>
@@ -90,14 +122,15 @@ export default {
   methods: {
     async login() {
       try {
-        this.loading = true
+        this.loading = true;
         const response = await axios.post("/users/login", {
           email: this.email,
           password: this.password,
         });
         this.loginResponse = response.data.msg;
         // 根据响应码改变登入提示類型
-        this.loginAlertType = response.data.code === 20051 ? "success" : "error";
+        this.loginAlertType =
+          response.data.code === 20051 ? "success" : "error";
         if (response.data.msg == "登入成功") {
           setTimeout(() => {
             this.loading = false; // 登入结束，设置 loading 为 false
@@ -117,48 +150,44 @@ export default {
     async handleCredentialResponse(response) {
       console.log(response);
       const id_token = response.credential;
-      let formData = new FormData();   // 建立新的 FormData 實例
-      formData.append('credential', id_token);  // 將資料附加到 formData 上
+      let formData = new FormData(); // 建立新的 FormData 實例
+      formData.append("credential", id_token); // 將資料附加到 formData 上
 
       try {
         const response = await axios.post("/users/google", formData, {
           headers: {
-            'Content-Type': 'multipart/form-data'
-          }
+            "Content-Type": "multipart/form-data",
+          },
         });
         console.log(response);
         // 根据响应码改变登入提示類型
-        this.loginAlertType = response.data.code === 20051 ? "success" : "error";
+        this.loginAlertType =
+          response.data.code === 20051 ? "success" : "error";
         if (response.data.msg === "登入成功") {
           // 登入成功後，跳轉到 /index 頁面
           this.$router.push("/index");
-
         }
       } catch (error) {
         console.error("Error:", error);
       }
-    }
+    },
   },
   mounted() {
     window.googleSignInPromise.then(() => {
       google.accounts.id.initialize({
         client_id:
-          '1042407337082-72sipavf4mejlbvb3r5surhov8el6m60.apps.googleusercontent.com',
+          "1042407337082-72sipavf4mejlbvb3r5surhov8el6m60.apps.googleusercontent.com",
         callback: this.handleCredentialResponse,
       });
-      google.accounts.id.renderButton(
-        document.getElementById("g_id_onload"),
-        {
-          theme: "outline",
-          size: "large"
-        }
-      );
+      google.accounts.id.renderButton(document.getElementById("g_id_onload"), {
+        theme: "outline",
+        size: "large",
+      });
       // 添加这一行以使图标居中
-      document.getElementById("g_id_onload").firstChild.style.display = 'flex';
+      document.getElementById("g_id_onload").firstChild.style.display = "flex";
       google.accounts.id.prompt();
     });
-  }
-
+  },
 };
 </script>
 
@@ -181,18 +210,18 @@ html {
 
 /* 登入內容的樣式 */
 .login-content {
+  background-color: white;
   width: 800px;
   display: flex; /* 这使其成为一个flex容器 */
   justify-content: center; /* 这将水平居中其所有子元素 */
   align-items: center; /* 这将垂直居中其所有子元素 */
   flex-direction: column; /* 这将使子元素以列方式排列 */
-    /* 添加边框 */
-    border: 1px solid #cccccc; /* 1px宽，灰色的边框 */
+  /* 添加边框 */
+  border: 1px solid #cccccc; /* 1px宽，灰色的边框 */
   border-radius: 8px; /* 圆角边框 */
-  padding: 20px; 
+  padding: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 
 /* 登入表單的樣式 */
 .login-form {

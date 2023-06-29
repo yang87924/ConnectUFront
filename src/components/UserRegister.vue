@@ -1,6 +1,6 @@
 <template>
   <!-- 主要應用元件 -->
-  <v-app>
+  <v-app style="background-image: url(/background.jpg);">
     <!-- 顶部应用栏 -->
     <v-app-bar color="purple" dark>
       <v-toolbar-title> ConnectU </v-toolbar-title>
@@ -51,7 +51,7 @@
             </v-form>
           </v-col>
           <!-- Grid系統的列元件，呈現圖像部分 -->
-          <v-col cols="6" class="login-image align-self-start custom-class" align="center" justify="center">
+          <v-col cols="6" class="login-image align-self-start custom-class">
             <spline-component />
           </v-col>
 
@@ -146,6 +146,7 @@ html {
 }
 
 .register-content {
+  background-color: white;
   width: 800px;
   display: flex;
   /* 这使其成为一个flex容器 */
@@ -184,8 +185,8 @@ html {
 }
 
 .custom-class {
-  align-items: center;
-  justify-content: center;
+  height: 500px;
+  width: 600px;
 }
 
 .error {
