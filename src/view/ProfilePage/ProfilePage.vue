@@ -9,9 +9,7 @@
             </div>
             <div class="profile-box flex-between">
                 <div class="data-left">
-                    <div class="photo-box">
-                        <img :src="avatar" alt="頭像">
-                    </div>
+                    <div class="photo-box" :style="{ backgroundImage: 'url(' + avatar + ')' }"></div>
                     <div class="content-box">
                         <div class="username">
                             <h1>{{ userName }}</h1>         
@@ -20,17 +18,12 @@
                             <span class="slogan">
                                 你好，世界
                             </span>
-                            <!-- <button class="edit">
-                                <span class="material-icons">edit</span>
-                            </button> -->
 							</div>
 							<div class="button-box flex-center">
 								<button class="profile-button">建立新文章</button> <button class="profile-button">發佈動態</button> 
 							</div>
 						</div>
-					</div><!-- <div class="edit-box">
-                            <button class="profile-button">編輯個人檔案</button>
-                        </div> -->
+					</div>
                                    
                         
 <div class="countbar">
@@ -146,10 +139,8 @@ export default {
         { id: 1, name: '粉絲1', avatar: 'avatar1.jpg' },
         { id: 2, name: '粉絲2', avatar: 'avatar2.jpg' },
         { id: 3, name: '粉絲3', avatar: 'avatar3.jpg' },
-        // 迭代数据中可以包含更多粉丝项
       ],
-      showFanList: false ,// 控制粉丝列表的显示状态
-
+            showFanList: false ,
             showFollowers: false,
             showFans: false,
             showSubscribers: false,
@@ -165,18 +156,6 @@ export default {
     }
   },    
 
-
-    // mounted() {
-    //     document.addEventListener('click', (event) => {
-    // const fanListContainer = document.querySelector('.fan-list');
-    // const isClickedInside = fanListContainer.contains(event.target);
-    // if (!isClickedInside) {
-    //   this.$nextTick(() => {
-    //     this.showFanList = false;
-    //     });}
-    // });},
-
-
     created() {
 
         // 在組件創建時使用 Axios，並傳遞使用者 ID
@@ -184,9 +163,7 @@ export default {
             .then(response => {
                 console.log(response.data);
                 this.userName = response.data.userName;
-
-                //先放置 圖片
-                //   this.avatar = response.data.avatar;
+                this.avatar = response.data.avatar;
             })
             .catch(error => {
                 console.log(error);
@@ -333,6 +310,7 @@ export default {
     height: 291.5px;
     border-radius: 50%;
     background-color: #EFD7C7;
+    background-size: cover;
 }
 
 .setting {
