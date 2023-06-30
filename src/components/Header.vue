@@ -53,7 +53,7 @@
                     <div class="dialog-content">
                         <p>是否確定要登出？</p>
                         <div class="buttons">
-                            <router-link to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }">
+                            <router-link to="/index" class="router-link" :class="{ 'active-link': $route.path === '/index' }">
                             <button @click="logout">是</button>
                             </router-link>
                             <button @click="cancelLogout">取消</button>
@@ -118,7 +118,17 @@ export default {
       // 執行登出操作
       console.log("已登出");
       this.isConfirmationDialogVisible = false; // 隱藏登出確認視窗
+      axios.post("users/invalidate")
+      .then((response) => {
+        console.log(response.data);
+        this.userName = "";
+      })
+      .catch((error) => {
+        console.log(error);
+        // 處理錯誤
+      });
     },
+    
     cancelLogout() {
       this.isConfirmationDialogVisible = false; // 取消登出，隱藏確認視窗
     },
@@ -128,8 +138,7 @@ export default {
     // const storeduserId = localStorage.getItem('userId');
 
     // 在組件創建時使用 Axios，並傳遞使用者 ID
-    axios
-      .post("/users/getUserId")
+    axios.post("/users/getUserId")
       .then((response) => {
         console.log(response.data);
         this.userName = response.data.userName;
