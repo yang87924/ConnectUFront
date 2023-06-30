@@ -1,7 +1,7 @@
 <template lang="">
     <div class="container">
         <div class="sidebar">
-            <img src="../../assets/img/header/logo.svg" alt="" class="logo">
+            <!-- <img src="../../assets/img/header/logo.svg" alt="" class="logo">
             <div class="nav-block">
                 <ul class="nav">
                     <li class="nav-item flex-start active">
@@ -44,16 +44,16 @@
                         </button>
                     </li>
                 </ul>
-            </div>
+            </div> -->
         </div>
         <div class="main-content">
-            <div class="create-post flex-between">
+            <!-- <div class="create-post flex-between">
                 <div class="memoji-box flex-center">
                     <img src="../../assets/img/postlist/memoji.svg" alt="" class="memoji">
                 </div>
                 <input type="text" class="post-input" placeholder="Let’s share what going on your mind...">
                 <input type="submit" class="submit" value="Create Post">
-            </div>
+            </div> -->
             <div class="content-switch flex-around">
                 <div class="switch">為你推薦</div>
                 <div class="switch">正在跟隨</div>
@@ -265,6 +265,7 @@ export default {
 }
 
 .content-switch {
+    margin-top: 50px;
     width: 100%;
     margin-bottom: 8px;
 }
