@@ -4,16 +4,23 @@
             <div class="banner-box">
                 <img src="../../assets/img/profile/background.svg" alt="">
                 <div class="setting">
-                    <router-link to="/index">
-                        <span class="material-icons">settings</span>
-                    </router-link>
+                    <button class="edit-button" @click="toggleEditList">編輯個人檔案</button>
+                    <div v-if="showEditList" class="edit-list">
+                        <div class="edit-list-container">
+                            <h2 class="edit-list-title">編輯個人檔案</h2>
+                            <ul class="edit-list-items">
+                                <li class="edit-list-item" v-for="fan in fans" :key="fan.id">
+                                    <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
+                                    <span class="fan-name">{{ fan.name }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="profile-box flex-between">
                 <div class="data-left">
-                    <div class="photo-box">
-                        <img :src="avatar" alt="頭像">
-                    </div>
+                    <div class="photo-box" :style="{ backgroundImage: 'url(' + avatar + ')' }"></div>
                     <div class="content-box">
                         <div class="username">
                             <h1>{{ userName }}</h1>         
@@ -22,30 +29,65 @@
                             <span class="slogan">
                                 你好，世界
                             </span>
-                            <button class="edit">
-                                <span class="material-icons">edit</span>
-                            </button>
-                        </div>
-                        <div class="button-box flex-center">
-                            <button class="profile-button">建立新文章</button>
-                            <button class="profile-button">發佈動態</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="data-right flex-end">
-                    <button class="profile-button">追蹤</button>
-                    <button class="profile-button">粉絲</button>
-                    <button class="profile-button">訂閱</button>
-                </div>
+							</div>
+							<div class="button-box flex-center">
+								<button class="profile-button">建立新文章</button> <button class="profile-button">發佈動態</button> 
+							</div>
+						</div>
+					</div>
+                                   
+                        
+<div class="countbar">
+        <button class="fans-button" @click="toggleFanList">追蹤：555</button>
+        <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
+            <div class="fan-list-container">
+                <h2 class="fan-list-title">追蹤列表</h2>
+                <ul class="fan-list-items">
+                    <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
+                        <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
+                        <span class="fan-name">{{ fan.name }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <button class="fans-button" @click="toggleFanList">粉絲：222</button>
+        <div v-if="showFanList" class="fan-list">
+            <div class="fan-list-container">
+                <h2 class="fan-list-title">粉絲列表</h2>
+                <ul class="fan-list-items">
+                    <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
+                        <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
+                        <span class="fan-name">{{ fan.name }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+        <button class="fans-button" @click="toggleFanList">訂閱：123</button>
+        <div v-if="showFanList" class="fan-list">
+            <div class="fan-list-container">
+                <h2 class="fan-list-title">訂閱列表</h2>
+                <ul class="fan-list-items">
+                    <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
+                        <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
+                        <span class="fan-name">{{ fan.name }}</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+</div>
+                
+
             </div>
                 <ul class="nav flex-between">
-                    <li class="nav-item" :class="{ active: activeTab === '文章' }" @click="activeTab = '文章'">文章</li>
-                    <li class="nav-item" :class="{ active: activeTab === '動態' }" @click="activeTab = '動態'">動態</li>
-                    <li class="nav-item" :class="{ active: activeTab === '收藏' }" @click="activeTab = '收藏'">收藏</li>
+                    <button class="nav-item" :class="{ active: activeTab === '文章' }" @click="activeTab = '文章'">文章</button>
+                    <button class="nav-item" :class="{ active: activeTab === '動態' }" @click="activeTab = '動態'">動態</button>
+                    <button class="nav-item" :class="{ active: activeTab === '收藏' }" @click="activeTab = '收藏'">收藏</button>
                 </ul>
 
                 <div v-if="activeTab === '文章'">
-            <div class="article-box flex-start">
+                <div class="article-box flex-start">
     
                 <div class="img-box">
                     <img src="../../assets/img/profile/article_img.svg" alt="文章縮圖">
@@ -89,16 +131,45 @@
 <script>
 
 import axios from 'axios';
+import VueClickOutside from 'v-click-outside';
 
 export default {
+
+    directives: {
+    ClickOutside: VueClickOutside.directive
+  },
+
     data() {
         return {
             userName: '', // 使用者名稱
             avatar: '', // 大頭貼圖片來源
             activeTab: '文章', // 文章/動態/收藏 標籤切換 預設讀取文章
             title: '', // 文章標題
+
+            fans: [
+        { id: 1, name: '粉絲1', avatar: 'avatar1.jpg' },
+        { id: 2, name: '粉絲2', avatar: 'avatar2.jpg' },
+        { id: 3, name: '粉絲3', avatar: 'avatar3.jpg' },
+      ],
+            showFanList: false ,
+            showFollowers: false,
+            showFans: false,
+            showSubscribers: false,
+            showEditList: false,
         };
     },
+
+    methods: {
+    toggleFanList() {
+      this.showFanList = !this.showFanList;
+    },
+    hideFanList() {
+      this.showFanList = false;
+    },
+    toggleEditList() {
+      this.showEditList = !this.showEditList;
+    },
+  },    
 
     created() {
 
@@ -107,9 +178,7 @@ export default {
             .then(response => {
                 console.log(response.data);
                 this.userName = response.data.userName;
-
-                //先放置 圖片
-                //   this.avatar = response.data.avatar;
+                this.avatar = response.data.avatar;
             })
             .catch(error => {
                 console.log(error);
@@ -138,6 +207,65 @@ export default {
 }
 </script>
 <style lang="css" scoped>
+
+.countbar {
+    margin-top: -260px;
+    display: flex;
+
+}
+
+/* 粉丝列表容器样式 */
+.fan-list {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  z-index: 9999;
+}
+
+/* 粉丝列表容器宽度样式 */  
+.fan-list-container {
+  width: 600px;
+  margin: 0 auto; /* 添加此行，使用margin: 0 auto; 将内容水平置中 */
+    padding: 20px;
+    display: flex; /* 添加此行，使用flex布局 */
+    flex-direction: column; /* 添加此行，使内容垂直方向上居中 */
+    align-items: center; /* 添加此行，使内容水平方向上居中 */
+}
+
+/* 粉丝列表标题样式 */
+.fan-list-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* 粉丝列表项样式 */
+.fan-list-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 100px;
+  
+}
+
+/* 粉丝头像样式 */
+.fan-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/* 粉丝姓名样式 */
+.fan-name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
 .container {
     display: flex;
     justify-content: center;
@@ -157,6 +285,12 @@ export default {
     align-items: center;
 }
 
+.flex-top {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
 .flex-start {
     display: flex;
     justify-content: start;
@@ -173,6 +307,10 @@ export default {
     width: fit-content;
 }
 
+.edit-box {
+    position: relative;
+}
+
 /* banner */
 .banner-box {
     width: 882px;
@@ -187,6 +325,7 @@ export default {
     height: 291.5px;
     border-radius: 50%;
     background-color: #EFD7C7;
+    background-size: cover;
 }
 
 .setting {
@@ -246,8 +385,36 @@ export default {
 }
 
 .data-right {
-    flex: 1;
-    margin-bottom: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+
+.count-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 15px;
+}
+
+.edit-button {
+    padding: 8px 16px;
+    border: 4px solid lightgrey;
+    border-radius: 18.19px;
+    background-color: gray;
+    color: #FFF;
+}
+
+.fans-button {
+    padding: 8px 16px;
+    border: 4px solid gray;
+    border-radius: 18.19px;
+    background-color: white;
+    color: black;
+    margin-right: 30px;
 }
 
 .profile-button {
@@ -287,6 +454,7 @@ export default {
 .active {
     color: var(--active);
 }
+
 
 /* article-box */
 .article-box {
