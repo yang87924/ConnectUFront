@@ -4,7 +4,18 @@
             <div class="banner-box">
                 <img src="../../assets/img/profile/background.svg" alt="">
                 <div class="setting">
-                    <button class="edit-button" @click="toggleFanList">編輯個人檔案</button>
+                    <button class="edit-button" @click="toggleEditList">編輯個人檔案</button>
+                    <div v-if="showEditList" class="edit-list">
+                        <div class="edit-list-container">
+                            <h2 class="edit-list-title">編輯個人檔案</h2>
+                            <ul class="edit-list-items">
+                                <li class="edit-list-item" v-for="fan in fans" :key="fan.id">
+                                    <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
+                                    <span class="fan-name">{{ fan.name }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="profile-box flex-between">
@@ -144,6 +155,7 @@ export default {
             showFollowers: false,
             showFans: false,
             showSubscribers: false,
+            showEditList: false,
         };
     },
 
@@ -153,7 +165,10 @@ export default {
     },
     hideFanList() {
       this.showFanList = false;
-    }
+    },
+    toggleEditList() {
+      this.showEditList = !this.showEditList;
+    },
   },    
 
     created() {
