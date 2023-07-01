@@ -33,21 +33,21 @@
             </li>
         </ul>
         <div class="user-info flex-between">
-            <div class="nav-item flex-center">
+            <div class="nav-item flex-center" v-if="userName != null">
                 <span class="material-icons">settings</span>
             </div>
             <div class="outer-border">
                 <div class="user-imgbox ">
                     <router-link to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }">
-                    <img src="../assets/img/header/user-photo.svg" alt="">
+                    <img src="../assets/img/header/user-photo.svg" alt="" text to="/UserLogin">
                     </router-link>
                 </div>
             </div>
             <div class="user-name" >
                 {{userName}}
             </div>
-            <div class="arrow-icon flex-center" @click="showConfirmationDialog">
-                <span class="material-icons-round">logout</span>
+            <div class="arrow-icon flex-center" v-if="userName != null">
+                <span class="material-icons-round"  @click="showConfirmationDialog">logout</span>
             </div>
                 <div v-if="isConfirmationDialogVisible" class="confirmation-dialog">
                     <div class="dialog-content">
@@ -116,17 +116,18 @@ export default {
     },
     logout() {
       // 執行登出操作
-      console.log("已登出");
+      // console.log("已登出");
       this.isConfirmationDialogVisible = false; // 隱藏登出確認視窗
       axios.post("users/invalidate")
       .then((response) => {
         console.log(response.data);
-        this.userName = "";
+        // this.userName = "";
       })
       .catch((error) => {
         console.log(error);
         // 處理錯誤
       });
+      location.reload();
     },
     
     cancelLogout() {
