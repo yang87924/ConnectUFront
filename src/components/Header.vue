@@ -38,8 +38,9 @@
             </div>
             <div class="outer-border">
                 <div class="user-imgbox ">
-                    <router-link to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }">
-                    <img src="../assets/img/header/user-photo.svg" alt="" text to="/UserLogin">
+                    <img v-if="userName != null" :src="avatar" alt="User Photo">
+                    <router-link v-else to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }">
+                    <img src="../assets/img/header/user-photo.svg" alt="" >
                     </router-link>
                 </div>
             </div>
@@ -116,8 +117,9 @@ export default {
     },
     logout() {
       // 執行登出操作
-      // console.log("已登出");
+      console.log("已登出");
       this.isConfirmationDialogVisible = false; // 隱藏登出確認視窗
+      //清除session資料
       axios.post("users/invalidate")
       .then((response) => {
         console.log(response.data);
@@ -143,9 +145,7 @@ export default {
       .then((response) => {
         console.log(response.data);
         this.userName = response.data.userName;
-
-        //先放置 圖片
-        //   this.avatar = response.data.avatar;
+        this.avatar = response.data.avatar;
       })
       .catch((error) => {
         console.log(error);
@@ -225,6 +225,10 @@ export default {
   color: #fff;
 }
 
+.user-info{
+    margin-right: 32px;
+}
+
 .user-info div:not(:last-child) {
   margin-right: 20px;
 }
@@ -239,6 +243,16 @@ export default {
   background-color: #f9dfc0;
   border-radius: 7.5px;
   padding: 3.6px;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+.user-imgbox img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius:10px;
 }
 
 .outer-border {
