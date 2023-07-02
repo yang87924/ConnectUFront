@@ -80,6 +80,7 @@
             <div class="tweets-box">
                 <Tweet />
                 <Tweet />
+                <Tweet />
             </div>
         </div>
         <div class="sidebar trend">
@@ -298,6 +299,7 @@ export default {
 .textarea {
     width: 100%;
     border: none;
+    height: 70px;
 }
 
 .tweet-tool .material-icons-outlined {
@@ -321,6 +323,8 @@ export default {
 /* tweets-box */
 .tweets-box {
     padding: 1rem 2rem;
+    height: 1000px;
+    overflow: auto;
 }
 
 /* trend */
