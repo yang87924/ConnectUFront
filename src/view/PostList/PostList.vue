@@ -114,7 +114,7 @@ export default {
 <style lang="css" scoped>
 .container {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 3fr 1fr;
     /* 定義三欄佈局的比例，1fr等於分配剩餘空間 */
     grid-gap: 20px;
     /* 欄與欄之間的寬度 */
