@@ -11,6 +11,7 @@
             <div class="tags">
                 <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
 
+                <div class="content">{{ item.content }}</div>
             </div>
             <div class="down">
                 <div class="person">
@@ -88,23 +89,7 @@ export default {
 };
 </script>
 <style lang="css" scoped>
-.down {
-    margin-top: 70px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    
 
-}
-
-.person {
-    height: 50px;
-    width: 200px;
-    display: flex;
-    align-items: center;
-
-
-}
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -124,6 +109,33 @@ export default {
     align-items: center;
     height: 100vh; /* or any other value that suits your needs */
 }
+
+.content {
+    font-family: 'Source Sans Pro';
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #333;
+    margin-top: 10px;
+}
+.down {
+    margin-top: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+
+}
+
+.person {
+    height: 50px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+
+
+}
+
 .avatar {
     height: 50px;
     width: 50px;
