@@ -79,8 +79,6 @@
             </div>
             <div class="tweets-box">
                 <Tweet />
-                <Tweet />
-                <Tweet />
             </div>
         </div>
         <div class="sidebar trend">

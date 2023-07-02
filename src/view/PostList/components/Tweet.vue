@@ -1,32 +1,32 @@
 <template lang="">
-    <div class="tweet flex-center">
-        <div class="friendimg-box">
-            <img src="../../../assets/img/postlist/Medium.svg" alt="friend">
+    <div class="tweet flex-center" v-for="(item, index) in items" :key="index">
+        <div class="friendimg-box" >
+            <img :src="item.user.avatar" alt="friend">
         </div>
         <div class="content">
             <div class="friend-info">
-                <span class="name">Devon Lane</span>
-                <span class="place">@johndue・23s</span>
+                <span class="name">{{ item.user.userName }}</span>
+                <span class="place">{{ item.createdAt }}</span>
             </div>
-            <div class="txt">Tom is in a big hurry.</div>
-            <div class="img-box"></div>
+            <div class="txt">{{ item.content }}</div>
+            <div class="img-box" :style="{ backgroundImage: `url(${item.picture})` }"></div>
             <div class="flex-start">
                 <div class="fn flex-center">
                     <span class="material-icons">chat_bubble_outline</span>
-                    <span class="fn-txt">61</span>
+                    <span class="fn-txt">{{ item.replyCount }}</span>
                 </div>
-                <div class="fn flex-center">
+                <!-- <div class="fn flex-center">
                     <span class="material-icons">autorenew</span>
                     <span class="fn-txt">12</span>
-                </div>
+                </div> -->
                 <div class="fn flex-center">
-                    <span class="material-icons">star</span>
-                    <span class="fn-txt">6.2K</span>
+                    <span class="material-icons">thumb_up</span>
+                    <span class="fn-txt">{{ item.love }}</span>
                 </div>
-                <div class="fn flex-center active">
+                <!-- <div class="fn flex-center active">
                     <span class="material-icons">ios_share</span>
                     <span class="fn-txt">61</span>
-                </div>
+                </div> -->
             </div>
             <div class="show">
                 Show this thread
@@ -35,8 +35,33 @@
     </div>
 </template>
 <script>
-export default {
+import axios from 'axios';
 
+export default {
+    data() {
+        return {
+            items: [], // 存放動態的列表
+        };
+    },
+    mounted() {
+        // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
+        this.fetchData();
+    },
+    methods: {
+        fetchData() {
+            // 發送 HTTP GET 請求到後端 API 獲取資料
+            axios.get('/DyThreads/pageDyThread')
+                .then(response => {
+                    // 請求成功，將資料設置給items陣列
+                    this.items = response.data.data;
+                    console.log(response.data.data)
+                })
+                .catch(error => {
+                    // 請求失敗，處理錯誤
+                    console.error(error);
+                });
+        }
+    }
 }
 </script>
 <style lang="css" scoped>
@@ -80,6 +105,13 @@ export default {
     margin-bottom: auto;
 }
 
+.friendimg-box img {
+    border-radius: 50%;
+    width: 55px;
+    height: 55px;
+    object-fit: cover;
+}
+
 .content {
     width: 100%;
 }
@@ -97,11 +129,14 @@ export default {
 }
 
 .img-box {
-    border-radius: 20px;
-    background-image: url('../../../assets/img/postlist/tweetImg.png');
-    width: 628.94px;
-    height: 305.2px;
+  border-radius: 20px;
+  width: 628.94px;
+  height: 305.2px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
+
 
 .tweetImg {
     width: 100%;
