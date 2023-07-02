@@ -1,5 +1,14 @@
 <template >
-    <div  v-for="(item, index) in items" :key="index" class="articleitem" >
+    <div class="create-post flex-between">
+                <div class="memoji-box flex-center">
+                    <img src="../../assets/img/postlist/memoji.svg" alt="" class="memoji">
+                </div>
+                <input type="text" class="post-input" placeholder="Let’s share what going on your mind...">
+                <input type="submit" class="submit" value="Create Post">
+            </div>
+    
+    <div v-for="(item, index) in items" :key="index" class="articleitem">
+
         <div class="newsimg">
             <img :src="item.picture" alt="" class="newspic">
         </div>
@@ -32,7 +41,8 @@
     </div>
     <div v-if="isLoading" class="loading">
         <div class="loader"></div>
-    </div></template>
+    </div>
+</template>
 <script>
 import axios from 'axios';
 export default {
@@ -89,14 +99,21 @@ export default {
 };
 </script>
 <style lang="css" scoped>
-
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
+
 .loader {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
+    border: 16px solid #f3f3f3;
+    /* Light grey */
+    border-top: 16px solid #3498db;
+    /* Blue */
     border-radius: 50%;
     width: 120px;
     height: 120px;
@@ -107,7 +124,8 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* or any other value that suits your needs */
+    height: 100vh;
+    /* or any other value that suits your needs */
 }
 
 .content {
@@ -118,12 +136,13 @@ export default {
     color: #333;
     margin-top: 10px;
 }
+
 .down {
     margin-top: 70px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    
+
 
 }
 
@@ -234,7 +253,7 @@ export default {
     box-shadow: 5px 5px rgba(0, 0, 0, 0.25);
     border-radius: 10%;
     margin: 10px 0px 10px 0px;
-    
+
 
 }
 
@@ -243,6 +262,51 @@ export default {
     height: 100%;
     object-fit: fill;
     border-radius: 10%;
+}
 
+.create-post {
+    padding: 24px;
+    margin-bottom: 100px;
+}
+
+.memoji-box {
+    height: 43px;
+    width: 43px;
+    border-radius: 50%;
+    background-color: #F9DFC0;
+    margin-right: 20px;
+}
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-post .post-input {
+    border: none;
+    border-radius: 6.44px;
+    background-color: #F4F6F8;
+    padding: 13px;
+    width: 100%;
+}
+.create-post .submit {
+    padding: 12px 17px;
+    margin-left: 20px;
+    border: none;
+    border-radius: 6.44px;
+    background-color: var(--button-default);
+    font-family: 'Rubik';
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 21px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #FFF;
 }
 </style>
