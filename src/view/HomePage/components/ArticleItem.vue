@@ -1,137 +1,312 @@
-<template lang="">
+<template >
+    <div class="create-post flex-between">
+                <div class="memoji-box flex-center">
+                    <img src="../../assets/img/postlist/memoji.svg" alt="" class="memoji">
+                </div>
+                <input type="text" class="post-input" placeholder="Let’s share what going on your mind...">
+                <input type="submit" class="submit" value="Create Post">
+            </div>
+    
     <div v-for="(item, index) in items" :key="index" class="articleitem">
-        <div class="img">
-            <img src="../../../assets/img/HomePage/ArticleItem/Rectangle 24.svg" alt="">
+
+        <div class="newsimg">
+            <img :src="item.picture" alt="" class="newspic">
         </div>
         <div class="data">
             <div class="top">
-                <div class="word">關於創新鏈的區塊鏈開發者最佳實踐!!</div>
+                <div class="word">{{ item.title }}</div>
                 <div class="icon"><img src="../../../assets/img/HomePage/ArticleItem/Love.svg" alt=""></div>
             </div>
             <div class="tags">
-                <span>finance</span>
-                <span>bitcoin</span>
-                <span>crypto</span>
+                <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
+
+                <div class="content">{{ item.content }}</div>
             </div>
             <div class="down">
                 <div class="person">
-                    <img src="../../../assets/img/HomePage/ArticleItem/Avatars.svg" alt="">
+                    <img :src="item.user.avatar" alt="" class="avatar">
                     <div class="name-area">
-                        <div class="name">Pavel Gvay</div>
-                        <div class="time">3 weeks ago</div>
+                        <div class="name">{{ item.user.userName }}</div>
+                        <div class="time">{{ item.createdAt }}</div>
                     </div>
                 </div>
                 <div class="num">
-                    <span>651,324 Views</span>
-                    <span>36,6545 Likes</span>
-                    <span>56 comments</span>
+                    <span>{{ item.views }}</span>
+                    <span>{{ item.likes }}</span>
+                    <span>{{ item.comments }}</span>
                 </div>
             </div>
         </div>
+
+    </div>
+    <div v-if="isLoading" class="loading">
+        <div class="loader"></div>
     </div>
 </template>
 <script>
-    export default {
-        data() {
-            return {
-                items:[1,2,3]
-            }
+import axios from 'axios';
+export default {
+    data() {
+        return {
+            items: [], // 存放文章的列表
+            newArticleTitle: '', // 新文章的標題
+            newArticleContent: '', // 新文章的內容
+            pageNum: 1, // 目前頁數
+            isLoading: true, // 是否正在載入中
+        };
+    },
+    mounted() {
+        // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
+        this.fetchData();
+        this.addScrollListener();
+    },
+    methods: {
+        fetchData() {
+            // 發送 HTTP GET 請求到後端 API 獲取資料
+            axios
+                .get('/threads/pageThread', {
+                    params: {
+                        pageNum: this.pageNum,
+                    },
+                })
+                .then(response => {
+                    // 請求成功，將資料設置給items陣列
+                    this.items = this.items.concat(response.data.data);
+                    console.log(response.data.data);
+                    this.isLoading = false; // 停止載入狀態
+                })
+                .catch(error => {
+                    // 請求失敗，處理錯誤
+                    console.error(error);
+                    this.isLoading = false; // 停止載入狀態
+                });
         },
-    }
+        addData() {
+            this.pageNum++; // 增加頁數
+            this.isLoading = true; // 開始載入狀態
+            this.fetchData();
+        },
+        addScrollListener() {
+            window.addEventListener('scroll', () => {
+                const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+                const offset = 5; // 設置一個偏移值
+                if (scrollTop + clientHeight + offset >= scrollHeight) {
+                    this.addData();
+                }
+            });
+        },
+    },
+};
 </script>
 <style lang="css" scoped>
-    .down {
-        margin-top: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
     }
 
-    .person {
-        display: flex;
-        align-items: center;
-
+    100% {
+        transform: rotate(360deg);
     }
+}
 
-    .articleitem {
-        width: 100%;
-        display: flex;
-        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-        padding-left: 21.48459243774414px;
-        padding-top: 21.48459243774414px;
-        border-radius: 17.187673568725586px;
-    }
+.loader {
+    border: 16px solid #f3f3f3;
+    /* Light grey */
+    border-top: 16px solid #3498db;
+    /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
 
-    .top {
-        display: flex;
-        margin-top: 5px;
-        width: 100%;
-        justify-content: space-between;
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* or any other value that suits your needs */
+}
 
-    }
+.content {
+    font-family: 'Source Sans Pro';
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #333;
+    margin-top: 10px;
+}
 
-    .data {
-        width: 100%;
+.down {
+    margin-top: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-    }
 
-    .word {
-        font-family: 'Source Sans Pro';
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 26px;
-        letter-spacing: 0em;
-    }
+}
 
-    .icon {
-        margin-top: -3px;
-    }
+.person {
+    height: 50px;
+    width: 200px;
+    display: flex;
+    align-items: center;
 
-    .tags {
-        width: 100%;
-    }
 
-    .time {
-        font-family: 'Source Sans Pro';
-        font-size: 8px;
-        font-weight: 600;
-        line-height: 18px;
-        letter-spacing: 0em;
-        text-align: left;
-        color: #97989D;
-        margin-left: 8px;
-    }
+}
 
-    .num span {
-        font-family: 'Source Sans Pro';
-        font-size: 11px;
-        font-weight: 600;
-        line-height: 18px;
-        letter-spacing: 0em;
-        text-align: left;
-        color: #97989D;
-        margin-left: 8px;
+.avatar {
+    height: 50px;
+    width: 50px;
+    clip-path: circle(50% at center);
 
-    }
+}
 
-    .num{
-        padding-right: 10px;
-    }
+.articleitem {
+    width: 100%;
+    display: flex;
+    box-shadow: 4px 4px rgba(0, 0, 0, 0.25);
+    padding-left: 21.48459243774414px;
+    /* padding-top: 21.48459243774414px; */
+    border-radius: 17.187673568725586px;
+    margin-bottom: 20px;
+}
 
-    .tags span {
-        width: 53.48px;
-        height: 24.59px;
-        padding: 4.2969183921813965px 10.74229621887207px 4.2969183921813965px 10.74229621887207px;
-        border-radius: 21.48459243774414px;
-        background-color: #F4F6F8;
-        font-family: Source Sans Pro;
-        font-size: 15px;
-        font-weight: 600;
-        line-height: 15px;
-        letter-spacing: 0em;
-        text-align: left;
-        color: #858EAD;
-        margin-right: 10px;
-    }
+.top {
+    display: flex;
+    margin-top: 5px;
+    width: 100%;
+    justify-content: space-between;
+
+}
+
+.data {
+    width: 60%;
+    margin-left: 10px;
+
+}
+
+.word {
+    font-family: 'Source Sans Pro';
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 26px;
+    letter-spacing: 0em;
+}
+
+.icon {
+    margin-top: -3px;
+}
+
+.tags {
+    width: 100%;
+}
+
+.time {
+    font-family: 'Source Sans Pro';
+    font-size: 8px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #97989D;
+    margin-left: 8px;
+}
+
+.num span {
+    font-family: 'Source Sans Pro';
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #97989D;
+    margin-left: 8px;
+
+}
+
+.num {
+    padding-right: 10px;
+}
+
+.tags span {
+    width: 53.48px;
+    height: 24.59px;
+    padding: 4.2969183921813965px 10.74229621887207px 4.2969183921813965px 10.74229621887207px;
+    border-radius: 21.48459243774414px;
+    background-color: #F4F6F8;
+    font-family: Source Sans Pro;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #858EAD;
+    margin-right: 10px;
+}
+
+.newsimg {
+
+    height: 150px;
+    width: 150px;
+
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 10%;
+    margin: 10px 0px 10px 0px;
+
+
+}
+
+.newspic {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    border-radius: 10%;
+}
+
+.create-post {
+    padding: 24px;
+    margin-bottom: 100px;
+}
+
+.memoji-box {
+    height: 43px;
+    width: 43px;
+    border-radius: 50%;
+    background-color: #F9DFC0;
+    margin-right: 20px;
+}
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-post .post-input {
+    border: none;
+    border-radius: 6.44px;
+    background-color: #F4F6F8;
+    padding: 13px;
+    width: 100%;
+}
+.create-post .submit {
+    padding: 12px 17px;
+    margin-left: 20px;
+    border: none;
+    border-radius: 6.44px;
+    background-color: var(--button-default);
+    font-family: 'Rubik';
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 21px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #FFF;
+}
 </style>
