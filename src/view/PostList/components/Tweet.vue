@@ -9,6 +9,7 @@
                 <span class="place">{{ item.createdAt }}</span>
             </div>
             <div class="txt">{{ item.content }}</div>
+            <div class="tags">#追星</div>
             <div class="img-box" :style="{ backgroundImage: `url(${item.picture})` }"></div>
             <div class="flex-start">
                 <div class="fn flex-center">
@@ -20,7 +21,8 @@
                     <span class="fn-txt">12</span>
                 </div> -->
                 <div class="fn flex-center">
-                    <span class="material-icons">thumb_up</span>
+                    <!-- <span class="material-icons" :class="{ active: isLoved }" @click="toggleLove(scope.row)">thumb_up</span> -->
+                    <span class="material-icons"  @click="toggleLove(scope.row)">thumb_up</span>
                     <span class="fn-txt">{{ item.love }}</span>
                 </div>
                 <!-- <div class="fn flex-center active">
@@ -43,6 +45,7 @@ export default {
             items: [], // 存放動態的列表
             pageNum: 1, // 目前頁數
             isLoading: true, // 是否正在載入中
+            isLoved: false, //是否有按讚
         };
     },
     mounted() {
@@ -86,6 +89,17 @@ export default {
                 }
             });
         },
+        toggleLove() {
+            axios.put("dyThreads/toggleUserLove/"+row.id)
+            .then((response) => {
+                console.log(response.data);
+            })
+            .catch((error) => {
+            console.log(error);
+            // 處理錯誤
+            });
+            // this.isLoved = !this.isLoved;
+        }
     }
 }
 </script>
@@ -121,6 +135,8 @@ export default {
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    /* margin-left: 200px; */
+    
 }
 
 .friendimg-box {
@@ -143,6 +159,11 @@ export default {
 
 .content div {
     margin-bottom: 12px;
+}
+
+.tags {
+    color: #1DA1F2;
+    cursor: pointer;
 }
 
 .friend-info span {
@@ -169,21 +190,26 @@ export default {
 
 .fn {
     color: #5B7083;
-    margin-right: 88px;
+    margin-right: 70px;
+    margin-left: 150px;
 }
 
 .fn span:not(:last-child) {
     margin-right: 8px;
 }
 
-.active {
+/* .active {
     color: #F4245E;
-}
+} */
 
 .show {
     color: #1DA1F2;
     font-size: 16.063px;
     font-family: 'ABeeZee';
     font-style: italic;
+}
+
+.active {
+  color: #1E90FF;
 }
 </style>
