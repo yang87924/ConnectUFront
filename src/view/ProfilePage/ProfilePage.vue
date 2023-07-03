@@ -14,6 +14,7 @@
                                     <label for="avatar">修改大頭貼：</label>
                                     <input type="file" id="avatar" accept="image/*" ref="avatarInput">
                                 </li>
+                                
                                 <li class="edit-list-item">
                                     <label for="username">修改會員名稱：</label>
                                     <input type="text" id="userName" v-model="userName">
@@ -323,11 +324,14 @@ export default {
 
 .edit-list-container {
   width: 600px;
-  margin: 0 auto; /* 添加此行，使用margin: 0 auto; 将内容水平置中 */
+  margin: 0 auto; 
     padding: 20px;
-    display: flex; /* 添加此行，使用flex布局 */
-    flex-direction: column; /* 添加此行，使内容垂直方向上居中 */
-    align-items: center; /* 添加此行，使内容水平方向上居中 */
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    background-color: whitesmoke;
+    border: 10px solid grey;
+    border-radius: 10px;
 }
 
 .edit-list-title {
@@ -340,7 +344,8 @@ export default {
   display: flex;
   align-items: center;
   margin-bottom: 100px;
-  
+  border: 2px solid grey;
+  border-radius: 10px;
 }
 
 .edit-avatar {
