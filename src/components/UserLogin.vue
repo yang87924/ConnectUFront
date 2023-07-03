@@ -166,6 +166,7 @@ export default {
         this.loginAlertType =
           response.data.code === 20051 ? "success" : "error";
         if (response.data.msg === "登入成功") {
+          //保存token到localStorage
           localStorage.setItem("jwt", response.data.data.token);
           // 登入成功後，跳轉到 /index 頁面
           this.$router.push("/index");
