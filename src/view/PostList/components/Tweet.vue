@@ -41,26 +41,51 @@ export default {
     data() {
         return {
             items: [], // 存放動態的列表
+            pageNum: 1, // 目前頁數
+            isLoading: true, // 是否正在載入中
         };
     },
     mounted() {
         // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
         this.fetchData();
+        // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
+        this.fetchData();
+        this.addScrollListener();
     },
     methods: {
         fetchData() {
             // 發送 HTTP GET 請求到後端 API 獲取資料
-            axios.get('/DyThreads/pageDyThread')
+            axios.get('/dyThreads/pageDyThread', {
+                params: {
+                    pageNum: this.pageNum,
+                },
+            })
                 .then(response => {
                     // 請求成功，將資料設置給items陣列
-                    this.items = response.data.data;
-                    console.log(response.data.data)
+                    this.items = this.items.concat(response.data.data);
+                    console.log(response.data.data);
+                    this.isLoading = false; // 停止載入狀態
                 })
                 .catch(error => {
                     // 請求失敗，處理錯誤
                     console.error(error);
+                    this.isLoading = false; // 停止載入狀態
                 });
-        }
+        },
+        addData() {
+            this.pageNum++; // 增加頁數
+            this.isLoading = true; // 開始載入狀態
+            this.fetchData();
+        },
+        addScrollListener() {
+            window.addEventListener('scroll', () => {
+                const {scrollTop, clientHeight, scrollHeight} = document.documentElement;
+                const offset = 5; // 設置一個偏移值
+                if (scrollTop + clientHeight + offset >= scrollHeight) {
+                    this.addData();
+                }
+            });
+        },
     }
 }
 </script>
@@ -129,12 +154,12 @@ export default {
 }
 
 .img-box {
-  border-radius: 20px;
-  width: 628.94px;
-  height: 305.2px;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+    border-radius: 20px;
+    width: 628.94px;
+    height: 305.2px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
 }
 
 
