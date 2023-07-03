@@ -6,15 +6,26 @@
                 <div class="setting">
                     <button class="edit-button" @click="toggleEditList">編輯個人檔案</button>
                     <div v-if="showEditList" class="edit-list">
-                        <div class="edit-list-container">
-                            <h2 class="edit-list-title">編輯個人檔案</h2>
+                       <div class="edit-list-container">
+                        <h2 class="edit-list-title">編輯個人檔案</h2>
+                        <form @submit="submitForm">
                             <ul class="edit-list-items">
-                                <li class="edit-list-item" v-for="fan in fans" :key="fan.id">
-                                    <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
-                                    <span class="fan-name">{{ fan.name }}</span>
+                                <li class="edit-list-item">
+                                    <label for="avatar">修改大頭貼：</label>
+                                    <input type="file" id="avatar" accept="image/*" ref="avatarInput">
                                 </li>
+                                <li class="edit-list-item">
+                                    <label for="username">修改會員名稱：</label>
+                                    <input type="text" id="username" v-model="username">
+                                  </li>
+                                  <li class="edit-list-item">
+                                    <label for="bio">修改個人簡介：</label>
+                                    <textarea id="bio" v-model="bio"></textarea>
+                                  </li>
                             </ul>
-                        </div>
+                            <button type="submit">提交</button>
+                        </form>
+                       </div>
                     </div>
                 </div>
             </div>
@@ -145,6 +156,7 @@ export default {
             avatar: '', // 大頭貼圖片來源
             activeTab: '文章', // 文章/動態/收藏 標籤切換 預設讀取文章
             title: '', // 文章標題
+            userId: '', // 使用者id
 
             fans: [
         { id: 1, name: '粉絲1', avatar: 'avatar1.jpg' },
@@ -169,6 +181,28 @@ export default {
     toggleEditList() {
       this.showEditList = !this.showEditList;
     },
+
+    submitForm(event) {
+  event.preventDefault();
+
+  const formData = new FormData();
+  formData.append('userId', this.userId);
+  formData.append('files', this.$refs.avatarInput.files[0]);
+
+  axios.put('/users', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+    .then(response => {
+        console.log(response.data);
+        console.log(this.$refs.avatarInput.files[0])
+    })
+    .catch(error => {
+      console.log(error);
+    });
+}
+
   },    
 
     created() {
@@ -177,6 +211,7 @@ export default {
         axios.post('/users/getUserId')
             .then(response => {
                 console.log(response.data);
+                this.userId = response.data.userId;
                 this.userName = response.data.userName;
                 this.avatar = response.data.avatar;
             })
@@ -226,7 +261,6 @@ export default {
   z-index: 9999;
 }
 
-/* 粉丝列表容器宽度样式 */  
 .fan-list-container {
   width: 600px;
   margin: 0 auto; /* 添加此行，使用margin: 0 auto; 将内容水平置中 */
@@ -236,14 +270,12 @@ export default {
     align-items: center; /* 添加此行，使内容水平方向上居中 */
 }
 
-/* 粉丝列表标题样式 */
 .fan-list-title {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-/* 粉丝列表项样式 */
 .fan-list-item {
   display: flex;
   align-items: center;
@@ -251,7 +283,6 @@ export default {
   
 }
 
-/* 粉丝头像样式 */
 .fan-avatar {
   width: 40px;
   height: 40px;
@@ -259,11 +290,60 @@ export default {
   margin-right: 10px;
 }
 
-/* 粉丝姓名样式 */
 .fan-name {
   font-size: 14px;
   font-weight: bold;
 }
+
+/* 編輯個人檔案 */
+
+.edit-list {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  z-index: 9999;
+}
+
+.edit-list-container {
+  width: 600px;
+  margin: 0 auto; /* 添加此行，使用margin: 0 auto; 将内容水平置中 */
+    padding: 20px;
+    display: flex; /* 添加此行，使用flex布局 */
+    flex-direction: column; /* 添加此行，使内容垂直方向上居中 */
+    align-items: center; /* 添加此行，使内容水平方向上居中 */
+}
+
+.edit-list-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.edit-list-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 100px;
+  
+}
+
+.edit-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.edit-name {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+
+/* 編輯個人檔案 */
 
 
 .container {
