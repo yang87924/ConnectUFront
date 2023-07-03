@@ -5,7 +5,7 @@
                 <img src="../../assets/img/profile/background.svg" alt="">
                 <div class="setting">
                     <button class="edit-button" @click="toggleEditList">編輯個人檔案</button>
-                    <div v-if="showEditList" class="edit-list">
+                    <div v-if="showEditList" class="edit-list" v-click-outside="hideFanList">
                        <div class="edit-list-container">
                         <h2 class="edit-list-title">編輯個人檔案</h2>
                         <form @submit="submitForm">
@@ -16,11 +16,11 @@
                                 </li>
                                 <li class="edit-list-item">
                                     <label for="username">修改會員名稱：</label>
-                                    <input type="text" id="username" v-model="username">
+                                    <input type="text" id="userName" v-model="userName">
                                   </li>
                                   <li class="edit-list-item">
-                                    <label for="bio">修改個人簡介：</label>
-                                    <textarea id="bio" v-model="bio"></textarea>
+                                    <label for="profile">修改個人簡介：</label>
+                                    <input type="text" id="profile" v-model="profile">
                                   </li>
                             </ul>
                             <button type="submit">提交</button>
@@ -38,7 +38,7 @@
                         </div>
                         <div class="slogan-box flex-center">
                             <span class="slogan">
-                                你好，世界
+                                {{ profile }}
                             </span>
 							</div>
 							<div class="button-box flex-center">
@@ -63,7 +63,7 @@
         </div>
 
         <button class="fans-button" @click="toggleFanList">粉絲：222</button>
-        <div v-if="showFanList" class="fan-list">
+        <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
             <div class="fan-list-container">
                 <h2 class="fan-list-title">粉絲列表</h2>
                 <ul class="fan-list-items">
@@ -157,6 +157,7 @@ export default {
             activeTab: '文章', // 文章/動態/收藏 標籤切換 預設讀取文章
             title: '', // 文章標題
             userId: '', // 使用者id
+            profile: '', // 使用者資料
 
             fans: [
         { id: 1, name: '粉絲1', avatar: 'avatar1.jpg' },
@@ -177,17 +178,26 @@ export default {
     },
     hideFanList() {
       this.showFanList = false;
+      this.showEditList = false;
     },
     toggleEditList() {
       this.showEditList = !this.showEditList;
     },
 
+    
     submitForm(event) {
+
+        setTimeout(() => {
+        location.reload();
+      }, 1000);
   event.preventDefault();
 
   const formData = new FormData();
+
   formData.append('userId', this.userId);
-  formData.append('files', this.$refs.avatarInput.files[0]);
+  formData.append('userName', this.userName);
+  formData.append('profile', this.profile);
+  formData.append('files', this.$refs.avatarInput.files[0] == null?new File([], 'empty-file.txt'):this.$refs.avatarInput.files[0]);
 
   axios.put('/users', formData, {
     headers: {
@@ -195,15 +205,17 @@ export default {
     }
   })
     .then(response => {
-        console.log(response.data);
-        console.log(this.$refs.avatarInput.files[0])
+      console.log(response.data);
     })
     .catch(error => {
       console.log(error);
     });
 }
 
+
+
   },    
+  
 
     created() {
 
@@ -214,6 +226,7 @@ export default {
                 this.userId = response.data.userId;
                 this.userName = response.data.userName;
                 this.avatar = response.data.avatar;
+                this.profile = response.data.profile;
             })
             .catch(error => {
                 console.log(error);
