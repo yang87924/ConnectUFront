@@ -2,7 +2,7 @@
     <div class="container">
         <div class="main-content">
             <div class="banner-box">
-                <img src="../../assets/img/profile/background.svg" alt="">
+                <img src="../../assets/img/profile/background.svg" alt="" class="backimg">
                 <div class="setting">
                     <button class="edit-button" @click="toggleEditList">編輯個人檔案</button>
                     <div v-if="showEditList" class="edit-list" v-click-outside="hideFanList">
@@ -50,7 +50,7 @@
                                    
                         
 <div class="countbar">
-        <button class="fans-button" @click="toggleFanList">追蹤：555</button>
+        <button class="fans-button" @click="toggleFanList">追蹤<br>555</button>
         <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
             <div class="fan-list-container">
                 <h2 class="fan-list-title">追蹤列表</h2>
@@ -62,8 +62,7 @@
                 </ul>
             </div>
         </div>
-
-        <button class="fans-button" @click="toggleFanList">粉絲：222</button>
+        <button class="fans-button" @click="toggleFanList">粉絲<br>222</button>
         <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
             <div class="fan-list-container">
                 <h2 class="fan-list-title">粉絲列表</h2>
@@ -76,7 +75,7 @@
             </div>
         </div>
         
-        <button class="fans-button" @click="toggleFanList">訂閱：123</button>
+        <button class="fans-button" @click="toggleFanList">訂閱<br>123</button>
         <div v-if="showFanList" class="fan-list">
             <div class="fan-list-container">
                 <h2 class="fan-list-title">訂閱列表</h2>
@@ -89,7 +88,11 @@
             </div>
         </div>
 </div>
-                
+                <div class="floow">
+                    <button class="floow-button">追蹤</button>
+
+                    <button class="floow-button">私訊</button>
+                </div>
 
             </div>
                 <ul class="nav flex-between">
@@ -257,8 +260,14 @@ export default {
 </script>
 <style lang="css" scoped>
 
+.backimg {
+    width: 897px;
+}
+
 .countbar {
+    position: relative;
     margin-top: -260px;
+    left: 200px;
     display: flex;
 
 }
@@ -506,8 +515,25 @@ export default {
     color: #FFF;
 }
 
+.floow{
+    top: 145px;
+    left:-130px;
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+}
+
+.floow-button {
+    margin-left: 30PX;
+    padding: 8px 30px;
+    border: 4px solid lightgrey;
+    border-radius: 18.19px;
+    background-color: gray;
+    color: #FFF;
+}
+
 .fans-button {
-    padding: 8px 16px;
+    padding: 8px 24px;
     border: 4px solid gray;
     border-radius: 18.19px;
     background-color: white;
@@ -521,7 +547,7 @@ export default {
     border-radius: 18.19px;
     background-color: var(--black);
     color: #FFF;
-    margin-right: 45.5px;
+    margin-right: 10px;
 }
 
 .button-box .profile-button {
