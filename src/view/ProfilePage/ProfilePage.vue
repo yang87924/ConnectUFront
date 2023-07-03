@@ -14,7 +14,6 @@
                                     <label for="avatar">修改大頭貼：</label>
                                     <input type="file" id="avatar" accept="image/*" ref="avatarInput">
                                 </li>
-                                
                                 <li class="edit-list-item">
                                     <label for="username">修改會員名稱：</label>
                                     <input type="text" id="userName" v-model="userName">
@@ -47,8 +46,6 @@
 							</div>
 						</div>
 					</div>
-                                   
-                        
 <div class="countbar">
         <button class="fans-button" @click="toggleFanList">追蹤<br>555</button>
         <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
