@@ -49,7 +49,6 @@ export default {
         // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
         this.fetchData();
         // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
-        this.fetchData();
         this.addScrollListener();
     },
     methods: {
