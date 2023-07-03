@@ -51,6 +51,7 @@ export default {
         // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
         this.addScrollListener();
     },
+    //-----
     methods: {
         fetchData() {
             // 發送 HTTP GET 請求到後端 API 獲取資料
