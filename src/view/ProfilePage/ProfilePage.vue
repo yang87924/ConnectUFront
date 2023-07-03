@@ -76,36 +76,52 @@
     </div>
 </template>
 <script>
-
-import axios from 'axios';
+import axios from "axios";
 
 export default {
   data() {
     return {
-      userName: '', // 使用者名稱
-      avatar: '', // 大頭貼圖片來源
+      userName: "", // 使用者名稱
+      avatar: "", // 大頭貼圖片來源
     };
   },
-    
+
   created() {
     // const storeduserId = localStorage.getItem('userId');
+    //jwt請求頭
+    const token = localStorage.getItem("jwt");
+    axios
+      .post(
+        "/users/getUserId",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        this.userName = response.data.userName;
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
+    // 在組件創建時使用 Axios，並傳遞使用者 ID
+    // axios
+    //   .post("/users/getUserId")
+    //   .then((response) => {
+    //     console.log(response.data);
+    //     this.userName = response.data.userName;
 
-    
-  // 在組件創建時使用 Axios，並傳遞使用者 ID
-  axios.post('/users/getUserId')
-    .then(response => {
-      console.log(response.data);
-      this.userName = response.data.userName;
-
-    //先放置 圖片
-    //   this.avatar = response.data.avatar;
-    })
-    .catch(error => {
-      console.log(error);
-      // 處理錯誤
-    });
-
+    //     //先放置 圖片
+    //     //   this.avatar = response.data.avatar;
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     // 處理錯誤
+    //   });
 
     // // 在組件創建時使用 Axios，並傳遞使用者 ID
     // axios.get(`/users/${storeduserId}`)
@@ -122,250 +138,250 @@ export default {
     //     console.log(error);
     //     // 處理錯誤
     //   });
-  }
-}
+  },
+};
 </script>
 <style lang="css" scoped>
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: start;
-    padding-bottom: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  padding-bottom: 40px;
 }
 
 .flex-between {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .flex-start {
-    display: flex;
-    justify-content: start;
-    align-items: center;
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }
 
 .flex-end {
-    display: flex;
-    justify-content: end;
-    align-items: center;
+  display: flex;
+  justify-content: end;
+  align-items: center;
 }
 
 .main-content {
-    width: fit-content;
+  width: fit-content;
 }
 
 /* banner */
 .banner-box {
-    width: 882px;
-    position: relative;
+  width: 882px;
+  position: relative;
 }
 
 .photo-box {
-    position: absolute;
-    top: -251.52px;
-    left: 48.72px;
-    width: 291.5px;
-    height: 291.5px;
-    border-radius: 50%;
-    background-color: #EFD7C7;
+  position: absolute;
+  top: -251.52px;
+  left: 48.72px;
+  width: 291.5px;
+  height: 291.5px;
+  border-radius: 50%;
+  background-color: #efd7c7;
 }
 
 .setting {
-    position: absolute;
-    top: 13px;
-    right: 13px;
+  position: absolute;
+  top: 13px;
+  right: 13px;
 }
 
 .setting .material-icons {
-    color: var(--black);
+  color: var(--black);
 }
 
 /* 個人資料 */
 .profile-box {
-    position: relative;
-    margin-bottom: 40px;
+  position: relative;
+  margin-bottom: 40px;
 }
 
 .data-left {
-    padding-top: 50px;
-    width: 291.5px;
-    flex: 1;
+  padding-top: 50px;
+  width: 291.5px;
+  flex: 1;
 }
 
 .content-box {
-    width: calc(291.5px + 48.72px * 2);
+  width: calc(291.5px + 48.72px * 2);
 }
 
 .username {
-    font-family: 'Inter';
-    font-size: 45px;
-    font-weight: 700;
-    line-height: 68px;
-    letter-spacing: -0.022em;
-    text-align: center;
-    color: var(--black);
+  font-family: "Inter";
+  font-size: 45px;
+  font-weight: 700;
+  line-height: 68px;
+  letter-spacing: -0.022em;
+  text-align: center;
+  color: var(--black);
 }
 
 .slogan-box {
-    margin: 0 auto 16px;
+  margin: 0 auto 16px;
 }
 
 .slogan {
-    font-family: 'Inter';
-    font-size: 27px;
-    font-weight: 500;
-    line-height: 41px;
-    letter-spacing: -0.019em;
-    text-align: center;
+  font-family: "Inter";
+  font-size: 27px;
+  font-weight: 500;
+  line-height: 41px;
+  letter-spacing: -0.019em;
+  text-align: center;
 }
 
 .slogan-box .edit {
-    margin-left: 20px;
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
+  margin-left: 20px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 .data-right {
-    flex: 1;
-    margin-bottom: auto;
+  flex: 1;
+  margin-bottom: auto;
 }
 
 .profile-button {
-    padding: 8px 16px;
-    border: 4px solid lightgrey;
-    border-radius: 18.19px;
-    background-color: var(--black);
-    color: #FFF;
-    margin-right: 45.5px;
+  padding: 8px 16px;
+  border: 4px solid lightgrey;
+  border-radius: 18.19px;
+  background-color: var(--black);
+  color: #fff;
+  margin-right: 45.5px;
 }
 
 .button-box .profile-button {
-    width: 130px;
+  width: 130px;
 }
 
 .button-box .profile-button:not(:last-child) {
-    margin-right: 17.5px;
+  margin-right: 17.5px;
 }
 
 /* nav */
 .nav {
-    list-style-type: none;
-    padding: 0 40px;
-    margin: 0;
-    margin-bottom: 37px;
+  list-style-type: none;
+  padding: 0 40px;
+  margin: 0;
+  margin-bottom: 37px;
 }
 
 .nav-item {
-    font-family: 'Inter';
-    font-size: 44px;
-    font-weight: 500;
-    line-height: 66px;
-    letter-spacing: -0.011em;
-    text-align: center;
+  font-family: "Inter";
+  font-size: 44px;
+  font-weight: 500;
+  line-height: 66px;
+  letter-spacing: -0.011em;
+  text-align: center;
 }
 
 .active {
-    color: var(--active);
+  color: var(--active);
 }
 
 /* article-box */
 .article-box {
-    border-radius: 17.29px;
-    background-color: #FFF;
-    box-shadow: 0px 4.0237250328063965px 4.0237250328063965px 0px #00000040;
-    padding: 21px;
+  border-radius: 17.29px;
+  background-color: #fff;
+  box-shadow: 0px 4.0237250328063965px 4.0237250328063965px 0px #00000040;
+  padding: 21px;
 }
 
 .article-box .img-box {
-    margin-right: 21.61px;
+  margin-right: 21.61px;
 }
 
 .article-content {
-    margin-bottom: auto;
-    width: 100%;
+  margin-bottom: auto;
+  width: 100%;
 }
 
 .article-content .title {
-    font-family: 'Source Sans Pro';
-    font-size: 18px;
-    font-weight: 600;
-    line-height: 26px;
-    letter-spacing: 0em;
-    text-align: left;
-    margin-bottom: 10px;
+  font-family: "Source Sans Pro";
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 26px;
+  letter-spacing: 0em;
+  text-align: left;
+  margin-bottom: 10px;
 }
 
 .tags .tag {
-    padding: 5px 10px;
-    border-radius: 21.6px;
-    text-align: center;
-    background-color: #F0F1FE;
-    font-family: 'Source Sans Pro';
-    font-size: 10px;
-    font-weight: 600;
-    line-height: 16px;
-    letter-spacing: 0em;
-    margin-right: 20px;
-    margin-bottom: 32px;
+  padding: 5px 10px;
+  border-radius: 21.6px;
+  text-align: center;
+  background-color: #f0f1fe;
+  font-family: "Source Sans Pro";
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: 0em;
+  margin-right: 20px;
+  margin-bottom: 32px;
 }
 
 .memoji-box {
-    height: 45px;
-    width: 45px;
-    border-radius: 50%;
-    background-color: #F0F1FE;
-    margin-right: 10px;
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  background-color: #f0f1fe;
+  margin-right: 10px;
 }
 
 .author .name {
-    font-family: 'Source Sans Pro';
-    font-size: 14px;
-    font-weight: 600;
-    line-height: 22px;
-    letter-spacing: 0px;
-    text-align: left;
-    color: var(--black);
-    position: relative;
+  font-family: "Source Sans Pro";
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: var(--black);
+  position: relative;
 }
 
 .name::after {
-    position: absolute;
-    right: -20%;
-    bottom: 20%;
-    content: "";
-    transform: translate(-50%, -50%);
-    width: 6px;
-    height: 6px;
-    background-color: var(--secondary);
-    border-radius: 50%;
+  position: absolute;
+  right: -20%;
+  bottom: 20%;
+  content: "";
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  background-color: var(--secondary);
+  border-radius: 50%;
 }
 
 .author .publish-time {
-    font-family: 'Source Sans Pro';
-    font-size: 10px;
-    font-weight: 400;
-    line-height: 16px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: var(--secondary);
+  font-family: "Source Sans Pro";
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: var(--secondary);
 }
 
 .data-info {
-    width: 345px;
-    font-family: 'Source Sans Pro';
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 22px;
-    letter-spacing: 0px;
-    text-align: left;
-    color: var(--secondary);
+  width: 345px;
+  font-family: "Source Sans Pro";
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0px;
+  text-align: left;
+  color: var(--secondary);
 }
 </style>

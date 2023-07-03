@@ -1,6 +1,6 @@
 <template>
   <!-- 主要應用元件 -->
-  <v-app style="background-image: url(/background.jpg);">
+  <v-app style="background-image: url(/background.jpg)">
     <!-- 顶部应用栏 -->
     <v-app-bar color="purple" dark>
       <v-toolbar-title> ConnectU </v-toolbar-title>
@@ -132,6 +132,8 @@ export default {
         this.loginAlertType =
           response.data.code === 20051 ? "success" : "error";
         if (response.data.msg == "登入成功") {
+          //保存JWT到localStorage
+          localStorage.setItem("jwt", response.data.data.token);
           setTimeout(() => {
             this.loading = false; // 登入结束，设置 loading 为 false
             this.$router.push("/index");
@@ -164,6 +166,7 @@ export default {
         this.loginAlertType =
           response.data.code === 20051 ? "success" : "error";
         if (response.data.msg === "登入成功") {
+          localStorage.setItem("jwt", response.data.data.token);
           // 登入成功後，跳轉到 /index 頁面
           this.$router.push("/index");
         }
