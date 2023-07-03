@@ -52,6 +52,7 @@ export default {
         this.fetchData();
         this.addScrollListener();
     },
+    //-----
     methods: {
         fetchData() {
             // 發送 HTTP GET 請求到後端 API 獲取資料
