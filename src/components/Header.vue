@@ -140,17 +140,21 @@ export default {
   created() {
     // const storeduserId = localStorage.getItem('userId');
 
-    // 在組件創建時使用 Axios，並傳遞使用者 ID
-    axios.post("/users/getUserId")
-      .then((response) => {
-        console.log(response.data);
-        this.userName = response.data.userName;
-        this.avatar = response.data.avatar;
-      })
-      .catch((error) => {
-        console.log(error);
-        // 處理錯誤
-      });
+
+    
+  // 在組件創建時使用 Axios，並傳遞使用者 ID
+  axios.post('/users/getUserId/0')
+    .then(response => {
+      console.log(response.data);
+      this.userName = response.data.userName;
+
+    //先放置 圖片
+    //   this.avatar = response.data.avatar;
+    })
+    .catch(error => {
+      console.log(error);
+      // 處理錯誤
+    });
 
     // // 在組件創建時使用 Axios，並傳遞使用者 ID
     // axios.get(`/users/${storeduserId}`)
