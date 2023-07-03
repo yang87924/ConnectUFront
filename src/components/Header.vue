@@ -93,7 +93,7 @@ export default {
 
     
   // 在組件創建時使用 Axios，並傳遞使用者 ID
-  axios.post('/users/getUserId')
+  axios.post('/users/getUserId/0')
     .then(response => {
       console.log(response.data);
       this.userName = response.data.userName;

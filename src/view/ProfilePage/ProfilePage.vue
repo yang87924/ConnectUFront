@@ -221,7 +221,7 @@ export default {
     created() {
 
         // 在組件創建時使用 Axios，並傳遞使用者 ID
-        axios.post('/users/getUserId')
+        axios.post('/users/getUserId/24')
             .then(response => {
                 console.log(response.data);
                 this.userId = response.data.userId;
@@ -235,7 +235,7 @@ export default {
             });
 
         // 查詢使用者文章的API
-        axios.get('/threads/userThread')
+        axios.get('/threads/userThread/24')
             .then(response => {
                 console.log('文章資料：', response.data.data);
                 // console.log(response.data);
