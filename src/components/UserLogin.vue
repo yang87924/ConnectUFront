@@ -1,14 +1,14 @@
 <template>
   <!-- 主要應用元件 -->
-  <v-app>
+  <v-app style="background-image: url(/background.jpg)">
     <!-- 顶部应用栏 -->
-    <v-app-bar color="dark" dark>
+    <v-app-bar color="purple" dark>
       <v-toolbar-title> ConnectU </v-toolbar-title>
       <v-spacer></v-spacer>
       <!-- 登录按钮，点击跳转到 "/login" 路由 -->
-      <v-btn text to="/UserLogin"> Login </v-btn>
+      <v-btn text to="/UserLogin"> 登入 </v-btn>
       <!-- 注册按钮，点击跳转到 "/register" 路由 -->
-      <v-btn text to="/UserRegister"> Register </v-btn>
+      <v-btn text to="/UserRegister"> 創建 </v-btn>
     </v-app-bar>
     <!-- 主要內容 -->
     <v-main class="login-container">
@@ -21,8 +21,6 @@
             <h2>登入</h2>
             <!-- 登入標題 -->
             <h3>歡迎回來！</h3>
-            <!-- 歡迎訊息 -->
-            <!-- 登入表單 -->
             <v-form>
               <!-- 電子郵件輸入框 -->
               <v-text-field
@@ -41,9 +39,11 @@
               <!-- 忘記密碼連結 -->
               <!-- 錯誤訊息提示 -->
               <v-alert
-                type="error"
-                color="red"
-                icon="mdi-alert-circle"
+                :type="loginAlertType"
+                :color="loginAlertType === 'error' ? 'red' : 'green'"
+                :icon="
+                  loginAlertType === 'error' ? 'mdi-alert-circle' : '$success'
+                "
                 class="custom-alert"
                 v-if="loginResponse"
                 dense
@@ -52,15 +52,19 @@
                 {{ loginResponse }}
               </v-alert>
               <!-- 登入按鈕，點擊時觸發 login 方法 -->
-              <v-btn block color="purple" dark class="my-2" @click="login"
-                >登入</v-btn
-              >
+              <v-btn block color="purple" dark class="my-2" @click="login">
+                <v-progress-circular
+                  v-if="loading"
+                  indeterminate
+                  color="White"
+                ></v-progress-circular>
+                <span v-if="!loading">登入</span>
+              </v-btn>
             </v-form>
             <!-- 其他登入選項 -->
             <div class="login-options">
               <!-- Google 登入按鈕 -->
-              <div id="g_id_onload"></div>
-
+              <div id="g_id_onload" class="my-2 google-btn"></div>
               <!-- Facebook 登入按鈕 -->
               <v-btn
                 block
@@ -87,10 +91,10 @@
             </div>
           </v-col>
           <!-- Grid系統的列元件，呈現圖像部分 -->
-          <!-- <v-col cols="6" class="login-image align-self-start custom-class">
-            <spline-component /> -->
+          <v-col cols="6" class="login-image align-self-start custom-class">
+            <spline-component />
             <!-- SplineComponent元件，用於顯示3D圖像 -->
-          <!-- </v-col> -->
+          </v-col>
         </v-row>
       </v-container>
     </v-main>
@@ -111,82 +115,116 @@ export default {
       email: "",
       password: "",
       loginResponse: "",
+      loginAlertType: "error",
+      loading: false,
     };
   },
   methods: {
     async login() {
       try {
+        this.loading = true;
         const response = await axios.post("/users/login", {
           email: this.email,
           password: this.password,
         });
         this.loginResponse = response.data.msg;
+        // 根据响应码改变登入提示類型
+        this.loginAlertType =
+          response.data.code === 20051 ? "success" : "error";
         if (response.data.msg == "登入成功") {
+          //保存JWT到localStorage
+          localStorage.setItem("jwt", response.data.data.token);
           setTimeout(() => {
+            this.loading = false; // 登入结束，设置 loading 为 false
             this.$router.push("/index");
-          }, 3000);
+          }, 1000);
+        } else {
+          this.loading = false; // 登入失败，设置 loading 为 false
         }
         console.log("Logged in: " + response.data.msg + response.data.code);
       } catch (error) {
+        this.loading = false; // 登入失败，设置 loading 为 false
         this.loginResponse = error.message;
       }
     },
 
     //第三方登入google
     async handleCredentialResponse(response) {
-  console.log(response);
-  const id_token = response.credential;
-  let formData = new FormData();   // 建立新的 FormData 實例
-  formData.append('credential', id_token);  // 將資料附加到 formData 上
+      console.log(response);
+      const id_token = response.credential;
+      let formData = new FormData(); // 建立新的 FormData 實例
+      formData.append("credential", id_token); // 將資料附加到 formData 上
 
-  try {
-    const response = await axios.post("/users/google", formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'  
+      try {
+        const response = await axios.post("/users/google", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+        console.log(response);
+        // 根据响应码改变登入提示類型
+        this.loginAlertType =
+          response.data.code === 20051 ? "success" : "error";
+        if (response.data.msg === "登入成功") {
+          //保存token到localStorage
+          localStorage.setItem("jwt", response.data.data.token);
+          // 登入成功後，跳轉到 /index 頁面
+          this.$router.push("/index");
+        }
+      } catch (error) {
+        console.error("Error:", error);
       }
-    });
-    console.log(response);
-    if (response.data.msg === "登入成功") {
-      // 登入成功後，跳轉到 /index 頁面
-      this.$router.push("/index");
-    }
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
+    },
   },
   mounted() {
-  window.googleSignInPromise.then(() => {
-    google.accounts.id.initialize({
-      client_id:
-        '1042407337082-72sipavf4mejlbvb3r5surhov8el6m60.apps.googleusercontent.com',
-      callback: this.handleCredentialResponse,
+    window.googleSignInPromise.then(() => {
+      google.accounts.id.initialize({
+        client_id:
+          "1042407337082-72sipavf4mejlbvb3r5surhov8el6m60.apps.googleusercontent.com",
+        callback: this.handleCredentialResponse,
+      });
+      google.accounts.id.renderButton(document.getElementById("g_id_onload"), {
+        theme: "outline",
+        size: "large",
+      });
+      // 添加这一行以使图标居中
+      document.getElementById("g_id_onload").firstChild.style.display = "flex";
+      google.accounts.id.prompt();
     });
-    google.accounts.id.renderButton(
-      document.getElementById("g_id_onload"), 
-      { theme: "outline", size: "large" } 
-    );
-    google.accounts.id.prompt(); 
-  });
-}
+  },
 };
 </script>
 
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900");
+
 body,
 html {
   font-family: "Roboto", sans-serif;
 }
+
 /* 登入頁面的全局樣式 */
 .login-container {
   height: 100vh;
+  display: flex; /* 这使其成为一个flex容器 */
+  justify-content: center; /* 这将水平居中其所有子元素 */
+  align-items: center; /* 这将垂直居中其所有子元素 */
 }
 
 /* 登入內容的樣式 */
 .login-content {
+  background-color: white;
   width: 800px;
+  display: flex; /* 这使其成为一个flex容器 */
+  justify-content: center; /* 这将水平居中其所有子元素 */
+  align-items: center; /* 这将垂直居中其所有子元素 */
+  flex-direction: column; /* 这将使子元素以列方式排列 */
+  /* 添加边框 */
+  border: 1px solid #cccccc; /* 1px宽，灰色的边框 */
+  border-radius: 8px; /* 圆角边框 */
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* 登入表單的樣式 */
@@ -195,9 +233,10 @@ html {
 }
 
 /* SplineComponent 組件中的圖像的樣式 */
-.spline-component img {
-  height: 100%;
-  object-fit: cover; /* 讓圖像保持原始比例並覆蓋整個容器 */
+.login-image {
+  display: flex; /* 这使其成为一个flex容器 */
+  justify-content: center; /* 这将水平居中其所有子元素 */
+  align-items: center; /* 这将垂直居中其所有子元素 */
 }
 
 .custom-class {
@@ -213,5 +252,19 @@ html {
 
 .v-btn {
   text-transform: none;
+}
+
+/* Google 登入按鈕的樣式 */
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  /* 设置按钮宽度与 Facebook 按钮相同 */
+}
+
+/* Google 按钮的图标样式 */
+.google-btn img {
+  margin-right: 8px;
 }
 </style>

@@ -51,9 +51,31 @@
     </div>
 </template>
 <script>
-export default {
-
-}
+// import axios from "axios";
+// export default {
+//     created() {
+//     // const storeduserId = localStorage.getItem('userId');
+//     //jwt請求頭
+//     const token = localStorage.getItem("jwt");
+//     axios
+//       .post(
+//         "/DyThreads",
+//         {},
+//         {
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//         }
+//       )
+//       .then((response) => {
+//         console.log(response.data);
+//         this.userName = response.data.userName;
+//       })
+//       .catch((error) => {
+//         console.log(error);
+//       });
+//     }
+// }
 </script>
 <style lang="css" scoped>
 .container {
