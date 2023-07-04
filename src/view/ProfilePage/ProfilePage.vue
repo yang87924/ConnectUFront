@@ -153,12 +153,12 @@ export default {
 
     data() {
         return {
-            userName: '', // 使用者名稱
-            avatar: '', // 大頭貼圖片來源
-            activeTab: '文章', // 文章/動態/收藏 標籤切換 預設讀取文章
-            title: '', // 文章標題
-            userId: '', // 使用者id
-            profile: '', // 使用者資料
+            userId: '',
+            userName: '',
+            vatar: '',
+            profile: '',
+            title: '',
+            activeTab: '',
 
             fans: [
         { id: 1, name: '粉絲1', avatar: 'avatar1.jpg' },
@@ -215,13 +215,19 @@ export default {
 
 
 
-  },    
+  },
+  
+    
+    created() {
+        this.getUserData();
+        this.getUserThreads();
+    },
   
 
     created() {
 
         // 在組件創建時使用 Axios，並傳遞使用者 ID
-        axios.post('/users/getUserId/24')
+        axios.post('/users/getUserId/0')
             .then(response => {
                 console.log(response.data);
                 this.userId = response.data.userId;
@@ -231,11 +237,11 @@ export default {
             })
             .catch(error => {
                 console.log(error);
-                // 處理錯誤
+                // 處理錯誤 
             });
 
         // 查詢使用者文章的API
-        axios.get('/threads/userThread/24')
+        axios.get('/threads/userThread/0')
             .then(response => {
                 console.log('文章資料：', response.data.data);
                 // console.log(response.data);
