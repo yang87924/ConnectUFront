@@ -13,7 +13,7 @@
     </div>
 </template>
 <script>
-import SideBar from '../../components/sideBar.vue';
+import SideBar from '../../components/SideBar.vue';
 import AuthorRank from './components/AuthorRank.vue';
 import HotArticle from './components/HotArticle.vue'
 import ArticleItem from './components/ArticleItem.vue'
