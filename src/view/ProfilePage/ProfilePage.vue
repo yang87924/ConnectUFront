@@ -47,8 +47,8 @@
 						</div>
 					</div>
 <div class="countbar">
-        <button class="fans-button" @click="toggleFanList">追蹤<br>555</button>
-        <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
+        <button class="fans-button" @click="toggleFollowList">追蹤<br>555</button>
+        <div v-if="showFollowList" class="fan-list" v-click-outside="hideFollowList">
             <div class="fan-list-container">
                 <h2 class="fan-list-title">追蹤列表</h2>
                 <ul class="fan-list-items">
@@ -66,14 +66,14 @@
                 <ul class="fan-list-items">
                     <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
                         <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
-                        <span class="fan-name">{{ fan.name }}</span>
+                        <span class="fan-name">{{ fan.userName }}</span>
                     </li>
                 </ul>
             </div>
         </div>
         
-        <button class="fans-button" @click="toggleFanList">訂閱<br>123</button>
-        <div v-if="showFanList" class="fan-list">
+        <button class="fans-button" @click="toggleSubList">訂閱<br>123</button>
+        <div v-if="showSubList" class="fan-list" v-click-outside="hideSubList">
             <div class="fan-list-container">
                 <h2 class="fan-list-title">訂閱列表</h2>
                 <ul class="fan-list-items">
@@ -85,10 +85,10 @@
             </div>
         </div>
 </div>
-                <div class="floow">
-                    <button class="floow-button">追蹤</button>
+                <div class="follow">
+                    <button class="follow-button">追蹤</button>
 
-                    <button class="floow-button">私訊</button>
+                    <button class="follow-button">私訊</button>
                 </div>
 
             </div>
@@ -155,35 +155,63 @@ export default {
         return {
             userId: '',
             userName: '',
-            vatar: '',
+            avatar: '',
             profile: '',
             title: '',
             activeTab: '',
 
-            fans: [
-        { id: 1, name: '粉絲1', avatar: 'avatar1.jpg' },
-        { id: 2, name: '粉絲2', avatar: 'avatar2.jpg' },
-        { id: 3, name: '粉絲3', avatar: 'avatar3.jpg' },
-      ],
+            fans: [],
             showFanList: false ,
             showFollowers: false,
             showFans: false,
             showSubscribers: false,
             showEditList: false,
+            showSubList: false,
+            showFollowList: false,
         };
     },
 
     methods: {
-    toggleFanList() {
-      this.showFanList = !this.showFanList;
+
+        
+  fetchFansData() {
+      axios.get('/users/following')
+        .then(response => {
+            this.fans = response.data.data;
+        })
+            .catch(error => {
+        });
     },
+
+
     hideFanList() {
       this.showFanList = false;
       this.showEditList = false;
     },
+    hideSubList() {
+      this.showSubList = false;
+    },
+    hideFollowList() {
+      this.showFollowList = false;
+    },
     toggleEditList() {
       this.showEditList = !this.showEditList;
     },
+    toggleSubList() {
+      this.showSubList = !this.showSubList;
+    },
+    toggleFollowList() {
+      this.showFollowList = !this.showFollowList;
+    //   if (this.showFollowList && this.fans.length === 0) {
+    //     this.fetchFansData();
+    //   }
+    },
+    toggleFanList() {
+        this.showFanList = !this.showFanList;
+        if (this.showFanList && this.fans.length === 0) {
+        this.fetchFansData();
+        }
+},
 
     
     submitForm(event) {
@@ -518,7 +546,7 @@ export default {
     color: #FFF;
 }
 
-.floow{
+.follow{
     top: 145px;
     left:-130px;
     position: relative;
@@ -526,7 +554,7 @@ export default {
     justify-content: space-between;
 }
 
-.floow-button {
+.follow-button {
     margin-left: 30PX;
     padding: 8px 30px;
     border: 4px solid lightgrey;
