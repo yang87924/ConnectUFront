@@ -50,11 +50,11 @@
         <button class="fans-button" @click="toggleFollowList">追蹤<br>555</button>
         <div v-if="showFollowList" class="fan-list" v-click-outside="hideFollowList">
             <div class="fan-list-container">
-                <h2 class="fan-list-title">追蹤列表</h2>
+                <h2 class="fan-list-title">所有追蹤</h2>
                 <ul class="fan-list-items">
-                    <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
-                        <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
-                        <span class="fan-name">{{ fan.name }}</span>
+                    <li class="fan-list-item" v-for="follow in follow" :key="follow.id">
+                        <img class="fan-avatar" :src="follow.avatar" alt="粉絲頭像">
+                        <span class="fan-name">{{ follow.userName }}</span>
                     </li>
                 </ul>
             </div>
@@ -62,7 +62,7 @@
         <button class="fans-button" @click="toggleFanList">粉絲<br>222</button>
         <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
             <div class="fan-list-container">
-                <h2 class="fan-list-title">粉絲列表</h2>
+                <h2 class="fan-list-title">所有粉絲</h2>
                 <ul class="fan-list-items">
                     <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
                         <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
@@ -75,11 +75,11 @@
         <button class="fans-button" @click="toggleSubList">訂閱<br>123</button>
         <div v-if="showSubList" class="fan-list" v-click-outside="hideSubList">
             <div class="fan-list-container">
-                <h2 class="fan-list-title">訂閱列表</h2>
+                <h2 class="fan-list-title">所有訂閱</h2>
                 <ul class="fan-list-items">
                     <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
                         <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
-                        <span class="fan-name">{{ fan.name }}</span>
+                        <span class="fan-name">{{ fan.userName }}</span>
                     </li>
                 </ul>
             </div>
@@ -161,6 +161,7 @@ export default {
             activeTab: '',
 
             fans: [],
+            follow: [],
             showFanList: false ,
             showFollowers: false,
             showFans: false,
@@ -178,8 +179,20 @@ export default {
       axios.get('/users/following')
         .then(response => {
             this.fans = response.data.data;
+            console.log(this.fans);
         })
             .catch(error => {
+        });
+    },
+
+    fetchFollowData() {
+      axios.get('/users/followedBy')
+        .then(response => {
+            this.follow = response.data.data;
+            console.log(this.follow);
+        })
+            .catch(error => {
+            console.log(error);
         });
     },
 
@@ -202,9 +215,9 @@ export default {
     },
     toggleFollowList() {
       this.showFollowList = !this.showFollowList;
-    //   if (this.showFollowList && this.fans.length === 0) {
-    //     this.fetchFansData();
-    //   }
+      if (this.showFollowList && this.follow.length === 0) {
+        this.fetchFollowData();
+        }
     },
     toggleFanList() {
         this.showFanList = !this.showFanList;
@@ -325,7 +338,7 @@ export default {
 }
 
 .fan-list-title {
-  font-size: 18px;
+  font-size: 40px;
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -338,14 +351,14 @@ export default {
 }
 
 .fan-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  margin-right: 100px;
 }
 
 .fan-name {
-  font-size: 14px;
+  font-size: 30px;
   font-weight: bold;
 }
 
