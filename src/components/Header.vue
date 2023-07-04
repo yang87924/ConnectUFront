@@ -147,6 +147,7 @@ export default {
     .then(response => {
       console.log(response.data);
       this.userName = response.data.userName;
+      this.avatar=response.data.avatar;
 
     //先放置 圖片
     //   this.avatar = response.data.avatar;
