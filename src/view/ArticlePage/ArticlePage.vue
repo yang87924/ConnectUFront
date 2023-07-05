@@ -4,7 +4,7 @@
             <SideBar />
         </div>
         <div class="main-content">
-            <div class="main-title">番賞「七龍珠」F賞 魔人普烏</div>
+            <div class="main-title">{{title}}</div>
             <div class="author-block flex-between">
                 <div class="author-info flex-between">
                     <div class="author-img-box flex-center">人</div>
@@ -16,14 +16,44 @@
                 </div>
                 <div class="count-info flex-between">
                     <span class="date">
-                        公仔・2023/6/4
+                        公仔・{{createdAt}}
                     </span>
                     <span class="material-icons-outlined">remove_red_eye</span>
-                    <span>2,664 views</span>
+                    <span>{{hotScore}} views</span>
                 </div>
             </div>
             <div class="article-content">
-                文章內容文章內容文章內容文章內容文章內容
+                {{content}}
+                <div class="photo-box">
+                    <img :src="picture" alt="">
+                </div>
+            </div>
+            <div class="foot-bar">
+                <button>愛心</button>
+                <button>留言</button>
+            </div>
+            <div class="comment-bar">
+                <input type="text" class="comment-input" placeholder="留言...">
+            </div>
+            <div class="sent-comment">
+                <button>送出留言</button>
+            </div>
+            <div class="comment-card">
+                <div class="comment-avatr">我是大頭貼</div>
+                <div class="comment-body">
+                    <div class="comment-body-top">
+                        <span class="people-name">我是名字</span>
+                        <span class="comment-time">2021-08-01 12:00</span>
+                    </div>
+                    <div class="comment-body-mid">
+                        <span class="comment-content">我是留言內容</span>
+                    </div>
+                    <div class="comment-body-down">
+                        <button class="comment-love">愛心</button>
+                        <button class="comment-reply">回覆</button>
+                    </div>
+                </div>
+                <div class="comment-menu">我是menu</div>
             </div>
         </div>
         <div class="sidebar">
@@ -33,6 +63,7 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 import SideBar from '../../components/SideBar.vue'
 import AuthorRank from './components/AuthorRank.vue'
 import HotArticle from './components/HotArticle.vue'
@@ -42,10 +73,103 @@ export default {
         SideBar,
         AuthorRank,
         HotArticle,
-    }
+    },
+
+    data() {
+        return {
+            title: '',
+            content: '',
+            picture: '',
+            love: '',
+            loveStatus: '',
+            user: '',
+            userId: '',
+            categoryId: '',
+            categoryName: '',
+            categoryAt: '',
+            favoriteCount: '',
+            hashtags: '',
+            replyCount: '',
+            hotScore: '',
+        }
+    },
+
+    created() {
+        axios.get('/threads/2')
+            .then(res => {
+                console.log(res.data)
+                this.title = res.data.data.title
+                this.content = res.data.data.content
+                this.picture = res.data.data.picture
+                this.love = res.data.data.love
+                this.loveStatus = res.data.data.loveStatus
+                this.user = res.data.data.user
+                this.userId = res.data.data.userId
+                this.categoryId = res.data.data.categoryId
+                this.categoryName = res.data.data.categoryName
+                this.createdAt =  res.data.data.createdAt
+                this.favoriteCount = res.data.data.favoriteCount
+                this.hashtags = res.data.data.hashtags
+                this.replyCount = res.data.data.replyCount
+                this.hotScore = res.data.data.hotScore
+            })
+            .then(err => {
+                console.log(err)
+            });
+    },
+
+
 }
 </script>
 <style lang="css" scoped>
+
+.comment-card {
+  width: 100%;
+  height: 150px;
+  display: flex;
+  background-color: red;
+}
+
+.comment-avatr {
+  width: 100px;
+  height: 150px;
+  background-color: gray;
+}
+
+.comment-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.comment-body-top {
+  height: 40px;
+}
+
+.comment-body-mid {
+  flex: 1;
+}
+
+.comment-body-down {
+  height: 40px;
+  margin-top: auto;
+}
+
+.comment-menu {
+  width: 50px;
+  height: 150px;
+  background-color: gray;
+}
+
+.comment-bar {
+  width: 100%; /* 设置父元素宽度为100% */
+}
+
+.comment-input {
+  width: 100%; /* 设置输入框宽度为100% */
+  border: 1px solid #ccc; /* 添加边框 */
+  padding: 8px; /* 可选的内边距 */
+  height: 100px;
+}
 .container {
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;

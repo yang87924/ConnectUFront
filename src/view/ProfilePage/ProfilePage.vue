@@ -234,6 +234,7 @@ export default {
         setTimeout(() => {
         location.reload();
       }, 1000);
+      
   event.preventDefault();
 
   const formData = new FormData();
