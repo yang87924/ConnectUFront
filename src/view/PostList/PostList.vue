@@ -1,7 +1,7 @@
 <template lang="">
     <div class="container">
         <div class="sidebar">
-            <img src="../../assets/img/header/logo.svg" alt="" class="logo">
+            <!-- <img src="../../assets/img/header/logo.svg" alt="" class="logo">
             <div class="nav-block">
                 <ul class="nav">
                     <li class="nav-item flex-start active">
@@ -44,16 +44,16 @@
                         </button>
                     </li>
                 </ul>
-            </div>
+            </div> -->
         </div>
         <div class="main-content">
-            <div class="create-post flex-between">
+            <!-- <div class="create-post flex-between">
                 <div class="memoji-box flex-center">
                     <img src="../../assets/img/postlist/memoji.svg" alt="" class="memoji">
                 </div>
                 <input type="text" class="post-input" placeholder="Let’s share what going on your mind...">
                 <input type="submit" class="submit" value="Create Post">
-            </div>
+            </div> -->
             <div class="content-switch flex-around">
                 <div class="switch">為你推薦</div>
                 <div class="switch">正在跟隨</div>
@@ -78,7 +78,6 @@
                 </div>
             </div>
             <div class="tweets-box">
-                <Tweet />
                 <Tweet />
             </div>
         </div>
@@ -115,7 +114,7 @@ export default {
 <style lang="css" scoped>
 .container {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-columns: 1fr 3fr 1fr;
     /* 定義三欄佈局的比例，1fr等於分配剩餘空間 */
     grid-gap: 20px;
     /* 欄與欄之間的寬度 */
@@ -265,6 +264,7 @@ export default {
 }
 
 .content-switch {
+    margin-top: 50px;
     width: 100%;
     margin-bottom: 8px;
 }
@@ -297,6 +297,7 @@ export default {
 .textarea {
     width: 100%;
     border: none;
+    height: 70px;
 }
 
 .tweet-tool .material-icons-outlined {
@@ -320,6 +321,8 @@ export default {
 /* tweets-box */
 .tweets-box {
     padding: 1rem 2rem;
+    height: 1000px;
+    overflow: auto;
 }
 
 /* trend */

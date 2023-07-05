@@ -23,7 +23,7 @@
             </li>
             <li class="nav-item flex-center" :class="{ 'active': $route.path === '/profile' }">
                 <router-link to="/profile" class="router-link" :class="{ 'active-link': $route.path === '/profile' }">
-                    <span class="material-icons">headset_mic</span>
+                    <span class="material-icons">account_circle</span>
                 </router-link>
             </li>
             <li class="nav-item flex-center" :class="{ 'active': $route.path === '/article' }">
@@ -33,25 +33,46 @@
             </li>
         </ul>
         <div class="user-info flex-between">
-            <div class="nav-item flex-center">
-                <span class="material-icons">notifications</span>
+            <div class="nav-item flex-center" v-if="userName != null">
+                <span class="material-icons">settings</span>
             </div>
             <div class="outer-border">
-                <div class="user-imgbox">
-                    <img src="../assets/img/header/user-photo.svg" alt="">
+                <div class="user-imgbox ">
+                    <img v-if="userName != null" :src="avatar" alt="User Photo">
+                    <router-link v-else to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }">
+                    <img src="../assets/img/header/user-photo.svg" alt="" >
+                    </router-link>
                 </div>
             </div>
-            <div class="user-name">
-                AR. Jakir
+            <div class="user-name" >
+                {{userName}}
             </div>
-            <li class="nav-item flex-center" :class="{ 'active': $route.path === '/UserLogin' }">
-                <router-link to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }">
-            <div class="arrow-icon" >
-                <span class="material-icons-round">arrow_drop_down</span>
+            <div class="arrow-icon flex-center" v-if="userName != null">
+                <span class="material-icons-round"  @click="showConfirmationDialog">logout</span>
             </div>
-                </router-link>
-            </li>
-        </div>
+                <div v-if="isConfirmationDialogVisible" class="confirmation-dialog">
+                    <div class="dialog-content">
+                        <p>是否確定要登出？</p>
+                        <div class="buttons">
+                            <router-link to="/index" class="router-link" :class="{ 'active-link': $route.path === '/index' }">
+                            <button @click="logout">是</button>
+                            </router-link>
+                            <button @click="cancelLogout">取消</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- <div class="dropdown" >
+                <div class="arrow-icon flex-center" @click="toggleDropdown" aria-expanded="false">
+                    <span class="material-icons-round">arrow_drop_down</span>
+                </div>
+                <ul v-if="isOpen" class="dropdown-menu flex-center">
+                    <router-link to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }">
+                    <li class="dropdown-item">Logout</li>
+                    </router-link>
+                </ul>
+            </div> -->
     </div>
     <!-- <div class="container">
         <div class="logo">
@@ -76,103 +97,256 @@
     </div> -->
 </template>
 <script>
-export default {
+import axios from "axios";
 
-}
+export default {
+  data() {
+    return {
+      userName: "", // 使用者名稱
+      avatar: "", // 大頭貼圖片來源
+    //   isOpen: false,
+      isConfirmationDialogVisible: false, // 控制登出確認視窗的顯示狀態
+    };
+  },
+  methods: {
+    // toggleDropdown() {
+    //   this.isOpen = !this.isOpen;
+    // }},
+    showConfirmationDialog() {
+      this.isConfirmationDialogVisible = true; // 顯示登出確認視窗
+    },
+    logout() {
+      // 執行登出操作
+      console.log("已登出");
+      this.isConfirmationDialogVisible = false; // 隱藏登出確認視窗
+      //清除session資料
+      axios.post("users/invalidate")
+      .then((response) => {
+        console.log(response.data);
+        // this.userName = "";
+      })
+      .catch((error) => {
+        console.log(error);
+        // 處理錯誤
+      });
+      location.reload();
+    },
+    
+    cancelLogout() {
+      this.isConfirmationDialogVisible = false; // 取消登出，隱藏確認視窗
+    },
+  },
+
+  created() {
+    // const storeduserId = localStorage.getItem('userId');
+
+
+    
+  // 在組件創建時使用 Axios，並傳遞使用者 ID
+  axios.post('/users/getUserId/0')
+    .then(response => {
+      console.log(response.data);
+      this.userName = response.data.userName;
+      this.avatar=response.data.avatar;
+
+    //先放置 圖片
+    //   this.avatar = response.data.avatar;
+    })
+    .catch(error => {
+      console.log(error);
+      // 處理錯誤
+    });
+
+    // // 在組件創建時使用 Axios，並傳遞使用者 ID
+    // axios.get(`/users/${storeduserId}`)
+    //   .then(response => {
+    //     console.log(response.data);
+    //     console.log(response.data.userName);
+    //     console.log("eeeeee");
+    //     // 處理回應資料
+    //     this.userName = response.data.data.userName;
+    //     this.avatar = response.data.data.avatar;
+    //     console.log(this.avatar);
+    // })
+    //   .catch(error => {
+    //     console.log(error);
+    //     // 處理錯誤
+    //   });
+  },
+};
 </script>
 <style lang="css" scoped>
 .container {
-    width: 100%;
-    max-width: 100vw;
-    height: 84px;
-    background-color: #fff;
-    box-shadow: 0px 4px 4px 0px #00000040;
-    z-index: 999;
-    position: fixed;
+  width: 100%;
+  max-width: 100vw;
+  height: 84px;
+  background-color: #fff;
+  box-shadow: 0px 4px 4px 0px #00000040;
+  z-index: 999;
+  position: fixed;
 }
 
 .flex-between {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .logo-box {
-    height: 84px;
+  height: 84px;
 }
 
 .nav {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    width: calc(40px * 5 + 45px * 4);
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  width: calc(40px * 5 + 45px * 4);
 }
 
 .nav-item {
-    width: 40px;
-    height: 40px;
-    border-radius: 7px;
-    background-color: #EAEAEA;
+  width: 40px;
+  height: 40px;
+  border-radius: 7px;
+  background-color: #eaeaea;
+  
 }
 
 .active {
-    background-color: var(--active);
+  background-color: var(--active);
 }
 
 .router-link {
-    color: var(--black);
+  color: var(--black);
+  text-decoration: none;
 }
 
 .active-link {
-    color: #FFF;
+  color: #fff;
+}
+
+.user-info{
+    margin-right: 32px;
 }
 
 .user-info div:not(:last-child) {
-    margin-right: 20px;
+  margin-right: 20px;
 }
 
 .user-info div:last-child {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .user-imgbox {
-    width: 42.5px;
-    height: 42.5px;
-    background-color: #F9DFC0;
-    border-radius: 7.5px;
-    padding: 3.6px;
+  width: 42.5px;
+  height: 42.5px;
+  background-color: #f9dfc0;
+  border-radius: 7.5px;
+  padding: 3.6px;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+.user-imgbox img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius:10px;
 }
 
 .outer-border {
-    width: 50px;
-    height: 50px;
-    border: 1.25px solid #EA942C;
-    border-radius: 10px;
-    padding: 3.6px;
+  width: 50px;
+  height: 50px;
+  border: 1.25px solid #ea942c;
+  border-radius: 10px;
+  padding: 3.6px;
+}
+
+.dropdown {
+    cursor: pointer;
+    position: relative;
 }
 
 .user-name {
-    font-family: 'Vodafone Rg';
-    font-weight: 500;
-    font-size: 20px;
-    line-height: 30px;
-    color: var(--black);
-    text-align: center;
-    cursor: pointer;
+  font-family: "Vodafone Rg";
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 30px;
+  color: var(--black);
+  text-align: center;
 }
 
-.arrow-icon .material-icons-round {
-    font-size: 40px;
-    color: var(--black);
-    cursor: pointer;
+.arrow-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--black);
+  cursor: pointer;
+  background: #eaeaea;
+  border-radius: 7px;
 }
 
+.dropdown .dropdown-menu {
+    background: #fff;
+    position: absolute;
+    top: calc(100% + 5px); 
+    transform: translateX(-70%); /* 根據您的需求設置適當的位移值 */
+    height: 40px;
+    width: 80px;
+    left: 50%;
+    border-radius: 5px;
+    font-size: 18px;
+    text-align: center; /* 將內容置中 */
+    /* align-items: center; */
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+    
+}
+
+.dropdown-item {
+    list-style-type: none;
+    color: #bcbcbc;
+}
+
+.dropdown-item:hover {
+    color: #6e6d6d;
+}
+
+.confirmation-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dialog-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.buttons {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.buttons button {
+  margin: 0 10px;
+  color: #9b9999;
+}
+
+.buttons button:hover {
+  color: #555454;
+}
 /* .container {
     width: 100%;
     height: 84px;
