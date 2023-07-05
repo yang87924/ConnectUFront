@@ -55,8 +55,8 @@
                 <input type="submit" class="submit" value="Create Post">
             </div> -->
             <div class="content-switch flex-around">
-                <div class="switch">為你推薦</div>
-                <div class="switch">正在跟隨</div>
+                <div class="switch" :class="{ active: activeTab === 'recommend' }" @click="activeTab = 'recommend'">為你推薦</div>
+                <div class="switch" :class="{ active: activeTab === 'following' }" @click="activeTab = 'following'">正在跟隨</div>
             </div>
             <div class="new-tweet">
                 <div class="tweet-input flex-start">
@@ -77,8 +77,13 @@
                     </div>
                 </div>
             </div>
-            <div class="tweets-box">
+            <div class="tweets-box" v-if="activeTab === 'recommend'">
+                <!-- 顯示為你推薦的內容 -->
                 <Tweet />
+            </div>
+            <div class="tweets-box" v-else-if="activeTab === 'following'">
+                <!-- 顯示正在跟隨的內容 -->
+                <TweetFolling />
             </div>
         </div>
         <div class="sidebar trend">
@@ -91,10 +96,6 @@
                 </div>
             </div>
             <Trend />
-            <Trend />
-            <Trend />
-            <Trend />
-            <Trend />
             <div class="show-more">Show More</div>
         </div>
     </div>
@@ -102,13 +103,20 @@
 <script>
 import Tweet from './components/Tweet.vue';
 import Trend from './components/Trend.vue';
+import TweetFolling from './components/TweetFollowing.vue';
 
 export default {
     name: 'IndexView',
     components: {
         Tweet,
         Trend,
+        TweetFolling,
+    },
+    data() {
+    return {
+      activeTab: 'recommend' // 預設為為你推薦
     }
+  }
 }
 </script>
 <style lang="css" scoped>
@@ -264,9 +272,10 @@ export default {
 }
 
 .content-switch {
-    margin-top: 50px;
+    margin-top: 20px;
     width: 100%;
-    margin-bottom: 8px;
+    margin-bottom: 20px;
+    /* height: 80px; */
 }
 
 .switch {
@@ -277,6 +286,7 @@ export default {
     line-height: 23px;
     letter-spacing: 0em;
     text-align: center;
+    cursor: pointer;
 }
 
 .new-tweet {
@@ -348,6 +358,7 @@ export default {
 .title-box .settings {
     font-size: 26.91px;
     color: var(--button-default);
+    cursor: pointer;
 }
 
 .show-more {
@@ -359,5 +370,18 @@ export default {
     text-align: left;
     color: #1DA1F2;
     padding: 12px 24px;
+    cursor: pointer;
 }
+
+.active {
+  background-color: #e1e0e0; 
+  color: #000; /* 設置您希望的字體顏色 */
+  border-radius: 8px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
 </style>
