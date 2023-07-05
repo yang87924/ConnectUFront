@@ -124,16 +124,16 @@ export default {
 <style lang="css" scoped>
 
 .comment-card {
-  width: 100%;
-  height: 150px;
-  display: flex;
-  background-color: red;
+    width: 100%;
+    height: 150px;
+    display: flex;
+    background-color: red;
 }
 
 .comment-avatr {
-  width: 100px;
-  height: 150px;
-  background-color: gray;
+    width: 100px;
+    height: 150px;
+    background-color: gray;
 }
 
 .comment-body {
@@ -142,33 +142,33 @@ export default {
     flex-direction: column;
 }
 .comment-body-top {
-  height: 40px;
+    height: 40px;
 }
 
 .comment-body-mid {
-  flex: 1;
+    flex: 1;
 }
 
 .comment-body-down {
-  height: 40px;
-  margin-top: auto;
+    height: 40px;
+    margin-top: auto;
 }
 
 .comment-menu {
-  width: 50px;
-  height: 150px;
-  background-color: gray;
+    width: 50px;
+    height: 150px;
+    background-color: gray;
 }
 
 .comment-bar {
-  width: 100%; /* 设置父元素宽度为100% */
+    width: 100%; /* 设置父元素宽度为100% */
 }
 
 .comment-input {
-  width: 100%; /* 设置输入框宽度为100% */
-  border: 1px solid #ccc; /* 添加边框 */
-  padding: 8px; /* 可选的内边距 */
-  height: 100px;
+    width: 100%; /* 设置输入框宽度为100% */
+    border: 1px solid #ccc; /* 添加边框 */
+    padding: 8px; /* 可选的内边距 */
+    height: 100px;
 }
 .container {
     display: grid;
