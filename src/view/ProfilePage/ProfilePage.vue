@@ -47,7 +47,7 @@
 						</div>
 					</div>
 <div class="countbar">
-        <button class="fans-button" @click="toggleFollowList">追蹤<br>555</button>
+        <button class="fans-button" @click="toggleFollowList">追蹤<br>{{followedByCount}}</button>
         <div v-if="showFollowList" class="fan-list" v-click-outside="hideFollowList">
             <div class="fan-list-container">
                 <h2 class="fan-list-title">所有追蹤</h2>
@@ -59,7 +59,7 @@
                 </ul>
             </div>
         </div>
-        <button class="fans-button" @click="toggleFanList">粉絲<br>222</button>
+        <button class="fans-button" @click="toggleFanList">粉絲<br>{{followingCount}}</button>
         <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
             <div class="fan-list-container">
                 <h2 class="fan-list-title">所有粉絲</h2>
@@ -159,6 +159,8 @@ export default {
             profile: '',
             title: '',
             activeTab: '',
+            followedByCount: '',
+            followingCount: '',
 
             fans: [],
             follow: [],
@@ -275,6 +277,8 @@ export default {
                 this.userName = response.data.userName;
                 this.avatar = response.data.avatar;
                 this.profile = response.data.profile;
+                this.followingCount = response.data.followingCount;
+                this.followedByCount = response.data.followedByCount;
             })
             .catch(error => {
                 console.log(error);
@@ -329,12 +333,14 @@ export default {
 }
 
 .fan-list-container {
-  width: 600px;
-  margin: 0 auto; /* 添加此行，使用margin: 0 auto; 将内容水平置中 */
+    width: 600px;
+    margin: 0 auto; /* 添加此行，使用margin: 0 auto; 将内容水平置中 */
     padding: 20px;
     display: flex; /* 添加此行，使用flex布局 */
     flex-direction: column; /* 添加此行，使内容垂直方向上居中 */
     align-items: center; /* 添加此行，使内容水平方向上居中 */
+    max-height: 800px; /* 设置最大高度，根据需要进行调整 */
+    overflow-y: scroll; /* 添加垂直滚动条 */
 }
 
 .fan-list-title {
