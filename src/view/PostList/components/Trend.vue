@@ -1,14 +1,14 @@
 <template lang="">
-    <div class="content flex-between">
+    <div class="content flex-between" v-for="(item, index) in items" :key="index">
         <div class="trending">
-            <div class="subtitle">
+            <!-- <div class="subtitle">
                 Trending in Turkey
-            </div>
+            </div> -->
             <div class="tag">
-                Fransa'da 15,5
+                {{ item.name }}
             </div>
             <div class="count">
-                8,130 Tweets
+                {{ item.amount }} Tweets
             </div>
         </div>
         <div class="tool">
@@ -17,8 +17,36 @@
     </div>
 </template>
 <script>
-export default {
+import axios from "axios";
 
+export default {
+  data() {
+    return {
+      items: [], // 存放動態的列表
+    };
+  },
+  mounted() {
+    // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
+    // this.fetchData();
+  },
+  created() {
+    // 查詢流行趨勢的API
+        axios.get('/dyThreads/dyHotHashtag')
+            .then(response => {
+                console.log('流行趨勢：', response.data.data);
+                // console.log(response.data);
+                if (response.data.data && response.data.data.length > 0) {
+                    this.items = this.items.concat(response.data.data);
+                } else {
+                    console.log('回應資料無效或沒有文章資料');
+                    this.item = '找不到流行趨勢';
+                }
+            })
+            .catch(error => {
+                console.log('發生錯誤：', error);
+                this.item = '找不到流行趨勢';
+            });
+  },
 }
 </script>
 <style lang="css" scoped>
@@ -72,5 +100,9 @@ export default {
     letter-spacing: 0em;
     text-align: left;
     color: #6E767D;
+}
+
+.material-icons {
+    cursor: pointer;
 }
 </style>
