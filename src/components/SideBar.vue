@@ -1,119 +1,175 @@
-<template lang="">
+<template>
     <div class="sidebar">
-        <div class="title">
-      <button class="btn" :class="{ active: selectedTab === 'hotTags' }" @click="selectedTab = 'hotTags'">熱門標籤</button>
-      <button class="btn" :class="{ active: selectedTab === 'topicCategory' }" @click="selectedTab = 'topicCategory'">主題分類</button>
-    </div> 
-        <!-- <div class="item"> -->
-            <div v-show="selectedTab === 'hotTags'" class="color">
-            <div>
-                <img src="../assets/img/HomePage/SideBar/Icon (1).svg" alt="">
-                <div>
-                    <div class="topic">#程式碼</div>
-                    <div class="num">82,645 Posted by this tag</div>
-                </div>
-            </div>
-            <div>
-                <img src="../assets/img/HomePage/SideBar/Icon (2).svg" alt="">
-                <div>
-                    <div class="topic">#程式碼</div>
-                    <div class="num">82,645 Posted by this tag</div>
-                </div>
-            </div>
-            <div>
-                <img src="../assets/img/HomePage/SideBar/Icon (3).svg" alt="">
-                <div>
-                    <div class="topic">#程式碼</div>
-                    <div class="num">82,645 Posted by this tag</div>
-                </div>
-            </div>
-            <div>
-                <img src="../assets/img/HomePage/SideBar/Icon.svg" alt="">
-                <div>
-                    <div class="topic">主題</div>
-                    <div class="num">100 則帖子</div>
-                </div>
-            </div>
-            </div>
-
-        <div v-show="selectedTab === 'topicCategory'" class="content">
-            
+      <div class="title">
+        <button
+          class="btn"
+          :class="{ active: selectedTab === 'hotTags' }"
+          @click="selectedTab = 'hotTags'"
+        >
+          熱門標籤
+        </button>
+        <button
+          class="btn"
+          :class="{ active: selectedTab === 'topicCategory' }"
+          @click="selectedTab = 'topicCategory'"
+        >
+          主題分類
+        </button>
+      </div>
+      
+      <div v-show="selectedTab === 'hotTags'" class="hottags">
+  <!-- <div v-for="item in leaderboardData" :key="item.hashtagId"> -->
+    <div v-for="(a,id) in leaderboardData" :key="id" class="hash">
+    <img src="../assets/img/HomePage/SideBar/Icon (1).svg" alt="" />
+    <div class="topic">{{ a.name }}{{id}}</div>
+    <div class="num">{{ a.amount }}</div>
+  </div>
+</div>
+  
+      <div v-show="selectedTab === 'topicCategory'" class="content">
         <div class="podcast flex-between">
-            <div class="img-box">
-                <img src="../assets/img/article/Rectangle 54.svg" alt="">
+          <div class="img-box">
+            <img src="../assets/img/article/Rectangle 54.svg" alt="">
+          </div>
+          <div class="content">
+            <div class="txt-box flex-between">
+              <div class="txt">心情</div>
             </div>
-            <div class="content">
-                <div class="txt-box flex-between">
-                    <div class="txt">標題</div> <br> 
-                </div>
-                <div class="comment">作者：cherry</div>
-            </div>
-            <div class="arrow">
-                <span class="material-icons-round">arrow_forward</span>
-            </div>
+            <div class="comment"></div>篇數：86
+          </div>
+          <div class="arrow">
+            <span class="material-icons-round">arrow_forward</span>
+          </div>
         </div>
         <div class="podcast flex-between">
-            <div class="img-box">
-                <img src="../assets/img/article/Rectangle 54.svg" alt="">
+          <div class="img-box">
+            <img src="../assets/img/article/Rectangle 54.svg" alt="">
+          </div>
+          <div class="content">
+            <div class="txt-box flex-between">
+              <div class="txt">求職</div>
             </div>
-            <div class="content">
-                <div class="txt-box flex-between">
-                    <div class="txt">Selling a Business and Scaling <br> Another Amidst Tragedy.</div>
-                </div>
-                <div class="comment">by Michele Hansen</div>
-            </div>
-            <div class="arrow">
-                <span class="material-icons-round">arrow_forward</span>
-            </div>
+            <div class="comment">1,020</div>
+          </div>
+          <div class="arrow">
+            <span class="material-icons-round">arrow_forward</span>
+          </div>
         </div>
         <div class="podcast flex-between">
-            <div class="img-box">
-                <img src="../assets/img/article/Rectangle 54.svg" alt="">
+          <div class="img-box">
+            <img src="../assets/img/article/Rectangle 54.svg" alt="">
+          </div>
+          <div class="content">
+            <div class="txt-box flex-between">
+              <div class="txt">工作</div>
             </div>
-            <div class="content">
-                <div class="txt-box flex-between">
-                    <div class="txt">Selling a Business and Scaling <br> Another Amidst Tragedy.</div>
-                </div>
-                <div class="comment">by Michele Hansen</div>
-            </div>
-            <div class="arrow">
-                <span class="material-icons-round">arrow_forward</span>
-            </div> 
-        <!-- </div>        -->
-            </div>
+            <div class="comment">545</div>
+          </div>
+          <div class="arrow">
+            <span class="material-icons-round">arrow_forward</span>
+          </div>
         </div>
-            
-           
-
-        
-        
+      </div>
     </div>
+  </template>
+  
+  <script>
 
 
-</template>
-<script>
+
+
+  import axios from 'axios';
+  
+  export default {
+    data() {
+      return {
+        leaderboardData: [], 
+       showSidebar: true, // 初始時側邊欄是顯示的
+        selectedTab: 'hotTags',
+        
+      };
+    },
+    created() {
+      this.fetchData();
+    },
+
+
+  methods: {
+    fetchData() {
+      // 發送 HTTP GET 請求到後端 API 獲取資料
+      axios
+        .get('/threads/HotHashtag')  // 請根據實際的 API 端點進行更新
+        .then(response => {
+
+            console.log("happy",response)
+          // 請求成功，將資料設置給 leaderboardData 陣列
+          this.leaderboardData = response.data.data;
+          console.log(this.leaderboardData);
+          this.isLoading = false; // 停止載入狀態
+        })
+        .catch(error => {
+          // 請求失敗，處理錯誤
+          console.error(error);
+          this.isLoading = false; // 停止載入狀態
+        });
+    },
+  },
+
+};
+
+
+
+
+
+
+
+
+
+  </script>
+  
+  
+  
+<!-- <>
 export default {
     data() {
         return {
+
+            item: [], // 或者 leaderboardData: {}
             showSidebar: true, // 初始時側邊欄是顯示的
             selectedTab: 'hotTags',
-            
+
         };
     },
 
     mounted() {
-    
-  },
+
+    },
     methods: {
-        
-      
+
+        fetchData() {
+            // 發送 HTTP GET 請求到後端 API 獲取資料
+            axios
+                .get('/threads/HotHashtag')  // 請根據實際的 API 端點進行更新
+                .then(response => {
+                    // 請求成功，將資料設置給 hotTags 陣列
+                    this.hashtags = response.data;
+                    console.log(this.hashtags);
+                    this.isLoading = false; // 停止載入狀態
+                })
+                .catch(error => {
+                    // 請求失敗，處理錯誤
+                    console.error(error);
+                    this.isLoading = false; // 停止載入狀態
+                });
+        },
+
         // toggleSidebar() {
         //     this.showSidebar = !this.showSidebar; // 點擊按鈕時切換側邊欄的顯示狀態
         // },
     },
 
 };
-</script>
+</> -->
 <style llang="css" scoped>
 .sidebar {
     background: #FFFFFF;
@@ -174,7 +230,7 @@ export default {
 }
 
 .btn {
-    padding: 50px 50px;
+    padding: 20px 20px;
     /* cursor: pointer; */
     background-color: #EEE;
     border: none;
@@ -190,7 +246,7 @@ export default {
 }
 
 .btn:hover {
-    background-color:#e0d3eb;
+    background-color: #e0d3eb;
 }
 
 .img-box {
@@ -210,4 +266,15 @@ export default {
     padding: 16px;
     margin-bottom: 20px;
 }
+
+.hash{
+
+    display: flex;
+    align-items: center; /* 將元素在垂直方向上居中對齊 */
+    margin-bottom: 10px; /* 可根據需要調整元素之間的垂直間距 */
+}
+
+.hash img {
+    margin-right: 10px; /* 可根據需要調整圖片與其他元素之間的間距 */
+  }
 </style>

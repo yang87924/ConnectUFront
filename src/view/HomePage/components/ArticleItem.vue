@@ -31,9 +31,11 @@
                     </div>
                 </div>
                 <div class="num">
-                    <span>{{ item.views }}</span>
-                    <span>{{ item.likes }}</span>
-                    <span>{{ item.comments }}</span>
+                    <img src="../../../assets/img/HomePage/ArticleItem/" alt="按讚圖片" />
+                    <span>按讚{{ item.love }}</span>
+                
+                    <span>留言{{ item.replyCount }}</span>
+                    <span>收藏{{ item.loveStatus }}</span>
                 </div>
             </div>
         </div>
