@@ -28,32 +28,39 @@
                     <img :src="picture" alt="">
                 </div>
             </div>
-            <div class="foot-bar">
-                <button>愛心</button>
-                <button>留言</button>
-            </div>
+                <div class="foot-bar">
+                    <button class="small-button" @click="increaseLove"><img src="../../assets/img/article/heart-regular.svg" alt=""></button>
+                    <div>{{love}}</div>
+                    <button class="small-button"><img src="../../assets/img/article/message-regular.svg" alt=""></button>
+                    <div>{{replyCount}}</div>
+                </div>
             <div class="comment-bar">
                 <input type="text" class="comment-input" placeholder="留言...">
             </div>
             <div class="sent-comment">
-                <button>送出留言</button>
+                <button class="sent-comment-button">送出留言</button>
             </div>
-            <div class="comment-card">
+            <div v-for="comment in comments" :key="comment.replyId" class="comment-card">
                 <div class="comment-avatr">我是大頭貼</div>
                 <div class="comment-body">
                     <div class="comment-body-top">
                         <span class="people-name">我是名字</span>
-                        <span class="comment-time">2021-08-01 12:00</span>
+                        <span class="comment-time">{{ comment.createdAt }}</span>
                     </div>
                     <div class="comment-body-mid">
-                        <span class="comment-content">我是留言內容</span>
+                        <span class="comment-content">{{ comment.content }}</span>
                     </div>
                     <div class="comment-body-down">
-                        <button class="comment-love">愛心</button>
-                        <button class="comment-reply">回覆</button>
+                        <button class="small-button"><img src="../../assets/img/article/heart-regular.svg" alt=""></button>
+                        <div>0</div>
+                        <button class="small-button">回覆</button>
                     </div>
                 </div>
-                <div class="comment-menu">我是menu</div>
+                <div class="comment-menu">
+                    <button class="comment-menu-button">
+                        <img src="../../assets/img/article/ellipsis-solid.svg" alt="">
+                    </button>
+                </div>
             </div>
         </div>
         <div class="sidebar">
@@ -75,6 +82,27 @@ export default {
         HotArticle,
     },
 
+    methods: {
+        increaseLove() {
+        const action = this.loveStatus === 0 ? 'like' : 'unlike';
+
+        axios.put('threads/toggleUserLove/2', {
+        action: action
+        })
+        .then(res => {
+            if (res.data.code === 20031) {
+                this.loveStatus = res.data.data.loveStatus;
+                this.love = res.data.data.love;
+            } else {
+                console.error(res.data.msg);
+            }
+        })
+        .catch(err => {
+            onsole.error(err);
+        });
+    }
+},
+
     data() {
         return {
             title: '',
@@ -91,6 +119,7 @@ export default {
             hashtags: '',
             replyCount: '',
             hotScore: '',
+            comments: [],
         }
     },
 
@@ -116,18 +145,82 @@ export default {
             .then(err => {
                 console.log(err)
             });
+
+            axios.get('/replys/2')
+            .then(res => {
+                console.log(res.data)
+                this.comments = res.data.data;
+            })
+            .then(err => {
+                console.log(err)
+            });
     },
+    
 
 
 }
 </script>
 <style lang="css" scoped>
 
+.photo-box {
+    width: 600px;
+    height: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.photo-box img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.comment-body-down {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.comment-menu {
+    display: flex;
+    justify-content: center;
+}
+
+.comment-menu-button {
+    height: 30px;
+    width: 30px;
+
+}
+
+.sent-comment-button {
+    width: 100%;
+    height: 50px;
+    background-color: #fff;
+}
+
+.foot-bar {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #fff;
+    border-top: 1px solid #ccc;
+}
+
+.small-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #fff;
+    margin: 0 15px;
+}
+
 .comment-card {
     width: 100%;
     height: 150px;
     display: flex;
     background-color: red;
+    margin-top: 30px;
 }
 
 .comment-avatr {
