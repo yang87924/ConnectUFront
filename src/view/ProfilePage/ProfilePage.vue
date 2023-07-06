@@ -47,48 +47,48 @@
 						</div>
 					</div>
 <div class="countbar">
-        <button class="fans-button" @click="toggleFanList">追蹤<br>555</button>
-        <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
+        <button class="fans-button" @click="toggleFollowList">追蹤<br>{{followedByCount}}</button>
+        <div v-if="showFollowList" class="fan-list" v-click-outside="hideFollowList">
             <div class="fan-list-container">
-                <h2 class="fan-list-title">追蹤列表</h2>
+                <h2 class="fan-list-title">所有追蹤</h2>
                 <ul class="fan-list-items">
-                    <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
-                        <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
-                        <span class="fan-name">{{ fan.name }}</span>
+                    <li class="fan-list-item" v-for="follow in follow" :key="follow.id">
+                        <img class="fan-avatar" :src="follow.avatar" alt="粉絲頭像">
+                        <span class="fan-name">{{ follow.userName }}</span>
                     </li>
                 </ul>
             </div>
         </div>
-        <button class="fans-button" @click="toggleFanList">粉絲<br>222</button>
+        <button class="fans-button" @click="toggleFanList">粉絲<br>{{followingCount}}</button>
         <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
             <div class="fan-list-container">
-                <h2 class="fan-list-title">粉絲列表</h2>
+                <h2 class="fan-list-title">所有粉絲</h2>
                 <ul class="fan-list-items">
                     <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
                         <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
-                        <span class="fan-name">{{ fan.name }}</span>
+                        <span class="fan-name">{{ fan.userName }}</span>
                     </li>
                 </ul>
             </div>
         </div>
         
-        <button class="fans-button" @click="toggleFanList">訂閱<br>123</button>
-        <div v-if="showFanList" class="fan-list">
+        <button class="fans-button" @click="toggleSubList">訂閱<br>123</button>
+        <div v-if="showSubList" class="fan-list" v-click-outside="hideSubList">
             <div class="fan-list-container">
-                <h2 class="fan-list-title">訂閱列表</h2>
+                <h2 class="fan-list-title">所有訂閱</h2>
                 <ul class="fan-list-items">
                     <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
                         <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
-                        <span class="fan-name">{{ fan.name }}</span>
+                        <span class="fan-name">{{ fan.userName }}</span>
                     </li>
                 </ul>
             </div>
         </div>
 </div>
-                <div class="floow">
-                    <button class="floow-button">追蹤</button>
+                <div class="follow">
+                    <button class="follow-button">追蹤</button>
 
-                    <button class="floow-button">私訊</button>
+                    <button class="follow-button">私訊</button>
                 </div>
 
             </div>
@@ -155,35 +155,78 @@ export default {
         return {
             userId: '',
             userName: '',
-            vatar: '',
+            avatar: '',
             profile: '',
             title: '',
             activeTab: '',
+            followedByCount: '',
+            followingCount: '',
 
-            fans: [
-        { id: 1, name: '粉絲1', avatar: 'avatar1.jpg' },
-        { id: 2, name: '粉絲2', avatar: 'avatar2.jpg' },
-        { id: 3, name: '粉絲3', avatar: 'avatar3.jpg' },
-      ],
+            fans: [],
+            follow: [],
             showFanList: false ,
             showFollowers: false,
             showFans: false,
             showSubscribers: false,
             showEditList: false,
+            showSubList: false,
+            showFollowList: false,
         };
     },
 
     methods: {
-    toggleFanList() {
-      this.showFanList = !this.showFanList;
+
+        
+  fetchFansData() {
+      axios.get('/users/following')
+        .then(response => {
+            this.fans = response.data.data;
+            console.log(this.fans);
+        })
+            .catch(error => {
+        });
     },
+
+    fetchFollowData() {
+      axios.get('/users/followedBy')
+        .then(response => {
+            this.follow = response.data.data;
+            console.log(this.follow);
+        })
+            .catch(error => {
+            console.log(error);
+        });
+    },
+
+
     hideFanList() {
       this.showFanList = false;
       this.showEditList = false;
     },
+    hideSubList() {
+      this.showSubList = false;
+    },
+    hideFollowList() {
+      this.showFollowList = false;
+    },
     toggleEditList() {
       this.showEditList = !this.showEditList;
     },
+    toggleSubList() {
+      this.showSubList = !this.showSubList;
+    },
+    toggleFollowList() {
+      this.showFollowList = !this.showFollowList;
+      if (this.showFollowList && this.follow.length === 0) {
+        this.fetchFollowData();
+        }
+    },
+    toggleFanList() {
+        this.showFanList = !this.showFanList;
+        if (this.showFanList && this.fans.length === 0) {
+        this.fetchFansData();
+        }
+},
 
     
     submitForm(event) {
@@ -191,6 +234,7 @@ export default {
         setTimeout(() => {
         location.reload();
       }, 1000);
+      
   event.preventDefault();
 
   const formData = new FormData();
@@ -234,6 +278,8 @@ export default {
                 this.userName = response.data.userName;
                 this.avatar = response.data.avatar;
                 this.profile = response.data.profile;
+                this.followingCount = response.data.followingCount;
+                this.followedByCount = response.data.followedByCount;
             })
             .catch(error => {
                 console.log(error);
@@ -288,16 +334,18 @@ export default {
 }
 
 .fan-list-container {
-  width: 600px;
-  margin: 0 auto; /* 添加此行，使用margin: 0 auto; 将内容水平置中 */
+    width: 600px;
+    margin: 0 auto; /* 添加此行，使用margin: 0 auto; 将内容水平置中 */
     padding: 20px;
     display: flex; /* 添加此行，使用flex布局 */
     flex-direction: column; /* 添加此行，使内容垂直方向上居中 */
     align-items: center; /* 添加此行，使内容水平方向上居中 */
+    max-height: 800px; /* 设置最大高度，根据需要进行调整 */
+    overflow-y: scroll; /* 添加垂直滚动条 */
 }
 
 .fan-list-title {
-  font-size: 18px;
+  font-size: 40px;
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -310,14 +358,14 @@ export default {
 }
 
 .fan-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  margin-right: 100px;
 }
 
 .fan-name {
-  font-size: 14px;
+  font-size: 30px;
   font-weight: bold;
 }
 
@@ -518,7 +566,7 @@ export default {
     color: #FFF;
 }
 
-.floow{
+.follow{
     top: 145px;
     left:-130px;
     position: relative;
@@ -526,7 +574,7 @@ export default {
     justify-content: space-between;
 }
 
-.floow-button {
+.follow-button {
     margin-left: 30PX;
     padding: 8px 30px;
     border: 4px solid lightgrey;
