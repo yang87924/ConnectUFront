@@ -9,7 +9,9 @@
                 <span class="place">{{ item.createdAt }}</span>
             </div>
             <div class="txt">{{ item.content }}</div>
-            <div class="tags">#追星</div>
+            <div class="tags">
+                <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
+            </div>
             <div class="img-box" :style="{ backgroundImage: `url(${item.picture})` }"></div>
             <div class="flex-start">
                 <div class="fn flex-center">
@@ -172,8 +174,24 @@ export default {
 }
 
 .tags {
-  color: #1da1f2;
-  cursor: pointer;
+    width: 100%;
+}
+
+.tags span {
+    width: 53.48px;
+    height: 24.59px;
+    padding: 4.2969183921813965px 10.74229621887207px 4.2969183921813965px 10.74229621887207px;
+    border-radius: 21.48459243774414px;
+    background-color: #F4F6F8;
+    font-family: Source Sans Pro;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #858EAD;
+    margin-right: 10px;
+    cursor: pointer;
 }
 
 .friend-info span {
