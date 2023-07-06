@@ -66,28 +66,16 @@
               <!-- Google 登入按鈕 -->
               <div id="g_id_onload" class="my-2 google-btn"></div>
               <!-- Facebook 登入按鈕 -->
-              <v-btn
-                block
-                color="white"
-                dark
-                class="my-2 d-flex justify-center"
-                @click="loginWithFacebook"
-              >
-                <v-icon left>mdi-facebook</v-icon>
-                以Facebook帳號登入
-              </v-btn>
+              <v-btn block class="my-2 d-flex justify-center facebook-button" color="white">
+    <i class="fab fa-facebook-f"></i>
+    <span>使用Facebook賬戶登入</span>
+  </v-btn>
 
               <!-- Twitter 登入按鈕 -->
-              <v-btn
-                block
-                color="white"
-                dark
-                class="my-2 d-flex justify-center"
-                @click="loginWithTwitter"
-              >
-                <v-icon left>mdi-twitter</v-icon>
-                以Twitter帳號登入
-              </v-btn>
+              <v-btn block class="my-2 d-flex justify-center twitter-button" color="white">
+    <i class="fab fa-twitter"></i>
+    <span>使用Twitter賬戶登入</span>
+  </v-btn>
             </div>
           </v-col>
           <!-- Grid系統的列元件，呈現圖像部分 -->
@@ -186,6 +174,8 @@ export default {
       google.accounts.id.renderButton(document.getElementById("g_id_onload"), {
         theme: "outline",
         size: "large",
+        width: "360",
+        logo_alignment: "center",
       });
       // 添加这一行以使图标居中
       document.getElementById("g_id_onload").firstChild.style.display = "flex";
@@ -266,5 +256,15 @@ html {
 /* Google 按钮的图标样式 */
 .google-btn img {
   margin-right: 8px;
+}
+
+.facebook-button {
+  background: linear-gradient(to right, #4064ac, #5177b5);
+  color: white;
+}
+
+.twitter-button {
+  background: linear-gradient(to right, #1da1f2, #1a8cdc);
+  color: white;
 }
 </style>
