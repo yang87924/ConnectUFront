@@ -9,6 +9,7 @@ import ArticlePage from '../view/ArticlePage/ArticlePage.vue'
 import UserLogin from '../components/UserLogin.vue'
 import UserRegister from '../components/UserRegister.vue'
 import Chatroom from "../view/Chatroom/Chatroom.vue";
+import AnotherProfilePage from "../view/AnotherProfilePage/AnotherProfilePage.vue";
 
 
 const routes = [
@@ -35,6 +36,12 @@ const routes = [
         path: '/UserRegister',
         name: 'UserRegister',
         component: UserRegister,
+    },
+    {
+        // 其他個人檔案頁
+        path: '/Anotherprofile',
+        name: 'AnotherProfilePage',
+        component: AnotherProfilePage,
     },
     {
         path: '/',
