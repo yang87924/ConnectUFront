@@ -43,12 +43,13 @@
                
             <div>
                 <div class="num">
-                    <img src="../../../assets/img/HomePage/ArticleItem/like1.svg" alt="按讚圖片" class="licon" />
-                    <span style="font-weight: bold; font-size: 20px;color: blueviolet;">{{ item.love }}</span>
-
-                    <img src="../../../assets/img/HomePage/ArticleItem/" alt="留言" class="licon"/>
-                    <span>留言{{ item.replyCount }}</span>
-                    <span>收藏{{ item.loveStatus }}</span>
+                    <!-- <img src="../../../assets/img/HomePage/ArticleItem/like1.svg" alt="按讚圖片" class="licon1"/> -->
+                    <i class="fas fa-heart"></i>
+                    <span class="text1" style="font-weight: bold; font-size: 20px;color: blueviolet;">{{ item.love }}</span>
+                    <!-- <img src="../../../assets/img/HomePage/ArticleItem/mess.svg" alt="留言" class="licon2"/> -->
+                    <i class="far fa-comments"></i>
+                    <span class="text2" style="font-weight: bold; font-size: 20px;color: blueviolet;" >{{ item.replyCount }}</span>
+                    <!-- <span>收藏{{ item.loveStatus }}</span> -->
              
                 </div>
             </div>
@@ -152,14 +153,14 @@ export default {
     line-height: 24px;
     color: #333;
     margin-top: 10px;
-    margin-left: 20px;
-    font-family: Cursive, sans-serif;
+    margin-left: 30px;
+    font-family: "Microsoft JhengHei", Arial, sans-serif;
 }
 
 .down {
-    margin-top: 70px;
+    margin-top: 20px;
     display: flex;
-    align-items: center;
+    align-items: right;
     justify-content: space-between;
 
 
@@ -185,7 +186,8 @@ export default {
     width: 100%;
     display: flex;
     box-shadow: 4px 4px rgba(0, 0, 0, 0.25);
-    padding-left: 21.48459243774414px;
+    padding-left: 20px;
+    
     /* padding-top: 21.48459243774414px; */
     border-radius: 17.187673568725586px;
     margin-bottom: 20px;
@@ -204,7 +206,7 @@ export default {
 
 .data {
     width: 60%;
-    margin-left: 10px;
+    margin-left: 30px;
 
 }
 
@@ -251,7 +253,8 @@ export default {
 }
 
 .num {
-    padding-right: 10px;
+    padding-left: 30px;
+    padding-bottom: 50px;
 }
 
 .tags span {
@@ -335,12 +338,38 @@ export default {
     text-align: center;
     color: #FFF;
 }
-.licon{
+.fa-comments{
 
-    width: 50px; 
-    height: 50px; 
+    padding-left: 50px;
+    font-size: 25px;
+}
+.fa-heart{
+
+    font-size: 25px;
 
 }
+
+.licon2{
+
+width: 30px; 
+height: 30px;
+margin-right: 30px;
+
+
+}
+.text1{
+margin-left: 10px;
+text-align: center;
+padding-right: 100px;
+padding-bottom: 70px;
+}
+.text2{
+margin-left: 100px;
+text-align: center;
+
+padding-bottom: 70px;
+}
+
 
 
 
