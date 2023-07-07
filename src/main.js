@@ -7,6 +7,8 @@ import 'vuetify/styles'
 import App from './App.vue';
 import router from './router';
 import axios from 'axios';
+import 'animate.css';
+
 
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = 'http://localhost:8080';

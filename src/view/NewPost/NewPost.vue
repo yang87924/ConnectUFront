@@ -5,7 +5,7 @@
             <select name="articleType" id="articleType" class="article-select">
                 <option value="defualt">請選擇文章板塊</option>
             </select>
-            <input type="text" class="input-box" placeholder="請輸入文章標題">
+            <input v-model="abc.title" type="text" class="input-box" placeholder="請輸入文章標題">
             <div class="edit-toolbox">
                 <span class="material-icons">translate</span>
                 <span class="material-icons">image</span>
@@ -42,7 +42,7 @@
                 <label for="default" class="checkbox">訂閱專屬文章</label>
             </div>
             <div class="submit-btn">
-                <button class="submit flex-between">
+                <button @click="createpost" class="submit flex-between">
                     <span class="material-icons">add</span>
                     <span>新增文章</span>
                 </button>
@@ -51,31 +51,41 @@
     </div>
 </template>
 <script>
-// import axios from "axios";
-// export default {
-//     created() {
-//     // const storeduserId = localStorage.getItem('userId');
-//     //jwt請求頭
-//     const token = localStorage.getItem("jwt");
-//     axios
-//       .post(
-//         "/DyThreads",
-//         {},
-//         {
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       )
-//       .then((response) => {
-//         console.log(response.data);
-//         this.userName = response.data.userName;
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//     }
-// }
+import axios from 'axios';
+export default {
+    data() {
+        return {
+            abc: {
+                content: "happy",
+                title: "",
+                categoryId: 2,
+
+            }
+        };
+    },
+    mounted() {
+        // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
+        this.fetchData();
+        this.addScrollListener();
+    },
+    methods: {
+        createpost() {
+            axios
+                .post('/threads', this.abc)
+                .then(response => {
+
+                    console.log(response);
+
+                })
+                .catch(error => {
+                    // 請求失敗，處理錯誤
+                    console.error(error);
+                    this.isLoading = false; // 停止載入狀態
+                });
+
+        }
+    },
+};
 </script>
 <style lang="css" scoped>
 .container {

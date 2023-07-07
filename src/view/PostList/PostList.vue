@@ -1,7 +1,7 @@
 <template lang="">
     <div class="container">
         <div class="sidebar">
-
+          <LeftSideBar/>
         </div>
         <div class="main-content">
             <!-- <div class="create-post flex-between">
@@ -18,8 +18,9 @@
         <form @submit="submitForm">
             <div class="new-tweet">
                 <div class="tweet-input flex-start">
-                <div class="memoji-box flex-center">
-                    <img src="../../assets/img/postlist/memoji.svg" alt="" class="memoji">
+                <div  class="memoji-box flex-center">
+                    <img v-if="userName != null" :src="avatar" alt="User Photo">
+                    <img v-else src="../../assets/img/postlist/memoji.svg" alt="" class="memoji">
                 </div>
                 <div class="tweet-content">
                     <textarea v-model="tweetContent" name="tweet" id="" cols="30" rows="5" class="textarea" placeholder="What’s happening?"></textarea>
@@ -32,12 +33,22 @@
                     </div>
                     <button class="tweet-submit" :disabled="!canTweet" type="submit">Tweet</button>
                     </div>
-                    <div v-for="(image, index) in uploadedImages" :key="index" class="uploaded-image-container">
-                    <img :src="image" alt="Uploaded Image" class="uploaded-image">
-                    <button class="remove-image" @click="removeImage(index)">
-                        <span class="material-icons-outlined">close</span>
-                    </button>
-                    </div>
+<div v-for="(image, index) in uploadedImages" :key="index" class="uploaded-image-container">
+  <div class="image-preview">
+    <div class="image-preview-box">
+      <img :src="image" alt="Uploaded Image" class="uploaded-image">
+    </div>
+    <button class="remove-image" @click="removeImage(index)">
+      <span class="material-icons-outlined">close</span>
+    </button>
+    <!-- 添加第二张图片预览 -->
+    <!-- <div v-if="index > 0" class="image-preview-box">
+      <img :src="uploadedImages[index - 1]" alt="Uploaded Image" class="uploaded-image">
+    </div> -->
+  </div>
+</div>
+
+
                 </div>
                 </div>
             </div>
@@ -70,6 +81,7 @@ import axios from "axios";
 import Tweet from "./components/Tweet.vue";
 import Trend from "./components/Trend.vue";
 import TweetFolling from "./components/TweetFollowing.vue";
+import LeftSideBar from "./components/LeftSideBar.vue";
 
 export default {
   name: "IndexView",
@@ -77,6 +89,23 @@ export default {
     Tweet,
     Trend,
     TweetFolling,
+    LeftSideBar
+  },
+  created() {
+  // 在組件創建時使用 Axios，並傳遞使用者 ID
+  axios.post('/users/getUserId/0')
+    .then(response => {
+      console.log(response.data);
+      this.userName = response.data.userName;
+      this.avatar=response.data.avatar;
+
+    //先放置 圖片
+    //   this.avatar = response.data.avatar;
+    })
+    .catch(error => {
+      console.log(error);
+      // 處理錯誤
+    });
   },
   data() {
     return {
@@ -84,6 +113,7 @@ export default {
       tweetContent: "", // 推文內容
       maxCharacters: 280, // 最大字數限制
       uploadedImages: [], // 上傳的圖片
+      userName: "",
     };
   },
 
@@ -292,7 +322,17 @@ export default {
   border-radius: 50%;
   background-color: #f9dfc0;
   margin-right: 20px;
+  /* border-radius: 7.5px; */
+  /* padding: 2px; */
 }
+
+.memoji-box img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  /* border-radius:10px; */
+}
+
 
 .create-post .post-input {
   border: none;
@@ -326,7 +366,7 @@ export default {
 
 .switch {
   flex: 1;
-  font-family: "Inter";
+  font-family: "微軟正黑體";
   font-size: 19px;
   font-weight: 400;
   line-height: 23px;
@@ -428,4 +468,49 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
+.uploaded-image-container {
+  width: 100%;
+  height: 250px;
+  background: #1da1f2;
+  /* display: flex; */
+}
+
+.image-preview {
+  /* display: flex; */
+  align-items: center;
+  background: #ad1a1a;
+}
+
+.image-preview-box {
+  width: 25%;
+  height: 100%;
+  border: 2px dashed #bcbcbc;
+  overflow: hidden;
+  margin-right: 10px; /* 调整第二张图片预览与第一张图片之间的间距 */
+  margin-bottom: 10px; /* 调整图片预览与删除按钮之间的间距 */
+}
+
+.remove-image {
+  display: block; /* 将删除按钮显示为块级元素 */
+  margin-top: 5px; /* 调整删除按钮与图片之间的间距 */
+}
+
+.uploaded-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* .image-preview-box {
+  width: 25%;
+  height: 100%;
+  border: 2px dashed #bcbcbc;
+  overflow: hidden;
+} */
+
+
+
+
 </style>
