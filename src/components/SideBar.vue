@@ -49,7 +49,7 @@
             <div class="txt-box flex-between">
               <div class="txt">求職</div>
             </div>
-            <div class="comment">1,020</div>
+            <div class="comment">篇數：1,020</div>
           </div>
           <div class="arrow">
             <span class="material-icons-round">arrow_forward</span>
@@ -63,7 +63,7 @@
             <div class="txt-box flex-between">
               <div class="txt">工作</div>
             </div>
-            <div class="comment">545</div>
+            <div class="comment">篇數：545</div>
           </div>
           <div class="arrow">
             <span class="material-icons-round">arrow_forward</span>
@@ -176,9 +176,9 @@ export default {
     /* mix-blend-mode: luminosity; */
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 24.286739349365234px;
-    height: 100vh;
     padding-left: 30px;
-    padding-top: 30px;
+    padding-top: 10px;
+    padding-bottom: 50px;
 }
 
 .item {

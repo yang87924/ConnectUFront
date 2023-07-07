@@ -11,32 +11,47 @@
 
         <div class="newsimg">
             <img :src="item.picture" alt="" class="newspic">
-        </div>
-        <div class="data">
             <div class="top">
                 <div class="word">{{ item.title }}</div>
                 <div class="icon"><img src="../../../assets/img/HomePage/ArticleItem/Love.svg" alt=""></div>
             </div>
             <div class="tags">
                 <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
-
-                <div class="content">{{ item.content }}</div>
-            </div>
-            <div class="down">
-                <div class="person">
+                </div>
+           
+        </div>
+        <div class="data">
+            <div class="person">
                     <img :src="item.user.avatar" alt="" class="avatar">
                     <div class="name-area">
                         <div class="name">{{ item.user.userName }}</div>
                         <div class="time">{{ item.createdAt }}</div>
                     </div>
                 </div>
+   
+
+                <div class="content">{{ item.content }}</div>
+            
+     <div>
+
+        
+
+
+     </div>       
+            
+            <div class="down">
+               
+            <div>
                 <div class="num">
-                    <img src="../../../assets/img/HomePage/ArticleItem/" alt="按讚圖片" />
-                    <span>按讚{{ item.love }}</span>
-                
+                    <img src="../../../assets/img/HomePage/ArticleItem/like1.svg" alt="按讚圖片" class="licon" />
+                    <span style="font-weight: bold; font-size: 20px;color: blueviolet;">{{ item.love }}</span>
+
+                    <img src="../../../assets/img/HomePage/ArticleItem/" alt="留言" class="licon"/>
                     <span>留言{{ item.replyCount }}</span>
                     <span>收藏{{ item.loveStatus }}</span>
+             
                 </div>
+            </div>
             </div>
         </div>
 
@@ -137,6 +152,8 @@ export default {
     line-height: 24px;
     color: #333;
     margin-top: 10px;
+    margin-left: 20px;
+    font-family: Cursive, sans-serif;
 }
 
 .down {
@@ -149,7 +166,7 @@ export default {
 }
 
 .person {
-    height: 50px;
+    height: 100px;
     width: 200px;
     display: flex;
     align-items: center;
@@ -173,6 +190,9 @@ export default {
     border-radius: 17.187673568725586px;
     margin-bottom: 20px;
 }
+
+
+
 
 .top {
     display: flex;
@@ -202,6 +222,9 @@ export default {
 
 .tags {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .time {
@@ -232,13 +255,13 @@ export default {
 }
 
 .tags span {
-    width: 53.48px;
+    width: 200px;
     height: 24.59px;
     padding: 4.2969183921813965px 10.74229621887207px 4.2969183921813965px 10.74229621887207px;
     border-radius: 21.48459243774414px;
     background-color: #F4F6F8;
     font-family: Source Sans Pro;
-    font-size: 15px;
+    font-size: 1px;
     font-weight: 600;
     line-height: 15px;
     letter-spacing: 0em;
@@ -255,6 +278,7 @@ export default {
     box-shadow: 5px 5px rgba(0, 0, 0, 0.25);
     border-radius: 10%;
     margin: 10px 0px 10px 0px;
+    
 
 
 }
@@ -311,4 +335,13 @@ export default {
     text-align: center;
     color: #FFF;
 }
+.licon{
+
+    width: 50px; 
+    height: 50px; 
+
+}
+
+
+
 </style>
