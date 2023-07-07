@@ -1,112 +1,280 @@
-<template lang="">
+<template>
     <div class="sidebar">
-        <div class="title">熱門標籤</div>
-        <div class="item">
-            <div>
-                <img src="../assets/img/HomePage/SideBar/Icon (1).svg" alt="">
-                <div>
-                    <div class="topic">#程式碼</div>
-                    <div class="num">82,645 Posted by this tag</div>
-                </div>
+      <div class="title">
+        <button
+          class="btn"
+          :class="{ active: selectedTab === 'hotTags' }"
+          @click="selectedTab = 'hotTags'"
+        >
+          熱門標籤
+        </button>
+        <button
+          class="btn"
+          :class="{ active: selectedTab === 'topicCategory' }"
+          @click="selectedTab = 'topicCategory'"
+        >
+          主題分類
+        </button>
+      </div>
+      
+      <div v-show="selectedTab === 'hotTags'" class="hottags">
+  <!-- <div v-for="item in leaderboardData" :key="item.hashtagId"> -->
+    <div v-for="(a,id) in leaderboardData" :key="id" class="hash">
+    <img src="../assets/img/HomePage/SideBar/Icon (1).svg" alt="" />
+    <div class="topic">{{ a.name }}{{id}}</div>
+    <div class="num">{{ a.amount }}</div>
+  </div>
+</div>
+  
+      <div v-show="selectedTab === 'topicCategory'" class="content">
+        <div class="podcast flex-between">
+          <div class="img-box">
+            <img src="../assets/img/article/Rectangle 54.svg" alt="">
+          </div>
+          <div class="content">
+            <div class="txt-box flex-between">
+              <div class="txt">心情</div>
             </div>
-            <div>
-                <img src="../assets/img/HomePage/SideBar/Icon (2).svg" alt="">
-                <div>
-                    <div class="topic">#程式碼</div>
-                    <div class="num">82,645 Posted by this tag</div>
-                </div>
-            </div>
-            <div>
-                <img src="../assets/img/HomePage/SideBar/Icon (3).svg" alt="">
-                <div>
-                    <div class="topic">#程式碼</div>
-                    <div class="num">82,645 Posted by this tag</div>
-                </div>
-            </div>
-            <div>
-                <img src="../assets/img/HomePage/SideBar/Icon.svg" alt="">
-                <div>
-                    <div class="topic">#程式碼</div>
-                    <div class="num">82,645 Posted by this tag</div>
-                </div>
-            </div>
-
+            <div class="comment"></div>篇數：86
+          </div>
+          <div class="arrow">
+            <span class="material-icons-round">arrow_forward</span>
+          </div>
         </div>
-        <div class="theme">
-            <div>主題分類</div>
-            <div class="different topic">
-
-
-
-
-
+        <div class="podcast flex-between">
+          <div class="img-box">
+            <img src="../assets/img/article/Rectangle 54.svg" alt="">
+          </div>
+          <div class="content">
+            <div class="txt-box flex-between">
+              <div class="txt">求職</div>
             </div>
+            <div class="comment">篇數：1,020</div>
+          </div>
+          <div class="arrow">
+            <span class="material-icons-round">arrow_forward</span>
+          </div>
         </div>
+        <div class="podcast flex-between">
+          <div class="img-box">
+            <img src="../assets/img/article/Rectangle 54.svg" alt="">
+          </div>
+          <div class="content">
+            <div class="txt-box flex-between">
+              <div class="txt">工作</div>
+            </div>
+            <div class="comment">篇數：545</div>
+          </div>
+          <div class="arrow">
+            <span class="material-icons-round">arrow_forward</span>
+          </div>
+        </div>
+      </div>
     </div>
+  </template>
+  
+  <script>
 
 
-</template>
-<script>
-    export default {
 
-    }
-</script>
+
+  import axios from 'axios';
+  
+  export default {
+    data() {
+      return {
+        leaderboardData: [], 
+       showSidebar: true, // 初始時側邊欄是顯示的
+        selectedTab: 'hotTags',
+        
+      };
+    },
+    created() {
+      this.fetchData();
+    },
+
+
+  methods: {
+    fetchData() {
+      // 發送 HTTP GET 請求到後端 API 獲取資料
+      axios
+        .get('/threads/HotHashtag')  // 請根據實際的 API 端點進行更新
+        .then(response => {
+
+            console.log("happy",response)
+          // 請求成功，將資料設置給 leaderboardData 陣列
+          this.leaderboardData = response.data.data;
+          console.log(this.leaderboardData);
+          this.isLoading = false; // 停止載入狀態
+        })
+        .catch(error => {
+          // 請求失敗，處理錯誤
+          console.error(error);
+          this.isLoading = false; // 停止載入狀態
+        });
+    },
+  },
+
+};
+
+
+
+
+
+
+
+
+
+  </script>
+  
+  
+  
+<!-- <>
+export default {
+    data() {
+        return {
+
+            item: [], // 或者 leaderboardData: {}
+            showSidebar: true, // 初始時側邊欄是顯示的
+            selectedTab: 'hotTags',
+
+        };
+    },
+
+    mounted() {
+
+    },
+    methods: {
+
+        fetchData() {
+            // 發送 HTTP GET 請求到後端 API 獲取資料
+            axios
+                .get('/threads/HotHashtag')  // 請根據實際的 API 端點進行更新
+                .then(response => {
+                    // 請求成功，將資料設置給 hotTags 陣列
+                    this.hashtags = response.data;
+                    console.log(this.hashtags);
+                    this.isLoading = false; // 停止載入狀態
+                })
+                .catch(error => {
+                    // 請求失敗，處理錯誤
+                    console.error(error);
+                    this.isLoading = false; // 停止載入狀態
+                });
+        },
+
+        // toggleSidebar() {
+        //     this.showSidebar = !this.showSidebar; // 點擊按鈕時切換側邊欄的顯示狀態
+        // },
+    },
+
+};
+</> -->
 <style llang="css" scoped>
-    .sidebar {
-        background: #FFFFFF;
-        mix-blend-mode: luminosity;
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-        border-radius: 24.286739349365234px;
-        height: 100vh;
-        padding-left: 30px;
-        padding-top: 30px;
-    }
+.sidebar {
+    background: #FFFFFF;
+    /* mix-blend-mode: luminosity; */
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 24.286739349365234px;
+    padding-left: 30px;
+    padding-top: 10px;
+    padding-bottom: 50px;
+}
 
-    .item {
-        height: 100%;
-    }
+.item {
+    height: 100%;
+}
 
-    .item>div {
-        display: flex;
-        margin-bottom: 30px;
-    }
+.item>div {
+    display: flex;
+    margin-bottom: 30px;
+}
 
-    .item>div>img {
-        margin-right: 20px;
-        width: 35px;
-        height: 35px;
-    }
+.item>div>img {
+    margin-right: 20px;
+    width: 35px;
+    height: 35px;
+}
 
-    .topic {
-        margin-bottom: 5px;
-        font-family: 'Source Sans Pro';
-        font-size: 15px;
-        font-weight: 600;
-        line-height: 24px;
-        letter-spacing: 0px;
-        text-align: left;
-        color: #3F4354;
-    }
+.topic {
+    margin-bottom: 5px;
+    font-family: 'Source Sans Pro';
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 24px;
+    letter-spacing: 0px;
+    text-align: left;
+    color: #3F4354;
+}
 
-    .title {
-        font-family: 'Source Sans Pro';
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 26px;
-        letter-spacing: 0em;
-        text-align: left;
-        margin-bottom: 20px;
-        padding: 16px;
-    }
+.title {
+    font-family: 'Source Sans Pro';
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 26px;
+    letter-spacing: 0em;
+    text-align: left;
+    margin-bottom: 20px;
+    padding: 16px;
+}
 
-    .num {
-        font-family: 'Source Sans Pro';
-        font-size: 11px;
-        font-weight: 600;
-        line-height: 18px;
-        letter-spacing: 0em;
-        text-align: left;
-        color: #97989D;
-        margin-left: 8px;
-    }
+.num {
+    font-family: 'Source Sans Pro';
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #97989D;
+    margin-left: 8px;
+}
+
+.btn {
+    padding: 20px 20px;
+    /* cursor: pointer; */
+    background-color: #EEE;
+    border: none;
+    outline: none;
+    color: #333;
+    font-weight: bold;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.btn.active {
+    background-color: #b581e0;
+}
+
+.btn:hover {
+    background-color: #e0d3eb;
+}
+
+.img-box {
+    width: 56.1px;
+    height: 56.1px;
+    margin-right: 13.5px;
+    box-shadow: 0px 2.9015159606933594px 3.8686881065368652px 0px #FA89240F;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.podcast {
+    padding: 16px;
+    margin-bottom: 20px;
+}
+
+.hash{
+
+    display: flex;
+    align-items: center; /* 將元素在垂直方向上居中對齊 */
+    margin-bottom: 10px; /* 可根據需要調整元素之間的垂直間距 */
+}
+
+.hash img {
+    margin-right: 10px; /* 可根據需要調整圖片與其他元素之間的間距 */
+  }
 </style>
