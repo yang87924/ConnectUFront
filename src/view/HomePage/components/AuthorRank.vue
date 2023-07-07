@@ -1,66 +1,59 @@
-<template lang="">
+<template>
     <div class="author-rank">
         <div class="title">作者排行榜</div>
-        <div class="meetsup flex-start">
+        <div class="meetsup flex-start" v-for="(user, index) in users" :key="index">
             <div class="number-box">
                 <div class="no">NO.</div>
-                <div class="number">1</div>
+                <div class="number">{{ index + 1 }}</div>
             </div>
             <div class="rank-content">
-                <div class="name">真正有影</div>
+                <div class="name">{{ user.userName }}</div>
                 <div class="comment flex-start">
-                    <img src="../../../assets/img/article/Rectangle 32.svg" alt="">
-                    <span class="txt">UIHUT • Sylhet, Bangladesh</span>
+                    <img :src="user.avatar" alt="" class="avatar">
+                    <span class="txt">熱門指數: {{ user.hotScore }}</span>
                 </div>
                 <div class="tags">
-                    <span>Remote</span>
-                    <span>Part-time</span>
-                    <span>Worldwide</span>
-                </div>
-            </div>
-        </div>
-        <div class="meetsup flex-start">
-            <div class="number-box">
-                <div class="no">NO.</div>
-                <div class="number">2</div>
-            </div>
-            <div class="rank-content">
-                <div class="name">你好世界</div>
-                <div class="comment flex-start">
-                    <img src="../../../assets/img/article/Rectangle 33.svg" alt="">
-                    <span class="txt">Dribbble • Austin, Texas, USA</span>
-                </div>
-                <div class="tags">
-                    <span>Remote</span>
-                    <span>Part-time</span>
-                </div>
-            </div>
-        </div>
-        <div class="meetsup flex-start">
-            <div class="number-box">
-                <div class="no">NO.</div>
-                <div class="number">3</div>
-            </div>
-            <div class="rank-content">
-                <div class="name">契卡契卡</div>
-                <div class="comment flex-start">
-                    <img src="../../../assets/img/article/Rectangle 34.svg" alt="">
-                    <span class="txt">Behance • Sab jose, Califonia, USA</span>
-                </div>
-                <div class="tags">
-                    <span>Remote</span>
-                    <span>Part-time</span>
-                    <span>Worldwide</span>
-                </div>
+    <span v-for="(tag, tagIndex) in user.tags" :key="tagIndex">{{ tag }}</span>
+</div>
+
             </div>
         </div>
     </div>
 </template>
-<script>
-export default {
 
+<script>
+import { reactive, onMounted } from 'vue';
+import axios from 'axios';
+
+export default {
+    setup() {
+        const users = reactive([]);
+        const tags = ['美食', '好康優惠', '食神大戰', '旅游', '科技', '文化', '健康','遊戲','星座']; // 添加你需要的标签
+
+        onMounted(async () => {
+            try {
+                const response = await axios.get('/users/hotUsers');
+                const topThreeUsers = response.data.data.slice(0, 3); 
+                topThreeUsers.forEach(user => {
+                    user.tags = []; // 创建tags属性
+                    for(let i = 0; i < 3; i++) { // 这里我们添加3个标签，你可以根据需要更改
+                        const tagIndex = Math.floor(Math.random() * tags.length);
+                        user.tags.push(tags[tagIndex]);
+                        tags.splice(tagIndex, 1); // 删除已使用的标签，防止重复
+                    }
+                })
+                users.push(...topThreeUsers);
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
+        return { users };
+    }
 }
 </script>
+
+
 <style lang="css" scoped>
 .author-rank {
     width: 100%;
@@ -157,5 +150,10 @@ export default {
     text-align: left;
     color: #858EAD;
     margin-right: 10px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
 }
 </style>
