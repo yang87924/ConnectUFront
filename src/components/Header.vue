@@ -34,7 +34,9 @@
         </ul>
         <div class="user-info flex-between">
             <div class="nav-item flex-center" v-if="userName != null">
-                <span class="material-icons">settings</span>
+                <router-link to="/Chatroom" class="router-link" :class="{ 'active-link': $route.path === '/Chatroom' }">
+                    <span class="material-icons">settings</span>
+                </router-link>
             </div>
             <div class="outer-border">
                 <div class="user-imgbox ">
