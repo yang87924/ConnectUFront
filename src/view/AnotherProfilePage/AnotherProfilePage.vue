@@ -3,7 +3,7 @@
         <div class="main-content">
             <div class="banner-box">
                 <img src="../../assets/img/profile/background.svg" alt="" class="backimg">
-                <div class="setting">
+                <!-- <div class="setting">
                     <button class="edit-button" @click="toggleEditList">編輯個人檔案</button>
                     <div v-if="showEditList" class="edit-list" v-click-outside="hideFanList">
                         <div class="edit-list-container">
@@ -27,7 +27,7 @@
                             </form>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
             <div class="profile-box flex-between">
                 <div class="data-left">
@@ -283,7 +283,7 @@ export default {
 
 .tab-content {
     width: 900px;  /* 更改這個數值到你想要的寬度 */
-    height: 500px; /* 更改這個數值到你想要的高度 */
+    height: 100%; /* 更改這個數值到你想要的高度 */
 }
 
 .backimg {
