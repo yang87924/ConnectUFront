@@ -61,7 +61,7 @@ export default {
     fetchData() {
       // 發送 HTTP GET 請求到後端 API 獲取資料
       axios
-        .get("/dyThreads/pageDyThread", {
+        .get("dyThreads/userDyThread/2", {
           params: {
             pageNum: this.pageNum,
           },
