@@ -3,7 +3,9 @@
   <v-app style="background-image: url(/background.jpg)">
     <!-- 顶部应用栏 -->
     <v-app-bar color="purple" dark>
-      <v-toolbar-title> ConnectU </v-toolbar-title>
+      <div class="logo-box">
+                <img src="../assets/img/header/logo.svg" alt="">
+            </div>
       <v-spacer></v-spacer>
       <!-- 登录按钮，点击跳转到 "/login" 路由 -->
       <v-btn text to="/UserLogin"> 登入 </v-btn>
@@ -267,4 +269,15 @@ html {
   background: linear-gradient(to right, #1da1f2, #1a8cdc);
   color: white;
 }
+.logo-box {
+  display: flex;
+  justify-content: center;
+  margin-top: 55px;
+}
+
+.logo-box img {
+  width: 140px; /* 将 logo 的宽度设为 100 像素 */
+}
+
+
 </style>
