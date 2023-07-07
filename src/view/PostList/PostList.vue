@@ -33,12 +33,22 @@
                     </div>
                     <button class="tweet-submit" :disabled="!canTweet" type="submit">Tweet</button>
                     </div>
-                    <div v-for="(image, index) in uploadedImages" :key="index" class="uploaded-image-container">
-                    <img :src="image" alt="Uploaded Image" class="uploaded-image">
-                    <button class="remove-image" @click="removeImage(index)">
-                        <span class="material-icons-outlined">close</span>
-                    </button>
-                    </div>
+<div v-for="(image, index) in uploadedImages" :key="index" class="uploaded-image-container">
+  <div class="image-preview">
+    <div class="image-preview-box">
+      <img :src="image" alt="Uploaded Image" class="uploaded-image">
+    </div>
+    <button class="remove-image" @click="removeImage(index)">
+      <span class="material-icons-outlined">close</span>
+    </button>
+    <!-- 添加第二张图片预览 -->
+    <!-- <div v-if="index > 0" class="image-preview-box">
+      <img :src="uploadedImages[index - 1]" alt="Uploaded Image" class="uploaded-image">
+    </div> -->
+  </div>
+</div>
+
+
                 </div>
                 </div>
             </div>
@@ -356,7 +366,7 @@ export default {
 
 .switch {
   flex: 1;
-  font-family: "Inter";
+  font-family: "微軟正黑體";
   font-size: 19px;
   font-weight: 400;
   line-height: 23px;
@@ -458,4 +468,49 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
+.uploaded-image-container {
+  width: 100%;
+  height: 250px;
+  background: #1da1f2;
+  /* display: flex; */
+}
+
+.image-preview {
+  /* display: flex; */
+  align-items: center;
+  background: #ad1a1a;
+}
+
+.image-preview-box {
+  width: 25%;
+  height: 100%;
+  border: 2px dashed #bcbcbc;
+  overflow: hidden;
+  margin-right: 10px; /* 调整第二张图片预览与第一张图片之间的间距 */
+  margin-bottom: 10px; /* 调整图片预览与删除按钮之间的间距 */
+}
+
+.remove-image {
+  display: block; /* 将删除按钮显示为块级元素 */
+  margin-top: 5px; /* 调整删除按钮与图片之间的间距 */
+}
+
+.uploaded-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* .image-preview-box {
+  width: 25%;
+  height: 100%;
+  border: 2px dashed #bcbcbc;
+  overflow: hidden;
+} */
+
+
+
+
 </style>
