@@ -94,35 +94,7 @@
                 <button class="nav-item" :class="{ active: activeTab === '收藏' }" @click="activeTab = '收藏'">收藏</button>
             </ul>
             <div v-if="activeTab === '文章'" class="tab-content">
-                <div class="article-box flex-start">
-                    <div class="img-box">
-                        <img src="../../assets/img/profile/article_img.svg" alt="文章縮圖">
-                    </div>
-                    <div class="article-content">
-                        <div class="title">{{ title }}</div>
-                        <div class="tags flex-start">
-                            <div class="tag">finance</div>
-                            <div class="tag">bitcoin</div>
-                            <div class="tag">crypto</div>
-                        </div>
-                        <div class="info-box flex-between">
-                            <div class="author-info flex-start">
-                                <div class="memoji-box flex-center">
-                                    <img src="../../assets/img/profile/memoji.svg" alt="">
-                                </div>
-                                <div class="author">
-                                    <div class="name">Pavel Gvay</div>
-                                    <div class="publish-time">3 weeks ago</div>
-                                </div>
-                            </div>
-                            <div class="data-info flex-between">
-                                <div class="count">651,324 Views</div>
-                                <div class="count">36,6545 Likes</div>
-                                <div class="count">56 comments</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <ArticleitemVue />
             </div>
             <div v-if="activeTab === '動態'" class="tab-content">
                 <Tweet />
@@ -138,6 +110,7 @@
 import axios from 'axios';
 import Tweet from './components/MyProfilePage.vue';
 import VueClickOutside from 'v-click-outside';
+import ArticleitemVue from './components/Articleitem.vue';
 
 export default {
 
@@ -170,6 +143,7 @@ export default {
 
     components: {
         Tweet,
+        ArticleitemVue,
     },
 
     methods: {
