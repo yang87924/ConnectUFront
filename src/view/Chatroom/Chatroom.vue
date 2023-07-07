@@ -14,11 +14,10 @@
                         <div class="abs cover pnl-left" id="chatArea" style="display: none">
                             <div class="abs cover pnl-msgs scroll" id="show">
                                 <div class="pnl-list" id="hists"><!-- 历史消息 --></div>
-                                <div class="pnl-list" id="msgs">
-
+                                <div class="pnl-list" id="msgs" v-for="msg in messages">
                                     <!-- 消息这展示区域 -->
-                                    <div class="msg guest"><div class="msg-right"><div class="msg-host photo" style="background-image: url(https://seeiebucket.s3.ap-northeast-1.amazonaws.com/d515c3c1-73bb-497f-b529-f10e8da4df49.png)"></div><div class="msg-ball">你好</div></div></div>
-                                     <div class="msg robot"><div class="msg-left" worker=""><div class="msg-host photo" style="background-image: url(https://seeiebucket.s3.ap-northeast-1.amazonaws.com/d515c3c1-73bb-497f-b529-f10e8da4df49.png)"></div><div class="msg-ball">你好</div></div></div>
+                                    <div v-if="msg.sender===this.userName" class="msg guest"><div class="msg-right"><div class="msg-host photo" :style="{ backgroundImage: 'url(' + myAvatar + ')' }"></div><div class="msg-ball">{{msg.content}}</div></div></div>
+                                     <div v-if="msg.sender===this.toName" class="msg robot"><div class="msg-left"><div class="msg-host photo" :style="{ backgroundImage: 'url(' + toAvatar + ')' }"></div><div class="msg-ball">{{msg.content}}</div></div></div>
                                 </div>
                             </div>
 
@@ -83,20 +82,34 @@ export default {
     data() {
         return {
             toName: "",
+            myAvatar: "",
+            toAvatar: "",
             userName: "",
-            userList: ["张三", "李四"]
+            userList: ["张三", "李四"],
+            messages: [
+                // {
+                //     sender: "toName",
+                //     content: "Hi, I'm guest"
+                // },
+                // {
+                //     sender: "me",
+                //     content: "Hi"
+                // }
+                ]
         };
     },
     methods: {
         showChat(name) {
+            axios.get('users/getUserAvatar?userName='+ name)
+                .then(res => {
+                    this.toAvatar = res.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
             this.toName = name;
             $("#chatArea").css("display", "inline");
-            // $("#msgs").html("");
             $("#chatMes").html("正在和 <font face=\"楷体\">" + this.toName + "</font> 聊天");
-            const chatData = sessionStorage.getItem(this.toName);
-            if (chatData != null) {
-                // $("#msgs").html(chatData);
-            }
         },
         updateUserList(newUserList) {
             this.userList = newUserList;
@@ -106,14 +119,15 @@ export default {
     },
     async mounted() {
         let userName;
-        let toName;
         const self = this;
 
-        await axios.get('users/getUserName')
+        await axios.get('users/getUser')
             .then(res => {
-                userName = res.data;
+                self.userName = res.data.userName;
+                userName = res.data.userName;
+                self.myAvatar = res.data.avatar;
                 console.log("success......." + userName);
-                $("#userName").html(" 用户：" + res + "<span style='float: right;color: green'>在線</span>");
+                $("#userName").html(" 用户：" + userName + "<span style='float: right;color: green'>在線</span>");
             })
             .catch(error => {
                 console.error(error);
@@ -143,16 +157,14 @@ export default {
                 self.updateUserList(userList);
                 $("#broadcastList").html(broadcastListStr);
             } else {
-                let str = "<div class=\"msg robot\"><div class=\"msg-left\" worker=\"\"><div class=\"msg-host photo\" style=\"background-image: url(https://seeiebucket.s3.ap-northeast-1.amazonaws.com/d515c3c1-73bb-497f-b529-f10e8da4df49.png)\"></div><div class=\"msg-ball\">" + res.message + "</div></div></div>";
-                if (toName === res.fromName) {
-                    $("#msgs").append(str);
+                const msg = {
+                    sender: res.fromName,
+                    content: res.message
                 }
-                const chatData = sessionStorage.getItem(res.fromName);
-                if (chatData != null) {
-                    str = chatData + str;
-                }
-                sessionStorage.setItem(res.fromName, str);
+                console.log("smg....."+msg);
+                self.messages.push(msg);
             }
+
         };
 
         ws.onclose = function () {
@@ -163,14 +175,12 @@ export default {
         $("#submit").click(function () {
             const data = $("#context_text").val();
             $("#context_text").val("");
-            const json = {"toName": toName, "message": data};
-            let str = "<div class=\"msg guest\"><div class=\"msg-right\"><div class=\"msg-host headDefault\"></div><div class=\"msg-ball\">" + data + "</div></div></div>";
-            $("#msgs").append(str);
-            const chatData = sessionStorage.getItem(toName);
-            if (chatData != null) {
-                str = chatData + str;
+            const json = {"toName": self.toName, "message": data};
+            const msg = {
+                sender: userName,
+                content: data
             }
-            sessionStorage.setItem(toName, str);
+            self.messages.push(msg);
             ws.send(JSON.stringify(json));
         });
     }
