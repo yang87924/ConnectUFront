@@ -1,8 +1,9 @@
 <template lang="">
     <div class="container">
-        <div class="sidebar">
-          <LeftSideBar/>
+      <div class="trend">
+            <Trend />
         </div>
+        
         <div class="main-content">
             <!-- <div class="create-post flex-between">
                 <div class="memoji-box flex-center">
@@ -31,22 +32,24 @@
                         </label>
                         <input type="file" id="imageUpload" accept="image/*" multiple @change="handleImageUpload" style="display: none;" ref="imageUpload">
                     </div>
-                    <button class="tweet-submit" :disabled="!canTweet" type="submit">Tweet</button>
+                      <button class="tweet-submit" :disabled="!canTweet" type="submit">Post</button>
                     </div>
-<div v-for="(image, index) in uploadedImages" :key="index" class="uploaded-image-container">
-  <div class="image-preview">
-    <div class="image-preview-box">
-      <img :src="image" alt="Uploaded Image" class="uploaded-image">
-    </div>
-    <button class="remove-image" @click="removeImage(index)">
-      <span class="material-icons-outlined">close</span>
-    </button>
-    <!-- 添加第二张图片预览 -->
-    <!-- <div v-if="index > 0" class="image-preview-box">
-      <img :src="uploadedImages[index - 1]" alt="Uploaded Image" class="uploaded-image">
-    </div> -->
-  </div>
-</div>
+
+
+                    <div v-for="(image, index) in uploadedImages" :key="index" class="uploaded-image-container">
+                      <div class="image-preview">
+                        <div class="image-preview-box">
+                          <img :src="image" alt="Uploaded Image" class="uploaded-image">
+                        </div>
+                        <button class="remove-image" @click="removeImage(index)">
+                          <span class="material-icons-outlined">close</span>
+                        </button>
+                        <!-- 添加第二张图片预览 -->
+                        <!-- <div v-if="index > 0" class="image-preview-box">
+                          <img :src="uploadedImages[index - 1]" alt="Uploaded Image" class="uploaded-image">
+                        </div> -->
+                      </div>
+                    </div>
 
 
                 </div>
@@ -62,17 +65,8 @@
                 <TweetFolling />
             </div>
         </div>
-        <div class="sidebar trend">
-            <div class="title-box flex-between">
-                <div class="trend-title">
-                    流行趨勢
-                </div>
-                <div class="settings">
-                    <span class="material-icons-outlined">settings</span>
-                </div>
-            </div>
-            <Trend />
-            <div class="show-more">Show More</div>
+        <div class="sidebar">
+          <RightSideBar/>
         </div>
     </div>
 </template>
@@ -81,7 +75,7 @@ import axios from "axios";
 import Tweet from "./components/Tweet.vue";
 import Trend from "./components/Trend.vue";
 import TweetFolling from "./components/TweetFollowing.vue";
-import LeftSideBar from "./components/LeftSideBar.vue";
+import RightSideBar from "./components/RightSideBar.vue";
 
 export default {
   name: "IndexView",
@@ -89,7 +83,7 @@ export default {
     Tweet,
     Trend,
     TweetFolling,
-    LeftSideBar
+    RightSideBar
   },
   created() {
   // 在組件創建時使用 Axios，並傳遞使用者 ID
@@ -209,6 +203,12 @@ export default {
 
 .sidebar {
   width: 100%;
+  height: 470px;
+  position: sticky;
+  top: 11%; /* 设置元素固定时距离顶部的位置 */
+  background-color: #fff;
+  border-radius:3% ;
+  box-shadow: 0px 4.010000228881836px 4.010000228881836px 0px #00000026;
 }
 
 .main-content {
@@ -358,10 +358,14 @@ export default {
 }
 
 .content-switch {
-  margin-top: 20px;
+  /* margin-top: 10px; */
   width: 100%;
-  margin-bottom: 20px;
-  /* height: 80px; */
+  margin-bottom: 10px;
+  height: 80px;
+  position: sticky;
+  top: 10.3%;
+  background: #fff;
+  border-bottom: 1px solid #efeded;
 }
 
 .switch {
@@ -417,46 +421,14 @@ export default {
 /* tweets-box */
 .tweets-box {
   padding: 1rem 2rem;
-  height: 1000px;
-  overflow: auto;
+  /* height: 1000px; */
+  /* overflow: auto; */
 }
 
 /* trend */
 .trend {
   box-shadow: 0px 4px 4px 0px #00000040;
   background-color: #fff;
-}
-
-.title-box {
-  height: 64.84px;
-  margin: 12px 24px;
-}
-
-.trend-title {
-  font-family: "Inter";
-  font-size: 23px;
-  font-weight: 400;
-  line-height: 28px;
-  letter-spacing: 0em;
-  text-align: center;
-}
-
-.title-box .settings {
-  font-size: 26.91px;
-  color: var(--button-default);
-  cursor: pointer;
-}
-
-.show-more {
-  font-family: "SF Pro Text";
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 18px;
-  letter-spacing: 0em;
-  text-align: left;
-  color: #1da1f2;
-  padding: 12px 24px;
-  cursor: pointer;
 }
 
 .active {
@@ -500,6 +472,12 @@ export default {
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.trend {
+  width: 100%;
+  height: 720px;
+  position: sticky;
+  top: 11%; /* 设置元素固定时距离顶部的位置 */
 }
 
 

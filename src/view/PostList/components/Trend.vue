@@ -1,4 +1,12 @@
 <template lang="">
+    <div class="title-box flex-between">
+         <div class="trend-title">
+            流行趨勢
+        </div>
+        <div class="settings">
+            <span class="material-icons-outlined">settings</span>
+        </div>
+    </div>
     <div class="content flex-between" v-for="(item, index) in items" :key="index">
         <div class="trending">
             <!-- <div class="subtitle">
@@ -15,6 +23,7 @@
             <span class="material-icons">keyboard_arrow_down</span>
         </div>
     </div>
+    <div class="show-more">Show More</div>
 </template>
 <script>
 import axios from "axios";
@@ -54,6 +63,7 @@ export default {
     border-top: 1px solid lightgrey;
     border-bottom: 1px solid lightgrey;
     padding: 12px 24px;
+    cursor: pointer;
 }
 
 .trending div:not(:last-child) {
@@ -104,5 +114,37 @@ export default {
 
 .material-icons {
     cursor: pointer;
+}
+
+.title-box {
+  height: 64.84px;
+  margin: 12px 24px;
+}
+
+.trend-title {
+  font-family: "Inter";
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 28px;
+  letter-spacing: 0em;
+  text-align: center;
+}
+
+.title-box .settings {
+  font-size: 26.91px;
+  color: var(--button-default);
+  cursor: pointer;
+}
+
+.show-more {
+  font-family: "SF Pro Text";
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #1da1f2;
+  padding: 12px 24px;
+  cursor: pointer;
 }
 </style>

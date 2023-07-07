@@ -1,8 +1,11 @@
 <template lang="">
-    <div class="tweet flex-center" v-for="(item, index) in items" :key="index">
+    <div class="tweet " v-for="(item, index) in items" :key="index">
+      <div class="friend-box">
         <div class="friendimg-box" >
             <img :src="item.user.avatar" alt="friend">
         </div>
+
+      </div>
         <div class="content">
             <div class="friend-info">
                 <span class="name">{{ item.user.userName }}</span>
@@ -107,7 +110,7 @@ export default {
             item.loveStatus = 1;
             item.love++;
           }
-          item = reactive(item);//實現數據的響應式
+          item = reactive(item);
         })
         .catch((error) => {
           console.log(error);
@@ -123,13 +126,21 @@ export default {
   background-color: #fff;
   padding: 8px 16px;
 
-  font-family: "ABeeZee";
+  font-family: "微軟正黑體";
   font-size: 19px;
-  font-style: italic;
   font-weight: 400;
   line-height: 22px;
   letter-spacing: 0em;
   text-align: left;
+
+  cursor: pointer;
+
+  display: flex;
+}
+
+.place {
+font-family: "ABeeZee";
+/* font-style: italic; */
 }
 
 .flex-center {
@@ -149,6 +160,11 @@ export default {
   justify-content: flex-start;
   align-items: center;
   /* margin-left: 200px; */
+}
+
+.friend-box {
+  height: 100%;
+  /* background: #1e90ff; */
 }
 
 .friendimg-box {
@@ -233,7 +249,7 @@ export default {
   color: #1da1f2;
   font-size: 16.063px;
   font-family: "ABeeZee";
-  font-style: italic;
+  /* font-style: italic; */
 }
 
 .active {
