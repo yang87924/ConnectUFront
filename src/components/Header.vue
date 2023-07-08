@@ -99,7 +99,7 @@
           </div>
       </div> -->
 
-      <div class="chatroom" :style="{ height: chatroomHeight }">
+      <div v-if="userName != null" class="chatroom" :style="{ height: chatroomHeight }">
           <Chatroom />
       </div>
 
