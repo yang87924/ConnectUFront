@@ -38,15 +38,6 @@ const routes = [
         component: UserRegister,
     },
     {
-        // 其他個人檔案頁
-        path: '/Anotherprofile/:id',
-        name: 'AnotherProfilePage',
-        component: AnotherProfilePage,
-        meta: {
-            showHeader: true,
-        }
-    },
-    {
         path: '/',
         redirect: '/index',
         name: 'IndexView',
@@ -93,6 +84,15 @@ const routes = [
                 path: 'article',
                 name: 'ArticlePage',
                 component: ArticlePage,
+                meta: {
+                    showHeader: true,
+                }
+            },
+            {
+                // 其他個人檔案頁
+                path: '/Anotherprofile/:id',
+                name: 'AnotherProfilePage',
+                component: AnotherProfilePage,
                 meta: {
                     showHeader: true,
                 }
