@@ -154,7 +154,7 @@ export default {
 
         
   fetchFansData() {
-      axios.get(`/users/following/${this.$route.params.id}`)
+      axios.get(`/users/following`)
         .then(response => {
             this.fans = response.data.data;
             console.log(this.fans);
@@ -164,7 +164,7 @@ export default {
     },
 
     fetchFollowData() {
-      axios.get(`/users/followedBy/${this.$route.params.id}`)
+      axios.get(`/users/followedBy`)
         .then(response => {
             this.follow = response.data.data;
             console.log(this.follow);
