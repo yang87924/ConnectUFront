@@ -125,7 +125,7 @@ export default {
             avatar: '',
             profile: '',
             title: '',
-            activeTab: '',
+            activeTab: '文章',
             followedByCount: '',
             followingCount: '',
 
@@ -154,7 +154,7 @@ export default {
 
         
   fetchFansData() {
-      axios.get('/users/following')
+      axios.get(`/users/following`)
         .then(response => {
             this.fans = response.data.data;
             console.log(this.fans);
@@ -164,7 +164,7 @@ export default {
     },
 
     fetchFollowData() {
-      axios.get('/users/followedBy')
+      axios.get(`/users/followedBy`)
         .then(response => {
             this.follow = response.data.data;
             console.log(this.follow);
