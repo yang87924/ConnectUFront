@@ -75,7 +75,7 @@ export default {
         fetchData() {
             // 發送 HTTP GET 請求到後端 API 獲取資料
             axios
-                .get('/threads/pageThread', {
+            axios.get(`/threads/userThread/${this.$route.params.id}`, {
                     params: {
                         pageNum: this.pageNum,
                     },

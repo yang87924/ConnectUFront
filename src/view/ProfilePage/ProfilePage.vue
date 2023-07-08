@@ -4,7 +4,7 @@
             <div class="banner-box">
                 <img src="../../assets/img/profile/background.svg" alt="" class="backimg">
                 <div class="setting">
-                    <button class="edit-button" @click="toggleEditList">編輯個人檔案</button>
+                    <button class="edit-button" @click="toggleEditList" v-show="showButton">編輯個人檔案</button>
                     <div v-if="showEditList" class="edit-list" v-click-outside="hideFanList">
                         <div class="edit-list-container">
                             <h2 class="edit-list-title">編輯個人檔案</h2>
@@ -63,7 +63,7 @@
                         <div class="fan-list-container">
                             <h2 class="fan-list-title">所有粉絲</h2>
                             <ul class="fan-list-items">
-                                <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
+                                <li class="fan-list-item" v-for="fan in fans" :key="fan.userId" @click="redirectToFanPage(fan.userId)">
                                     <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
                                     <span class="fan-name">{{ fan.userName }}</span>
                                 </li>
@@ -84,8 +84,8 @@
                     </div>
                 </div>
                 <div class="follow">
-                    <button class="follow-button">追蹤</button>
-                    <button class="follow-button">私訊</button>
+                    <button class="follow-button" @click="toggleEditList">編輯個人檔案</button>
+                    <button class="follow-button">分享個人檔案</button>
                 </div>
             </div>
             <ul class="nav flex-between">
@@ -147,6 +147,10 @@ export default {
     },
 
     methods: {
+
+        redirectToFanPage(userId) {
+            this.$router.push(`/Anotherprofile/${userId}`);
+        },
 
         
   fetchFansData() {
@@ -282,18 +286,18 @@ export default {
 <style lang="css" scoped>
 
 .tab-content {
-    width: 900px;  /* 更改這個數值到你想要的寬度 */
-    height: 500px; /* 更改這個數值到你想要的高度 */
+    width: 1025px;  /* 更改這個數值到你想要的寬度 */
+    height: 100%; /* 更改這個數值到你想要的高度 */
 }
 
 .backimg {
-    width: 897px;
+    width: 1025px;
 }
 
 .countbar {
     position: relative;
     margin-top: -260px;
-    left: 200px;
+    left: 300px;
     display: flex;
 
 }
