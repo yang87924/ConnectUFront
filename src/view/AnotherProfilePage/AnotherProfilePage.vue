@@ -1,109 +1,84 @@
 <template lang="">
-    <div class="container">
-        <div class="main-content">
-            <div class="banner-box">
-                <img src="../../assets/img/profile/background.svg" alt="" class="backimg">
-                <!-- <div class="setting">
-                    <button class="edit-button" @click="toggleEditList">編輯個人檔案</button>
-                    <div v-if="showEditList" class="edit-list" v-click-outside="hideFanList">
-                        <div class="edit-list-container">
-                            <h2 class="edit-list-title">編輯個人檔案</h2>
-                            <form @submit="submitForm">
-                                <ul class="edit-list-items">
-                                    <li class="edit-list-item">
-                                        <label for="avatar">修改大頭貼：</label>
-                                        <input type="file" id="avatar" accept="image/*" ref="avatarInput">
-                                    </li>
-                                    <li class="edit-list-item">
-                                        <label for="username">修改會員名稱：</label>
-                                        <input type="text" id="userName" v-model="userName">
-                                    </li>
-                                    <li class="edit-list-item">
-                                        <label for="profile">修改個人簡介：</label>
-                                        <input type="text" id="profile" v-model="profile">
-                                    </li>
-                                </ul>
-                                <button type="submit">提交</button>
-                            </form>
-                        </div>
-                    </div>
-                </div> -->
-            </div>
-            <div class="profile-box flex-between">
-                <div class="data-left">
-                    <div class="photo-box" :style="{ backgroundImage: 'url(' + avatar + ')' }"></div>
-                    <div class="content-box">
-                        <div class="username">
-                            <h1>{{ userName }}</h1>         
-                        </div>
-                        <div class="slogan-box flex-center">
-                            <span class="slogan">{{ profile }}</span>
-                        </div>
-                        <div class="button-box flex-center">
-                            <button class="profile-button">建立新文章</button> 
-                            <button class="profile-button">發佈動態</button> 
-                        </div>
-                    </div>
-                </div>
-                <div class="countbar">
-                    <button class="fans-button" @click="toggleFollowList">追蹤<br>{{followedByCount}}</button>
-                    <div v-if="showFollowList" class="fan-list" v-click-outside="hideFollowList">
-                        <div class="fan-list-container">
-                            <h2 class="fan-list-title">所有追蹤</h2>
-                            <ul class="fan-list-items">
-                                <li class="fan-list-item" v-for="follow in follow" :key="follow.id">
-                                    <img class="fan-avatar" :src="follow.avatar" alt="粉絲頭像">
-                                    <span class="fan-name">{{ follow.userName }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <button class="fans-button" @click="toggleFanList">粉絲<br>{{followingCount}}</button>
-                    <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
-                        <div class="fan-list-container">
-                            <h2 class="fan-list-title">所有粉絲</h2>
-                            <ul class="fan-list-items">
-                                <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
-                                    <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
-                                    <span class="fan-name">{{ fan.userName }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <button class="fans-button" @click="toggleSubList">訂閱<br>123</button>
-                    <div v-if="showSubList" class="fan-list" v-click-outside="hideSubList">
-                        <div class="fan-list-container">
-                            <h2 class="fan-list-title">所有訂閱</h2>
-                            <ul class="fan-list-items">
-                                <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
-                                    <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
-                                    <span class="fan-name">{{ fan.userName }}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="follow">
-                    <button class="follow-button">追蹤</button>
-                    <button class="follow-button">私訊</button>
-                </div>
-            </div>
-            <ul class="nav flex-between">
-                <button class="nav-item" :class="{ active: activeTab === '文章' }" @click="activeTab = '文章'">文章</button>
-                <button class="nav-item" :class="{ active: activeTab === '動態' }" @click="activeTab = '動態'">動態</button>
-                <button class="nav-item" :class="{ active: activeTab === '收藏' }" @click="activeTab = '收藏'">收藏</button>
-            </ul>
-            <div v-if="activeTab === '文章'" class="tab-content">
-                <ArticleitemVue />
-            </div>
-            <div v-if="activeTab === '動態'" class="tab-content">
-                <Tweet />
-            </div>
-            <div v-if="activeTab === '收藏'" class="tab-content">
-                <!-- 顯示收藏內容 -->
-            </div>
-        </div>
-    </div>
+  <div class="container">
+      <div class="main-content">
+          <div class="banner-box">
+              <img src="../../assets/img/profile/background.svg" alt="" class="backimg">
+          </div>
+          <div class="profile-box flex-between">
+              <div class="data-left">
+                  <div class="photo-box" :style="{ backgroundImage: 'url(' + avatar + ')' }"></div>
+                  <div class="content-box">
+                      <div class="username">
+                          <h1>{{ userName }}</h1>         
+                      </div>
+                      <div class="slogan-box flex-center">
+                          <span class="slogan">{{ profile }}</span>
+                      </div>
+                      <div class="button-box flex-center">
+                          <button class="profile-button">建立新文章</button> 
+                          <button class="profile-button">發佈動態</button> 
+                      </div>
+                  </div>
+              </div>
+              <div class="countbar">
+                  <button class="fans-button" @click="toggleFollowList">追蹤<br>{{followedByCount}}</button>
+                  <div v-if="showFollowList" class="fan-list" v-click-outside="hideFollowList">
+                      <div class="fan-list-container">
+                          <h2 class="fan-list-title">所有追蹤</h2>
+                          <ul class="fan-list-items">
+                              <li class="fan-list-item" v-for="follow in follow" :key="follow.id">
+                                  <img class="fan-avatar" :src="follow.avatar" alt="粉絲頭像">
+                                  <span class="fan-name">{{ follow.userName }}</span>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+                  <button class="fans-button" @click="toggleFanList">粉絲<br>{{followingCount}}</button>
+                  <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
+                      <div class="fan-list-container">
+                          <h2 class="fan-list-title">所有粉絲</h2>
+                          <ul class="fan-list-items">
+                              <li class="fan-list-item" v-for="fan in fans" :key="fan.userId" @click="redirectToFanPage(fan.userId)">
+                                  <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
+                                  <span class="fan-name">{{ fan.userName }}</span>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+                  <button class="fans-button" @click="toggleSubList">訂閱<br>123</button>
+                  <div v-if="showSubList" class="fan-list" v-click-outside="hideSubList">
+                      <div class="fan-list-container">
+                          <h2 class="fan-list-title">所有訂閱</h2>
+                          <ul class="fan-list-items">
+                              <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
+                                  <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
+                                  <span class="fan-name">{{ fan.userName }}</span>
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+              </div>
+              <div class="follow">
+                  <button class="follow-button">追蹤</button>
+                  <button class="follow-button">私訊</button>
+              </div>
+          </div>
+          <ul class="nav flex-between">
+              <button class="nav-item" :class="{ active: activeTab === '文章' }" @click="activeTab = '文章'">文章</button>
+              <button class="nav-item" :class="{ active: activeTab === '動態' }" @click="activeTab = '動態'">動態</button>
+              <button class="nav-item" :class="{ active: activeTab === '收藏' }" @click="activeTab = '收藏'">收藏</button>
+          </ul>
+          <div v-if="activeTab === '文章'" class="tab-content">
+              <ArticleitemVue />
+          </div>
+          <div v-if="activeTab === '動態'" class="tab-content">
+              <Tweet />
+          </div>
+          <div v-if="activeTab === '收藏'" class="tab-content">
+              <!-- 顯示收藏內容 -->
+          </div>
+      </div>
+  </div>
 </template>
 <script>
 
@@ -114,169 +89,173 @@ import ArticleitemVue from './components/Articleitem.vue';
 
 export default {
 
-    directives: {
-    ClickOutside: VueClickOutside.directive
-  },
-
-    data() {
-        return {
-            userId: '',
-            userName: '',
-            avatar: '',
-            profile: '',
-            title: '',
-            activeTab: '',
-            followedByCount: '',
-            followingCount: '',
-
-            fans: [],
-            follow: [],
-            showFanList: false ,
-            showFollowers: false,
-            showFans: false,
-            showSubscribers: false,
-            showEditList: false,
-            showSubList: false,
-            showFollowList: false,
-        };
-    },
-
-    components: {
-        Tweet,
-        ArticleitemVue,
-    },
-
-    methods: {
-
-        
-  fetchFansData() {
-      axios.get('/users/following')
-        .then(response => {
-            this.fans = response.data.data;
-            console.log(this.fans);
-        })
-            .catch(error => {
-        });
-    },
-
-    fetchFollowData() {
-      axios.get('/users/followedBy')
-        .then(response => {
-            this.follow = response.data.data;
-            console.log(this.follow);
-        })
-            .catch(error => {
-            console.log(error);
-        });
-    },
-
-
-    hideFanList() {
-      this.showFanList = false;
-      this.showEditList = false;
-    },
-    hideSubList() {
-      this.showSubList = false;
-    },
-    hideFollowList() {
-      this.showFollowList = false;
-    },
-    toggleEditList() {
-      this.showEditList = !this.showEditList;
-    },
-    toggleSubList() {
-      this.showSubList = !this.showSubList;
-    },
-    toggleFollowList() {
-      this.showFollowList = !this.showFollowList;
-      if (this.showFollowList && this.follow.length === 0) {
-        this.fetchFollowData();
-        }
-    },
-    toggleFanList() {
-        this.showFanList = !this.showFanList;
-        if (this.showFanList && this.fans.length === 0) {
-        this.fetchFansData();
-        }
+  directives: {
+  ClickOutside: VueClickOutside.directive
 },
 
-    
-    submitForm(event) {
+  data() {
+      return {
+          userId: '',
+          userName: '',
+          avatar: '',
+          profile: '',
+          title: '',
+          activeTab: '',
+          followedByCount: '',
+          followingCount: '',
 
-        setTimeout(() => {
-        location.reload();
-      }, 1000);
+          fans: [],
+          follow: [],
+          showFanList: false ,
+          showFollowers: false,
+          showFans: false,
+          showSubscribers: false,
+          showEditList: false,
+          showSubList: false,
+          showFollowList: false,
+      };
+  },
+
+  components: {
+      Tweet,
+      ArticleitemVue,
+  },
+
+  methods: {
+
+      redirectToFanPage(userId) {
+          this.$router.push(`/Anotherprofile/${userId}`);
+      },
+
       
-  event.preventDefault();
+fetchFansData() {
+    axios.get('/users/following')
+      .then(response => {
+          this.fans = response.data.data;
+          console.log(this.fans);
+      })
+          .catch(error => {
+      });
+  },
 
-  const formData = new FormData();
+  fetchFollowData() {
+    axios.get('/users/followedBy')
+      .then(response => {
+          this.follow = response.data.data;
+          console.log(this.follow);
+      })
+          .catch(error => {
+          console.log(error);
+      });
+  },
 
-  formData.append('userId', this.userId);
-  formData.append('userName', this.userName);
-  formData.append('profile', this.profile);
-  formData.append('files', this.$refs.avatarInput.files[0] == null?new File([], 'empty-file.txt'):this.$refs.avatarInput.files[0]);
 
-  axios.put('/users', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data'
-    }
+  hideFanList() {
+    this.showFanList = false;
+    this.showEditList = false;
+  },
+  hideSubList() {
+    this.showSubList = false;
+  },
+  hideFollowList() {
+    this.showFollowList = false;
+  },
+  toggleEditList() {
+    this.showEditList = !this.showEditList;
+  },
+  toggleSubList() {
+    this.showSubList = !this.showSubList;
+  },
+  toggleFollowList() {
+    this.showFollowList = !this.showFollowList;
+    if (this.showFollowList && this.follow.length === 0) {
+      this.fetchFollowData();
+      }
+  },
+  toggleFanList() {
+      this.showFanList = !this.showFanList;
+      if (this.showFanList && this.fans.length === 0) {
+      this.fetchFansData();
+      }
+},
+
+  
+  submitForm(event) {
+
+      setTimeout(() => {
+      location.reload();
+    }, 1000);
+    
+event.preventDefault();
+
+const formData = new FormData();
+
+formData.append('userId', this.userId);
+formData.append('userName', this.userName);
+formData.append('profile', this.profile);
+formData.append('files', this.$refs.avatarInput.files[0] == null?new File([], 'empty-file.txt'):this.$refs.avatarInput.files[0]);
+
+axios.put('/users', formData, {
+  headers: {
+    'Content-Type': 'multipart/form-data'
+  }
+})
+  .then(response => {
+    console.log(response.data);
   })
-    .then(response => {
-      console.log(response.data);
-    })
-    .catch(error => {
-      console.log(error);
-    });
+  .catch(error => {
+    console.log(error);
+  });
 }
 
 
 
+},
+
+  
+  created() {
+      this.getUserData();
+      this.getUserThreads();
   },
-  
-    
-    created() {
-        this.getUserData();
-        this.getUserThreads();
-    },
-  
 
-    created() {
 
-        // 在組件創建時使用 Axios，並傳遞使用者 ID
-        axios.post('/users/getUserId/0')
-            .then(response => {
-                console.log(response.data);
-                this.userId = response.data.userId;
-                this.userName = response.data.userName;
-                this.avatar = response.data.avatar;
-                this.profile = response.data.profile;
-                this.followingCount = response.data.followingCount;
-                this.followedByCount = response.data.followedByCount;
-            })
-            .catch(error => {
-                console.log(error);
-                // 處理錯誤 
-            });
+  created() {
 
-        // 查詢使用者文章的API
-        axios.get('/threads/userThread/0')
-            .then(response => {
-                console.log('文章資料：', response.data.data);
-                // console.log(response.data);
-                if (response.data.data && response.data.data.length > 0) {
-                    this.title = response.data.data[0].title;
+      // 在組件創建時使用 Axios，並傳遞使用者 ID
+      axios.get('/users/1')
+          .then(response => {
+              console.log(response.data);
+              this.userId = response.data.data.userId;
+              this.userName = response.data.data.userName;
+              this.avatar = response.data.data.avatar;
+              this.profile = response.data.data.profile;
+              this.followingCount = response.data.data.followingCount;
+              this.followedByCount = response.data.data.followedByCount;
+          })
+          .catch(error => {
+              console.log(error);
+              // 處理錯誤 
+          });
 
-                    this.activeTab = '文章';
-                } else {
-                    console.log('回應資料無效或沒有文章資料');
-                    this.title = '找不到文章';
-                }
-            })
-            .catch(error => {
-                console.log('發生錯誤：', error);
-                this.title = '找不到文章';
-            });
-    }
+      // 查詢使用者文章的API
+      axios.get('/threads/userThread/0')
+          .then(response => {
+              console.log('文章資料：', response.data.data);
+              // console.log(response.data);
+              if (response.data.data && response.data.data.length > 0) {
+                  this.title = response.data.data[0].title;
+
+                  this.activeTab = '文章';
+              } else {
+                  console.log('回應資料無效或沒有文章資料');
+                  this.title = '找不到文章';
+              }
+          })
+          .catch(error => {
+              console.log('發生錯誤：', error);
+              this.title = '找不到文章';
+          });
+  }
 }
 </script>
 <style lang="css" scoped>

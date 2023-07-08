@@ -63,7 +63,7 @@
                         <div class="fan-list-container">
                             <h2 class="fan-list-title">所有粉絲</h2>
                             <ul class="fan-list-items">
-                                <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
+                                <li class="fan-list-item" v-for="fan in fans" :key="fan.userId" @click="redirectToFanPage(fan.userId)">
                                     <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
                                     <span class="fan-name">{{ fan.userName }}</span>
                                 </li>
@@ -147,6 +147,10 @@ export default {
     },
 
     methods: {
+
+        redirectToFanPage(userId) {
+            this.$router.push(`/Anotherprofile/${userId}`);
+        },
 
         
   fetchFansData() {

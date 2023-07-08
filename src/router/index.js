@@ -39,9 +39,12 @@ const routes = [
     },
     {
         // 其他個人檔案頁
-        path: '/Anotherprofile',
+        path: '/Anotherprofile/:id',
         name: 'AnotherProfilePage',
         component: AnotherProfilePage,
+        meta: {
+            showHeader: true,
+        }
     },
     {
         path: '/',
