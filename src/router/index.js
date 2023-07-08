@@ -81,12 +81,12 @@ const routes = [
             },
             {
                 // 文章內頁
-                path: 'article',
+                path: '/article/:threadId',
                 name: 'ArticlePage',
                 component: ArticlePage,
                 meta: {
-                    showHeader: true,
-                }
+                  showHeader: true,
+                },
             },
             {
                 // 其他個人檔案頁

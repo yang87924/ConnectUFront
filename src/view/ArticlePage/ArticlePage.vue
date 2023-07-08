@@ -90,7 +90,7 @@ export default {
         increaseLove() {
         const action = this.loveStatus === 0 ? 'like' : 'unlike';
 
-        axios.put('threads/toggleUserLove/2', {
+        axios.put(`threads/toggleUserLove/${this.$route.params.threadId}`, {
         action: action
         })
         .then(res => {
@@ -132,7 +132,7 @@ export default {
     },
 
     created() {
-        axios.get('/threads/2')
+        axios.get(`/threads/${this.$route.params.threadId}`)
             .then(res => {
                 console.log(res.data)
                 this.title = res.data.data.title
@@ -156,7 +156,7 @@ export default {
                 console.log(err)
             });
 
-            axios.get('/replys/2')
+            axios.get(`/replys/${this.$route.params.threadId}`)
             .then(res => {
                 console.log(res.data)
                 this.comments = res.data.data;
