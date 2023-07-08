@@ -116,6 +116,12 @@ export default {
       };
   },
 
+  computed:{
+    userId() {
+        return this.$route.params.userId;
+    },
+  },
+
   components: {
       Tweet,
       ArticleitemVue,
@@ -129,7 +135,7 @@ export default {
 
       
 fetchFansData() {
-    axios.get('/users/following')
+    axios.get(`/users/following/${this.$route.params.id}`)
       .then(response => {
           this.fans = response.data.data;
           console.log(this.fans);
@@ -139,7 +145,7 @@ fetchFansData() {
   },
 
   fetchFollowData() {
-    axios.get('/users/followedBy')
+    axios.get(`/users/followedBy/${this.$route.params.id}`)
       .then(response => {
           this.follow = response.data.data;
           console.log(this.follow);
@@ -222,7 +228,7 @@ axios.put('/users', formData, {
   created() {
 
       // 在組件創建時使用 Axios，並傳遞使用者 ID
-      axios.get('/users/1')
+      axios.get(`/users/${this.$route.params.id}`)
           .then(response => {
               console.log(response.data);
               this.userId = response.data.data.userId;
@@ -235,25 +241,6 @@ axios.put('/users', formData, {
           .catch(error => {
               console.log(error);
               // 處理錯誤 
-          });
-
-      // 查詢使用者文章的API
-      axios.get('/threads/userThread/0')
-          .then(response => {
-              console.log('文章資料：', response.data.data);
-              // console.log(response.data);
-              if (response.data.data && response.data.data.length > 0) {
-                  this.title = response.data.data[0].title;
-
-                  this.activeTab = '文章';
-              } else {
-                  console.log('回應資料無效或沒有文章資料');
-                  this.title = '找不到文章';
-              }
-          })
-          .catch(error => {
-              console.log('發生錯誤：', error);
-              this.title = '找不到文章';
           });
   }
 }
