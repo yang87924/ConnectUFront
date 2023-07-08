@@ -100,7 +100,7 @@ export default {
           avatar: '',
           profile: '',
           title: '',
-          activeTab: '',
+          activeTab: '文章',
           followedByCount: '',
           followingCount: '',
 
