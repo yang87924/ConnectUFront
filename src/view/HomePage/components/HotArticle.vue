@@ -52,6 +52,8 @@ export default {
     padding-left: 30px;
     padding-top: 10px;
     padding-bottom: 50px;
+    margin-top: 100px;
+    
 }
 
 .title {

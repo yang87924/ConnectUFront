@@ -1,12 +1,80 @@
 <template >
     <div class="create-post flex-between">
-                <div class="memoji-box flex-center">
-                    <img src="../../assets/img/postlist/memoji.svg" alt="" class="memoji">
+        <div class="memoji-box flex-center">
+            <!-- <img src="../../assets/img/postlist/memoji.svg" alt="" class="memoji"> -->
+            <div class="user-imgbox ">
+                <!-- <img v-if="user.userName !== null" :src="user.avatar" alt="User Photo"> -->
+
+                    <!-- <router-link v-else to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }"> -->
+                    <img src="../assets/img/header/user-photo.svg" alt="" >
+                    <!-- </router-link> -->
                 </div>
-                <input type="text" class="post-input" placeholder="Let’s share what going on your mind...">
-                <input type="submit" class="submit" value="Create Post">
+
+        </div>
+        <input type="text" class="post-input" placeholder="Let’s share what going on your mind...">
+        <button @click="showModal" type="submit" class="submit" >Create Post</button>
+        
+        <div v-if="isModalOpen" class="modal">
+           
+        <div class="container">
+            <div class="close-button" @click="closeModal">x</div>
+        <div class="main-content">
+            <div class="page-title">建立文章</div>
+            <select name="articleType" id="articleType" class="article-select">
+                <option value="defualt">請選擇文章板塊</option>
+                <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
+            </select>
+            <input v-model="abc.title" type="text" class="input-box" placeholder="請輸入文章標題">
+            <div class="edit-toolbox">
+                <span class="material-icons">translate</span>
+                <span class="material-icons">image</span>
+                <span class="material-icons">create</span>
+                <span class="material-icons-round">delete</span>
             </div>
-    
+            <textarea class="textarea" placeholder="請輸入文章內容....."></textarea>
+            <div class="word-count">0/10000</div>
+            <div class="subtitle">選擇文章標籤(最多 5 個)</div>
+            <div class="tags">
+                <span class="tag">#美食</span>
+                <span class="tag">#生活</span>
+                <span class="tag">#創作</span>
+                <span class="tag">#小說</span>
+                <span class="tag">#插畫</span>
+                <span class="tag">#心情</span>
+                <span class="tag">#區塊鏈</span>
+                <span class="tag">#投資</span>
+                <span class="tag">#生活娛樂</span>
+                <span class="tag">#感情</span>
+            </div>
+            <label for="custom-tag" class="input-label">自訂標籤(最多10個)</label>
+            <input type="text" class="input-box" name="custom-tag">
+            <div class="c-tag-group">
+                <span class="c-tag">#美食</span>
+                <span class="c-tag">#生活</span>
+                <span class="c-tag">#創作</span>
+            </div>
+            <div class="checkbox-block">
+                <div class="checkbox-title">選擇文章種類</div>
+                <input type="checkbox" name="default" class="checkbox">
+                <label for="default" class="checkbox">一般文章</label>
+                <input type="checkbox" name="default" class="checkbox">
+                <label for="default" class="checkbox">訂閱專屬文章</label>
+            </div>
+            <div class="submit-btn">
+                <button @click="createpost" class="submit flex-between">
+                    <span class="material-icons">add</span>
+                    <span>新增文章</span>
+                   
+                </button>
+            </div>
+        </div>
+    </div>
+      </div>
+    </div>
+         
+
+   
+        
     <div v-for="(item, index) in items" :key="index" class="articleitem">
 
         <div class="newsimg">
@@ -17,42 +85,44 @@
             </div>
             <div class="tags">
                 <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
-                </div>
-           
+            </div>
+
         </div>
         <div class="data">
             <div class="person">
-                    <img :src="item.user.avatar" alt="" class="avatar">
-                    <div class="name-area">
-                        <div class="name">{{ item.user.userName }}</div>
-                        <div class="time">{{ item.createdAt }}</div>
-                    </div>
-                </div>
-   
-
-                <div class="content">{{ item.content }}</div>
-            
-     <div>
-
-        
-
-
-     </div>       
-            
-            <div class="down">
-               
-            <div>
-                <div class="num">
-                    <!-- <img src="../../../assets/img/HomePage/ArticleItem/like1.svg" alt="按讚圖片" class="licon1"/> -->
-                    <i class="fas fa-heart"></i>
-                    <span class="text1" style="font-weight: bold; font-size: 20px;color: blueviolet;">{{ item.love }}</span>
-                    <!-- <img src="../../../assets/img/HomePage/ArticleItem/mess.svg" alt="留言" class="licon2"/> -->
-                    <i class="far fa-comments"></i>
-                    <span class="text2" style="font-weight: bold; font-size: 20px;color: blueviolet;" >{{ item.replyCount }}</span>
-                    <!-- <span>收藏{{ item.loveStatus }}</span> -->
-             
+                <img :src="item.user.avatar" alt="" class="avatar">
+                <div class="name-area">
+                    <div class="name">{{ item.user.userName }}</div>
+                    <div class="time">{{ item.createdAt }}</div>
                 </div>
             </div>
+
+
+            <div class="content">{{ item.content }}</div>
+
+            <div>
+
+
+
+
+            </div>
+
+            <div class="down">
+
+                <div>
+                    <div class="num">
+                        <!-- <img src="../../../assets/img/HomePage/ArticleItem/like1.svg" alt="按讚圖片" class="licon1"/> -->
+                        <i class="fas fa-heart"></i>
+                        <span class="text1" style="font-weight: bold; font-size: 20px;color: blueviolet;">{{ item.love
+                        }}</span>
+                        <!-- <img src="../../../assets/img/HomePage/ArticleItem/mess.svg" alt="留言" class="licon2"/> -->
+                        <i class="far fa-comments"></i>
+                        <span class="text2" style="font-weight: bold; font-size: 20px;color: blueviolet;">{{
+                            item.replyCount }}</span>
+                        <!-- <span>收藏{{ item.loveStatus }}</span> -->
+
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -66,11 +136,23 @@ import axios from 'axios';
 export default {
     data() {
         return {
+            isModalOpen: false,
+            categories: [], // 存儲類別資料的陣列
             items: [], // 存放文章的列表
             newArticleTitle: '', // 新文章的標題
             newArticleContent: '', // 新文章的內容
             pageNum: 1, // 目前頁數
             isLoading: true, // 是否正在載入中
+            avatar: "",
+            userName: "", // 使用者名稱
+        
+            abc: {
+                content: "",
+                title: "",
+                categoryId: 2,
+
+            }
+
         };
     },
     mounted() {
@@ -79,6 +161,33 @@ export default {
         this.addScrollListener();
     },
     methods: {
+//         fetchCategories() {
+//       // 使用axios或Vue Resource等套件發送資料庫查詢請求
+//       // 在成功獲取資料後，將資料設定給categories陣列
+//       axios.get('類別api')
+//         .then(response => {
+//           this.categories = response.data.data;
+//         })
+//         .catch(error => {
+//           console.error(error);
+//         });
+//     },
+//     closeModal() {
+//       // 實現關閉Modal的邏輯
+//     }
+//   }
+
+        
+        
+        
+        
+        showModal() {
+            this.isModalOpen = true;
+        },
+        closeModal() {
+            this.isModalOpen = false;
+        },
+
         fetchData() {
             // 發送 HTTP GET 請求到後端 API 獲取資料
             axios
@@ -113,6 +222,27 @@ export default {
                 }
             });
         },
+
+        created() {
+    
+    // axios.post('/users/getUserId/0')
+    //   .then(response => {
+    //     console.log(response.data);
+    //     this.userName = response.data.userName;
+    //     this.avatar=response.data.avatar;
+  
+    //   //先放置 圖片
+    //   //   this.avatar = response.data.avatar;
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //     // 處理錯誤
+    //   });
+  
+     
+    },
+
+        
     },
 };
 </script>
@@ -187,7 +317,7 @@ export default {
     display: flex;
     box-shadow: 4px 4px rgba(0, 0, 0, 0.25);
     padding-left: 20px;
-    
+
     /* padding-top: 21.48459243774414px; */
     border-radius: 17.187673568725586px;
     margin-bottom: 20px;
@@ -281,7 +411,7 @@ export default {
     box-shadow: 5px 5px rgba(0, 0, 0, 0.25);
     border-radius: 10%;
     margin: 10px 0px 10px 0px;
-    
+
 
 
 }
@@ -305,6 +435,7 @@ export default {
     background-color: #F9DFC0;
     margin-right: 20px;
 }
+
 .flex-between {
     display: flex;
     justify-content: space-between;
@@ -324,6 +455,7 @@ export default {
     padding: 13px;
     width: 100%;
 }
+
 .create-post .submit {
     padding: 12px 17px;
     margin-left: 20px;
@@ -338,38 +470,252 @@ export default {
     text-align: center;
     color: #FFF;
 }
-.fa-comments{
+
+.fa-comments {
 
     padding-left: 50px;
     font-size: 25px;
 }
-.fa-heart{
+
+.fa-heart {
 
     font-size: 25px;
 
 }
 
-.licon2{
+.licon2 {
 
-width: 30px; 
-height: 30px;
-margin-right: 30px;
+    width: 30px;
+    height: 30px;
+    margin-right: 30px;
 
 
 }
-.text1{
-margin-left: 10px;
-text-align: center;
-padding-right: 100px;
-padding-bottom: 70px;
-}
-.text2{
-margin-left: 100px;
-text-align: center;
 
-padding-bottom: 70px;
+.text1 {
+    margin-left: 10px;
+    text-align: center;
+    padding-right: 100px;
+    padding-bottom: 70px;
 }
 
+.text2 {
+    margin-left: 100px;
+    text-align: center;
+
+    padding-bottom: 70px;
+}
+
+.modal {
+    position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(201, 192, 211, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* 設置較高的 z-index 值 */
+}
+
+/* .modal-content {
+    background-color: rgb(187, 22, 22);
+  padding: 40px;
+  border-radius: 50px;
+  width: 500px;
+  max-height: 300px; /* 使用 max-height 屬性 */
+  /* font-size: 16px;
+  overflow: auto; /* 加上卷軸 */
+
+
+
+.container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    height: 600px; /* 設置元素高度 */
+    width: 1050px;
+  overflow-y: auto; /* 顯示垂直卷軸 */
+}
+
+.main-content {
+    width: 100%;
+    height: 100;
+    padding: 40px 30px 50px;
+    background-color: #FFF;
+    box-shadow: 0px 4.006070137023926px 4.006070137023926px 0px #00000040;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.page-title {
+    font-family: 'Inter';
+    font-size: 44px;
+    font-weight: 400;
+    line-height: 66px;
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.article-select {
+    color: #828282;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url('../../assets/img/newpost/select_Icon.svg');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+
+    width: 100%;
+    height: 40px;
+    border: 1px solid var(--black);
+    border-radius: 7.33px;
+    padding: 0 15px;
+    margin-bottom: 12px;
+}
+
+.input-box {
+    width: calc(100% - 32px);
+    /* max-width: 1068.75px; */
+    height: 40px;
+    border: 1px solid var(--black);
+    border-radius: 7.33px;
+    padding: 0 15px;
+    
+}
+
+.edit-toolbox {
+    margin-top: 40px;
+    margin-bottom: 8px;
+}
+
+.edit-toolbox span {
+    margin-left: 12px;
+}
+
+.textarea {
+    width: calc(100% - 32px);
+    padding: 15px;
+    border: 2px solid var(--black);
+    border-radius: 7.33px;
+    height: 396px;
+    margin-bottom: 52px;
+}
+
+.word-count {
+    font-family: 'Inter';
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 33px;
+    letter-spacing: 0em;
+    text-align: center;
+}
+
+.subtitle {
+    font-family: 'Inter';
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 33px;
+    letter-spacing: 0em;
+    text-align: start;
+}
+
+.tags {
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: start;
+    margin: 8px auto 20px;
+}
+
+.tags .tag {
+    margin-right: 16px;
+}
+
+.input-label {
+    font-family: 'Inter';
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+}
+
+.c-tag-group {
+    margin-top: 12px;
+    margin-bottom: 50px;
+}
+
+.c-tag {
+    font-family: 'Inter';
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #828282;
+    border: 1px solid #000;
+    border-radius: 7.33px;
+    padding: 3px 6px;
+    margin-right: 8px;
+}
+
+.checkbox-block {
+    margin-bottom: 50px;
+}
+
+.checkbox-title {
+    font-family: 'Inter';
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 24px;
+    letter-spacing: 0em;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.checkbox {
+    margin-right: 12px;
+}
+
+.submit-btn {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.submit {
+    border: none;
+    border-radius: 9.594444274902344px;
+    padding: 13px 26px;
+    background-color: #800080;
+    color: #FFF;
+    cursor: pointer;
+}
+
+.submit .material-icons {
+    margin-right: 8px;
+}
+.close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  border-radius: 0%;
+  background-color:#800080;
+  color:white;
+  cursor: pointer;
+  border: 5px solid #ca774b;
+
+}
 
 
 
