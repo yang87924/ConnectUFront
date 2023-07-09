@@ -59,7 +59,7 @@
                   </div>
               </div>
               <div class="follow">
-                  <button class="follow-button">追蹤</button>
+                  <button class="follow-button" @click="toggleFollow">{{ isFollowing ? '取消追蹤' : '追蹤' }}</button>
                   <button class="follow-button">私訊</button>
               </div>
           </div>
@@ -113,6 +113,7 @@ export default {
           showEditList: false,
           showSubList: false,
           showFollowList: false,
+          isFollowing: false,
       };
   },
 
@@ -135,6 +136,27 @@ export default {
           location.reload(); // 在一秒后重新加载页面
           }, 1000);
       },
+
+      toggleFollow() {
+        axios.post(`/users/followIfNot/${this.$route.params.id}`)
+            .then(response => {
+                if(response.data.code === 20031) {
+                    console.log("跟隨成功");
+                    // Update the follower count
+                    this.followingCount++;
+                    this.isFollowing = true;
+                } else if(response.data.code === 20030) {
+                    console.log("取消追隨");
+                    // Update the follower count
+                    this.followingCount--;
+                    this.isFollowing = false;
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                // 處理錯誤 
+            });
+    },
 
       
 fetchFansData() {
@@ -263,6 +285,7 @@ axios.put('/users', formData, {
     position: relative;
     margin-top: -260px;
     left: 200px;
+    width: 500px;
     display: flex;
 
 }
@@ -446,11 +469,12 @@ axios.put('/users', formData, {
 .profile-box {
     position: relative;
     margin-bottom: 40px;
+    width: 900px;
 }
 
 .data-left {
     padding-top: 50px;
-    width: 291.5px;
+    width: 300px;
     flex: 1;
 }
 
@@ -514,13 +538,14 @@ axios.put('/users', formData, {
 
 .follow{
     top: 145px;
-    left:-130px;
+    left:-180px;
     position: relative;
     display: flex;
     justify-content: space-between;
 }
 
 .follow-button {
+    width: 140px;
     margin-left: 30PX;
     padding: 8px 30px;
     border: 4px solid lightgrey;
@@ -530,6 +555,7 @@ axios.put('/users', formData, {
 }
 
 .fans-button {
+    width: 100px;
     padding: 8px 24px;
     border: 4px solid gray;
     border-radius: 18.19px;
