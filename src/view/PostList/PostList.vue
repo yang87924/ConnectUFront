@@ -241,9 +241,9 @@ export default {
   align-items: center;
 }
 
-.active {
+/* .active {
   color: var(--active);
-}
+} */
 
 /* 左側sidebar */
 .logo {
@@ -378,6 +378,16 @@ export default {
   letter-spacing: 0em;
   text-align: center;
   cursor: pointer;
+  height: 40px;
+  background: #f1efef;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.switch:hover {
+  background: #e0d3eb
 }
 
 .new-tweet {
@@ -434,7 +444,7 @@ export default {
 
 .active {
   /* background-color: #e1e0e0; */
-  background-color: #be81d7;
+  background-color: #b581e0;
   color: #000; /* 設置您希望的字體顏色 */
   border-radius: 8px;
   height: 40px;
