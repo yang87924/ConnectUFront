@@ -5,7 +5,7 @@
         type="text"
         v-model="query"
         @input="onInput"
-        placeholder="Search..."
+        placeholder="請輸入關鍵字"
         class="search-input"
       />
       <div class="search-icon"></div>

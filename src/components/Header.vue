@@ -11,11 +11,11 @@
                     <span class="material-icons">home</span>
                 </router-link>
             </li>
-            <li class="nav-item flex-center" :class="{ 'active': $route.path === '/newpost' }">
+            <!-- <li class="nav-item flex-center" :class="{ 'active': $route.path === '/newpost' }">
                 <router-link to="/newpost" class="router-link" :class="{ 'active-link': $route.path === '/newpost' }">
                     <span class="material-icons">event_note</span>
                 </router-link>
-            </li>
+            </li> -->
             <li class="nav-item flex-center" :class="{ 'active': $route.path === '/postlist' }">
                 <router-link to="/postlist" class="router-link" :class="{ 'active-link': $route.path === '/postlist' }">
                     <span class="material-icons">groups</span>

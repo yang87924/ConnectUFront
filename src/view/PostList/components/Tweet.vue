@@ -15,12 +15,9 @@
             <div class="tags">
                 <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
             </div>
-            <!-- <div class="img-container">
-              <div class="img-box" v-for="(picture, index) in item.picture.split('▲')" :key="index">
-                <img :src="picture" alt="Picture">
-              </div> -->
+
               <div>
-              <div class="img-container">
+              <div class="img-container" v-if="item.picture != ''">
                 <div class="img-box" v-for="(picture, index) in item.picture.split('▲')" :key="index">
                   <img :src="picture" alt="Picture" @click="showImageDialog(picture)">
                 </div>
