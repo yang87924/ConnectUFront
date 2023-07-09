@@ -56,6 +56,10 @@
                 </div>
             </div>
         </form>
+        <div class="success-message" v-if="showSuccessMessage">
+          新增動態成功！
+        </div>
+
             <div class="tweets-box" v-if="activeTab === 'recommend'">
                 <!-- 顯示為你推薦的內容 -->
                 <Tweet />
@@ -86,20 +90,7 @@ export default {
     RightSideBar
   },
   created() {
-  // 在組件創建時使用 Axios，並傳遞使用者 ID
-  axios.post('/users/getUserId/0')
-    .then(response => {
-      console.log(response.data);
-      this.userName = response.data.userName;
-      this.avatar=response.data.avatar;
-
-    //先放置 圖片
-    //   this.avatar = response.data.avatar;
-    })
-    .catch(error => {
-      console.log(error);
-      // 處理錯誤
-    });
+    this.fetchTweets();
   },
   data() {
     return {
@@ -123,6 +114,22 @@ export default {
     },
   },
   methods: {
+    fetchTweets() {
+      // 在組件創建時使用 Axios，並傳遞使用者 ID
+  axios.post('/users/getUserId/0')
+    .then(response => {
+      console.log(response.data);
+      this.userName = response.data.userName;
+      this.avatar=response.data.avatar;
+
+    //先放置 圖片
+    //   this.avatar = response.data.avatar;
+    })
+    .catch(error => {
+      console.log(error);
+      // 處理錯誤
+    });
+    },
     sendTweet() {
       // 在此處執行發送推文的邏輯
       // 可以使用 this.tweetContent 獲取推文內容，this.uploadedImages 獲取上傳的圖片，然後進行相關處理
@@ -133,39 +140,52 @@ export default {
       this.uploadedImages = [];
     },
 
-   submitForm(event) {
-  event.preventDefault();
+    submitForm(event) {
+      event.preventDefault();
 
-  const formData = new FormData();
-  formData.append("content", this.tweetContent);
+      const formData = new FormData();
+      formData.append("content", this.tweetContent);
 
-  const files = this.$refs.imageUpload.files;
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    formData.append("files", file);
-  }
+      const files = this.$refs.imageUpload.files;
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        formData.append("file1", file);
+      }
 
-  axios
-    .post("/dyThreads", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    })
-    .then((response) => {
-      console.log(response.data);
-     for (const entry of formData.entries()) {
-    const [name, value] = entry;
-    if (value instanceof File) {
-      console.log(`File Name: ${name}`, value.name);
-    }
-  }
-    })
-    .catch((error) => {
-      console.log(error);
-      // 在錯誤回應後進行相應處理
-    });
-  console.log("FormData:", formData);
-},
+      axios
+        .post("/dyThreads", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(response.data);
+          for (const entry of formData.entries()) {
+            const [name, value] = entry;
+            if (value instanceof File) {
+              console.log(`File Name: ${name}`, value.name);
+            }
+          }
+          // 清空推文内容和图片
+          this.tweetContent = "";
+          this.uploadedImages = [];
+
+          // 显示成功提示窗口
+          this.showSuccessMessage = true;
+
+          // 定时隐藏成功提示窗口并刷新页面
+          setTimeout(() => {
+            this.showSuccessMessage = false;
+            location.reload(); // 刷新页面
+          }, 2000); // 2秒后隐藏成功提示窗口      
+        })
+        .catch((error) => {
+          console.log(error);
+          // 在錯誤回應後進行相應處理
+        });
+      console.log("FormData:", formData);
+    },
+
 
 
 
@@ -241,9 +261,9 @@ export default {
   align-items: center;
 }
 
-.active {
+/* .active {
   color: var(--active);
-}
+} */
 
 /* 左側sidebar */
 .logo {
@@ -365,7 +385,9 @@ export default {
   position: sticky;
   top: 10.3%;
   background: #fff;
+  /* background: rgb(184, 123, 184); */
   border-bottom: 1px solid #efeded;
+  z-index: 99;
 }
 
 .switch {
@@ -377,6 +399,16 @@ export default {
   letter-spacing: 0em;
   text-align: center;
   cursor: pointer;
+  height: 40px;
+  background: #f1efef;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.switch:hover {
+  background: #e0d3eb
 }
 
 .new-tweet {
@@ -432,7 +464,8 @@ export default {
 }
 
 .active {
-  background-color: #e1e0e0;
+  /* background-color: #e1e0e0; */
+  background-color: #b581e0;
   color: #000; /* 設置您希望的字體顏色 */
   border-radius: 8px;
   height: 40px;
@@ -478,6 +511,19 @@ export default {
   height: 720px;
   position: sticky;
   top: 11%; /* 设置元素固定时距离顶部的位置 */
+}
+
+.success-message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 20px;
+  background-color:#f4a03a;
+  color: white;
+  font-weight: bold;
+  border-radius: 5px;
+  z-index: 9999;
 }
 
 
