@@ -365,6 +365,7 @@ export default {
   position: sticky;
   top: 10.3%;
   background: #fff;
+  /* background: rgb(184, 123, 184); */
   border-bottom: 1px solid #efeded;
 }
 
@@ -432,7 +433,8 @@ export default {
 }
 
 .active {
-  background-color: #e1e0e0;
+  /* background-color: #e1e0e0; */
+  background-color: #be81d7;
   color: #000; /* 設置您希望的字體顏色 */
   border-radius: 8px;
   height: 40px;

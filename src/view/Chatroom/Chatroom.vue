@@ -1,12 +1,10 @@
 <template>
     <div>
-        <div class="abs cover contaniner">
-            <div class="abs cover pnl">
-                <div class="top pnl-head" style="padding: 20px ; color: white;">
-                    <div id="userName"> 用戶：张三<span style='float: right;color: green'>在線</span></div>
+        <div class="cover contaniner">
+            <div class="top pnl-head cover pnl" style="width:100%; padding: 20px ; color: white;">
+                    <div id="userName"> 用戶：<span style='float: right;color: green'>在線</span></div>
                     <div id="chatMes" style="text-align: center;color: #6fbdf3;font-family: 新宋体">
                         <!--正在和 <font face="楷体">张三</font> 聊天-->
-                    </div>
                 </div>
                 <!--聊天区开始-->
                 <div class="abs cover pnl-body" id="pnlBody">
@@ -85,7 +83,7 @@ export default {
             myAvatar: "",
             toAvatar: "",
             userName: "",
-            userList: ["张三", "李四"],
+            userList: [],
             messages: [
                 // {
                 //     sender: "toName",
@@ -127,7 +125,7 @@ export default {
                 userName = res.data.userName;
                 self.myAvatar = res.data.avatar;
                 console.log("success......." + userName);
-                $("#userName").html(" 用户：" + userName + "<span style='float: right;color: green'>在線</span>");
+                $("#userName").html(" 用戶：" + userName + "<span style='float: right;color: green'>在線</span>");
             })
             .catch(error => {
                 console.error(error);
@@ -135,7 +133,7 @@ export default {
         const ws = new WebSocket("ws://localhost:8080/chat");
         ws.onopen = function () {
             console.log("on open..." + userName);
-            $("#userName").html(" 用户：" + userName + "<span style='float: right;color: green'>在線</span>");
+            $("#userName").html(" 用戶：" + userName + "<span style='float: right;color: green'>在線</span>");
         };
 
         ws.onmessage = function (evt) {

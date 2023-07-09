@@ -129,6 +129,11 @@ video {
     left: 0;
     right: 0;
 }
+.top1{
+    top: 0;
+    left: 0;
+    right: 0;
+}
 
 .abs.bottom, .carousel-left.bottom, .carousel-right.bottom, .map-tabs, .res-tabs, .res-warn {
     position: absolute;
@@ -2091,7 +2096,7 @@ body {
 }
 
 .pnl-head {
-    height: 5em;
+    height: 4em;
     background-color: #484a4b;
     -webkit-box-shadow: 0 3px 10px -1px rgba(123, 121, 129, 0.2);
     box-shadow: 0 3px 10px -1px rgba(123, 121, 129, 0.2);
@@ -2204,7 +2209,7 @@ body {
 }
 
 .pnl-left {
-    right: 20em !important;
+    right: 40% !important;
     border-right: 1px solid #cdcfcf;
 }
 
@@ -2533,7 +2538,7 @@ body {
 }
 
 .pnl-right {
-    width: 20em;
+    width: 40%;
     background: #fff
 }
 

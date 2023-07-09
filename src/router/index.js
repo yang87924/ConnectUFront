@@ -38,12 +38,6 @@ const routes = [
         component: UserRegister,
     },
     {
-        // 其他個人檔案頁
-        path: '/Anotherprofile',
-        name: 'AnotherProfilePage',
-        component: AnotherProfilePage,
-    },
-    {
         path: '/',
         redirect: '/index',
         name: 'IndexView',
@@ -94,11 +88,20 @@ const routes = [
                     showHeader: true,
                 }
             },
+            {
+                // 其他個人檔案頁
+                path: '/Anotherprofile/:id',
+                name: 'AnotherProfilePage',
+                component: AnotherProfilePage,
+                meta: {
+                    showHeader: true,
+                }
+            },
         ]
     },
 ];
 
-const router = createRouter({
+export const router = createRouter({
     history: createWebHistory(),
     routes,
 });
