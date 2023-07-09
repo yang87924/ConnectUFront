@@ -267,6 +267,7 @@ export default {
 
 .user-info {
     margin-right: 32px;
+    cursor: pointer;
 }
 
 .user-info div:not(:last-child) {
