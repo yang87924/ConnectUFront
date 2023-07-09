@@ -367,6 +367,7 @@ export default {
   background: #fff;
   /* background: rgb(184, 123, 184); */
   border-bottom: 1px solid #efeded;
+  z-index: 99;
 }
 
 .switch {

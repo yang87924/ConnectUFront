@@ -15,7 +15,23 @@
             <div class="tags">
                 <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
             </div>
-            <div class="img-box" :style="{ backgroundImage: `url(${item.picture})` }"></div>
+            <!-- <div class="img-container">
+              <div class="img-box" v-for="(picture, index) in item.picture.split('▲')" :key="index">
+                <img :src="picture" alt="Picture">
+              </div> -->
+              <div>
+              <div class="img-container">
+                <div class="img-box" v-for="(picture, index) in item.picture.split('▲')" :key="index">
+                  <img :src="picture" alt="Picture" @click="showImageDialog(picture)">
+                </div>
+              </div>
+    
+              <v-dialog v-model="showDialog" max-width="500px">
+                <v-card>
+                  <v-img :src="selectedImage" alt="Full Image"></v-img>
+                </v-card>
+              </v-dialog>
+            </div>
             <div class="flex-start">
                 <div class="fn flex-center">
                     <span class="material-icons">chat_bubble_outline</span>
@@ -52,6 +68,8 @@ export default {
       pageNum: 1, // 目前頁數
       isLoading: true, // 是否正在載入中
       loveStatus: false, //使用者是否有按讚
+      showDialog: false,
+      selectedImage: ""
     };
   },
   mounted() {
@@ -116,6 +134,10 @@ export default {
           console.log(error);
         });
     },
+    showImageDialog(image) {
+      this.selectedImage = image;
+      this.showDialog = true;
+    }
   },
 };
 </script>
@@ -218,13 +240,34 @@ font-family: "ABeeZee";
   color: #5b7083;
 }
 
-.img-box {
+/* .img-box {
   border-radius: 20px;
   width: 628.94px;
   height: 305.2px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+} */
+.img-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 在这里设置你想要的列数 */
+  grid-gap: 10px; 
+  width: 628.94px;
+}
+
+.img-box {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 2/1;
+  border: 0.8px solid #5b7083;
+  border-radius: 8%;
+}
+
+.img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .tweetImg {
