@@ -5,7 +5,9 @@
         <div class="newsimg">
             <img :src="item.picture" alt="" class="newspic">
             <div class="top">
-                <div class="word">{{ item.title }}</div>
+                <router-link :to="{ name: 'ArticlePage', params: { threadId: item.threadId } }">
+                    <div class="word">{{ item.title }}</div>
+                </router-link>
                 <div class="icon"><img src="../../../assets/img/HomePage/ArticleItem/Love.svg" alt=""></div>
             </div>
             <div class="tags">
@@ -75,7 +77,7 @@ export default {
         fetchData() {
             // 發送 HTTP GET 請求到後端 API 獲取資料
             axios
-                .get('/threads/pageThread', {
+                .get('/threads/userThread/0', {
                     params: {
                         pageNum: this.pageNum,
                     },

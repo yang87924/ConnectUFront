@@ -5,7 +5,9 @@
         <div class="newsimg">
             <img :src="item.picture" alt="" class="newspic">
             <div class="top">
-                <div class="word">{{ item.title }}</div>
+                <router-link :to="{ name: 'ArticlePage', params: { threadId: item.threadId } }">
+                    <div class="word">{{ item.title }}</div>
+                </router-link>
                 <div class="icon"><img src="../../../assets/img/HomePage/ArticleItem/Love.svg" alt=""></div>
             </div>
             <div class="tags">

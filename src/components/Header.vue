@@ -2,7 +2,7 @@
     <div class="container flex-between">
         <router-link to="/index">
             <div class="logo-box">
-                <img src="../assets/img/header/logo.svg" alt="">
+                <img src="../assets/img/header/logo.png" alt="">
             </div>
         </router-link>
         <ul class="nav flex-between">
@@ -34,7 +34,7 @@
         </ul>
         <div class="user-info flex-between">
             <div class="nav-item flex-center" v-if="userName != null">
-                <span class="material-icons" @click="toggleHeight" >settings</span>
+                <span class="material-icons" @click="toggleHeight" >forum</span>
             </div>
             <div class="outer-border">
                 <div class="user-imgbox ">
@@ -227,13 +227,21 @@ export default {
 
 .logo-box {
     height: 84px;
+    width: 200px;
+    margin-left:30%;
+}
+
+.logo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .nav {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    width: calc(40px * 5 + 45px * 4);
+    width: calc(40px * 3 + 45px * 2);
 }
 
 .nav-item {
