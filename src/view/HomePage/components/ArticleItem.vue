@@ -11,7 +11,7 @@
             </div>
 
         </div>
-        <input type="text" class="post-input" placeholder="Let’s share what going on your mind...">
+        <input  v-model="newArticleTitle" type="text" class="post-input" placeholder="Let’s share what going on your mind...">
         <button @click="showModal" type="submit" class="submit">Create Post</button>
 
         <div v-if="isModalOpen" class="modal">
@@ -28,7 +28,7 @@
 
                     </select>
 
-                    <input v-model="abc.title" type="text" class="input-box" placeholder="請輸入文章標題">
+                    <input v-model="newArticleTitle" type="text" class="input-box" placeholder="請輸入文章標題">
                     <div class="edit-toolbox">
                         <button @click="decreaseFontSize" class="material-icons">text_decrease</button>
                         <button @click="increaseFontSize" class="material-icons">text_increase</button>
@@ -38,7 +38,7 @@
                     </div>
 
 
-                    <textarea ref="articleTextarea" class="textarea" placeholder="請輸入文章內容....." v-model="articleContent"
+                    <textarea ref="articleTextarea" class="textarea" placeholder="請輸入文章內容....." v-model=" newArticleContent"
                         :style="{ fontSize: `${fontSize}px` }"></textarea>
                     <div v-for="image in insertedImages" :key="image">
                         <img :src="image" alt="插入的圖片" style="height: 100px;width: 100px;">
@@ -46,17 +46,15 @@
 
                     <div class="word-count">0/10000</div>
                     <div class="subtitle">選擇文章標籤(最多 5 個)</div>
-                    <span class="tag" v-for="tag in tags" :key="tag" :class="{ 'selected-tag': selectedTags.includes(tag) }"
-                        @click="toggleTagSelection(tag)">
+                    <span class="tag" v-for="(tag, index) in tags.slice(0, 10)" :key="index"
+                        :class="{ 'selected-tag': selectedTags.includes(tag) }" @click="toggleTagSelection(tag)">
                         {{ tag.name }}
-
-
-
                     </span>
-                    <label style="margin-left: 50px ;" for="custom-tag" class="input-label">自訂標籤(最多10個)</label>
-                    <input type="text" class="input-box" name="custom-tag" v-model="customTag">
+                    <!-- <label style="margin-left: 50px ;" for="custom-tag" class="input-label">自訂標籤(最多10個)</label> -->
+
                     <div class="c-tag-group">
-                        <span class="c-tag" v-for="tag in selectedTags" :key="tag">{{ tag }}</span>
+                        <span style="font-size:10px" class="c-tag" v-for="tag in selectedTags" :key="tag">{{ tag.name
+                        }}</span>
                         <button @click="submitTags">提交標籤</button>
                     </div>
                     <div class="checkbox-block">
@@ -67,10 +65,10 @@
                         <label for="default" class="checkbox">訂閱專屬文章</label>
                     </div>
                     <div class="submit-btn">
-                    <button @click="submitForm" class="submit flex-between">
-                     <span class="material-icons">add</span>
-                    <span>新增文章</span>
-                    </button>
+                        <button @click="submitForm" class="submit flex-between">
+                            <span class="material-icons">add</span>
+                            <span>新增文章</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -160,16 +158,19 @@ export default {
             selectedTags: [],
             customTag: '',
 
-            abc: {
-                content: "",
-                title: "",
-                categoryId: 2,
-
-            }
+        pack: {
+        newArticleTitle: 'jj',
+        // category: '',
+        insertedImages: [],
+        newArticleContent: 'gg',
+        tags: [],
+        selectedTags: []
+    },
 
         };
     },
 
+    
 
 
 
@@ -195,43 +196,56 @@ export default {
     methods: {
 
         submitForm() {
-    // 構建表單數據
-    const formData = new FormData();
-    formData.append('title', this.abc.title);
-    formData.append('content', this.articleContent);
-    formData.append('category', this.categories);
-    // 添加照片數據（可選）
-    for (let i = 0; i < this.insertedImages.length; i++) {
-      const imageFile = this.insertedImages[i];
-      formData.append('images', imageFile);
-    }
-    
-    // 添加標籤數據（可選）
-    for (let i = 0; i < this.selectedTags.length; i++) {
-      const tag = this.selectedTags[i];
-      formData.append('tags', tag);
-    }
-    
-    // 發送 API 請求
-    axios.post('/threads', formData)
-      .then(response => {
-        // 請求成功，處理返回結果
-        console.log(response.data);
-        // 清空表單數據
-        this.abc.title = '';
-        this.articleContent = '';
-        this.insertedImages = [];
-        this.selectedTags = [];
-      })
-      .catch(error => {
-        // 請求失敗，處理錯誤
-        console.error(error);
-      });
-  },
+            // 構建表單數據
+            const formData = new FormData();
+            formData.append('title', this.pack.newArticleTitle);
+            formData.append('content', this.pack.newArticleContent);
+            // formData.append('category', this.pack.categories);
+
+          
+            // 添加照片數據（可選）
+            for (let i = 0; i < this.insertedImages.length; i++) {
+                const imageFile = this.insertedImages[i];
+                formData.append('image[]', imageFile);
+            }
+
+            // 添加標籤數據（可選）
+            for (let i = 0; i < this.selectedTags.length; i++) {
+                const tag = this.selectedTags[i];
+                formData.append('tags', tag);
+            }
+            console.log(title,content,category)
+
+                    // this.newArticleContent = '';
+                    // this.newArticleTitle = '';
+                    // this.insertedImages = [];
+                    // this.selectedTags = [];
+
+            // 發送 API 請求
+            axios.post('/threads', formData)
+                .then(response => {
+                    if (response.status === 200) {
+    console.log('文章建立成功');
+    // 顯示成功訊息或執行後續操作
+  } else {
+    console.log('文章建立失敗');
+    // 顯示錯誤訊息或執行錯誤處理
+  }
+                    
+
+                   
         
-        
-        
-        
+
+                })
+                .catch(error => {
+                    // 請求失敗，處理錯誤
+                    console.error(error);
+                });
+        },
+
+
+
+
         toggleTagSelection(tag) {
             if (this.selectedTags.includes(tag)) {
                 // 如果已選擇，則刪除該標籤
@@ -248,7 +262,7 @@ export default {
             // 使用 API 請求從資料庫獲取標籤資料
             // 請修改以下代碼以符合你的 API 要求
             axios
-                .get('/threads/HotHashtag')
+                .get('threads/AllHashtag')
                 .then(response => {
                     this.tags = response.data.data;
                     console.log(4545)// 將資料庫中的標籤資料存儲到 tags 陣列中
