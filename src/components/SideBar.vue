@@ -34,7 +34,7 @@
     <div v-show="selectedTab === 'topicCategory'" class="content">
       <div class="podcast flex-between">
         <div class="img-box">
-          <img src="../assets/img/article/Rectangle 54.svg" alt="">
+          <img src="../assets/img/article/Rectangle54.svg" alt="">
         </div>
         <div class="content1">
           <div class="txt-box flex-between">
@@ -48,7 +48,7 @@
       </div>
       <div class="podcast flex-between">
         <div class="img-box">
-          <img src="../assets/img/article/Rectangle 54.svg" alt="">
+          <img src="../assets/img/article/Rectangle54.svg" alt="">
         </div>
         <div class="content">
           <div class="txt-box flex-between">
@@ -62,7 +62,7 @@
       </div>
       <div class="podcast flex-between">
         <div class="img-box">
-          <img src="../assets/img/article/Rectangle 54.svg" alt="">
+          <img src="../assets/img/article/Rectangle54.svg" alt="">
         </div>
         <div class="content">
           <div class="txt-box flex-between">

@@ -170,7 +170,7 @@ export default {
     window.googleSignInPromise.then(() => {
       google.accounts.id.initialize({
         client_id:
-          "1042407337082-72sipavf4mejlbvb3r5surhov8el6m60.apps.googleusercontent.com",
+          "699569603913-tatuu7bhl3rntun7m5qt75olhivifnvl.apps.googleusercontent.com",
         callback: this.handleCredentialResponse,
       });
       google.accounts.id.renderButton(document.getElementById("g_id_onload"), {

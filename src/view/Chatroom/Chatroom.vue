@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="cover contaniner">
-            <div class="top pnl-head cover pnl" style="width:100%; padding: 20px ; color: white;">
+            <div class="top pnl-head cover pnl" style="width:100%; padding: 10px ; color: white;">
                     <div id="userName"> 用戶：<span style='float: right;color: green'>在線</span></div>
                     <div id="chatMes" style="text-align: center;color: #6fbdf3;font-family: 新宋体">
                         <!--正在和 <font face="楷体">张三</font> 聊天-->
@@ -21,8 +21,8 @@
 
                             <div class="abs bottom pnl-text">
                                 <div class="abs cover pnl-input">
-                            <textarea class="scroll" id="context_text" wrap="hard"
-                                      placeholder="在此輸入訊息..."></textarea>
+                                    <textarea class="scroll" id="context_text" wrap="hard"
+                                              placeholder="在此輸入訊息..."></textarea>
                                     <div class="abs atcom-pnl scroll hide" id="atcomPnl">
                                         <ul class="atcom" id="atcom"></ul>
                                     </div>

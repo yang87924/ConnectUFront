@@ -2394,7 +2394,7 @@ body {
 }
 
 .pnl-text {
-    height: 10em;
+    height: 40%;
     z-index: 100001 !important;
     background: #fff;
 }

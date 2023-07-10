@@ -3,7 +3,7 @@
         <div class="title">熱門文章</div>
         <div class="podcast flex-between">
             <div class="img-box">
-                <img src="../../../assets/img/article/Rectangle 54.svg" alt="">
+                <img src="../../../assets/img/article/Rectangle54.svg" alt="">
             </div>
             <div class="content">
                 <div class="txt-box flex-between">
@@ -17,7 +17,7 @@
         </div>
         <div class="podcast flex-between">
             <div class="img-box">
-                <img src="../../../assets/img/article/Rectangle 54.svg" alt="">
+                <img src="../../../assets/img/article/Rectangle54.svg" alt="">
             </div>
             <div class="content">
                 <div class="txt-box flex-between">
@@ -31,7 +31,7 @@
         </div>
         <div class="podcast flex-between">
             <div class="img-box">
-                <img src="../../../assets/img/article/Rectangle 54.svg" alt="">
+                <img src="../../../assets/img/article/Rectangle54.svg" alt="">
             </div>
             <div class="content">
                 <div class="txt-box flex-between">

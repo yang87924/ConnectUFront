@@ -6,7 +6,7 @@
                 <!-- <img v-if="user.userName !== null" :src="user.avatar" alt="User Photo"> -->
 
                 <!-- <router-link v-else to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }"> -->
-                <img src="../assets/img/header/user-photo.svg" alt="">
+                <img src="../../../assets/img/header/user-photo.svg" alt="">
                 <!-- </router-link> -->
             </div>
 

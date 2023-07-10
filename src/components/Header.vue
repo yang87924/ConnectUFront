@@ -123,7 +123,7 @@ export default {
             avatar: "", // 大頭貼圖片來源
             //   isOpen: false,
             isConfirmationDialogVisible: false, // 控制登出確認視窗的顯示狀態
-            chatroomHeight: "80px",
+            chatroomHeight: "59px",
             isHeightPercentage: false
         };
     },
@@ -160,7 +160,7 @@ export default {
             if (this.isHeightPercentage) {
                 this.chatroomHeight = "80%";
             } else {
-                this.chatroomHeight = "80px";
+                this.chatroomHeight = "59px";
             }
         }
     },
@@ -186,9 +186,9 @@ export default {
 </script>
 <style lang="css" scoped>
 .chatroom {
-    right: 0;
+    right: 10%;
     bottom: 0;
-    width: 50%;
+    width: 40%;
     height: 80px;
     position: fixed;
     z-index: 100;
