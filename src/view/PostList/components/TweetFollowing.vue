@@ -1,28 +1,46 @@
 <template lang="">
-    <div class="tweet flex-center" v-for="(item, index) in items" :key="index">
+    <div class="tweet" v-for="(item, index) in items" :key="index">
+      <div class="friend-box">
         <div class="friendimg-box" >
             <img :src="item.user.avatar" alt="friend">
         </div>
-        <div class="content">
+
+      </div>
+        <div class="content"  v-if="item.dyThread!= null">
             <div class="friend-info">
                 <span class="name">{{ item.user.userName }}</span>
-                <span class="place">{{ item.createdAt }}</span>
+                <span class="place">{{ item.dyThread.createdAt }}</span>
             </div>
-            <div class="txt">{{ item.content }}</div>
-            <div class="tags">#追星</div>
-            <div class="img-box" :style="{ backgroundImage: `url(${item.picture})` }"></div>
+            <div class="txt">{{ item.dyThread.content }}</div>
+            <div class="tags">
+                <span v-for="tag in item.dyThread.hashtags" :key="tag">{{ tag.name }}</span>
+            </div>
+
+              <div>
+              <!-- <div class="img-container" v-if="item.picture != ''">
+                <div class="img-box" v-for="(picture, index) in item.picture.split('▲')" :key="index">
+                  <img :src="picture" alt="Picture" @click="showImageDialog(picture)">
+                </div>
+              </div> -->
+    
+              <v-dialog v-model="showDialog" max-width="500px">
+                <v-card>
+                  <v-img :src="selectedImage" alt="Full Image"></v-img>
+                </v-card>
+              </v-dialog>
+            </div>
             <div class="flex-start">
                 <div class="fn flex-center">
                     <span class="material-icons">chat_bubble_outline</span>
-                    <span class="fn-txt">{{ item.replyCount }}</span>
+                    <span class="fn-txt">{{ item.dyThread.replyCount }}</span>
                 </div>
                 <!-- <div class="fn flex-center">
                     <span class="material-icons">autorenew</span>
                     <span class="fn-txt">12</span>
                 </div> -->
                 <div class="fn flex-center">
-                    <span class="material-icons" :class="{ active: item.loveStatus }" @click="toggleLove(item)">thumb_up</span>
-                    <span class="fn-txt">{{ item.love }}</span>
+                    <span class="material-icons" :class="{ active: item.dyThread.loveStatus }" @click="toggleLove(item)">thumb_up</span>
+                    <span class="fn-txt">{{ item.dyThread.love }}</span>
                 </div>
 
                 <!-- <div class="fn flex-center active">
@@ -47,12 +65,13 @@ export default {
       pageNum: 1, // 目前頁數
       isLoading: true, // 是否正在載入中
       loveStatus: false, //使用者是否有按讚
+      showDialog: false,
+      selectedImage: ""
     };
   },
   mounted() {
     // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
     this.fetchData();
-    // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
     this.addScrollListener();
   },
   //-----
@@ -60,15 +79,30 @@ export default {
     fetchData() {
       // 發送 HTTP GET 請求到後端 API 獲取資料
       axios
-        .get("/dyThreads/pageDyThread", {
+        .get("/firendship", {
           params: {
             pageNum: this.pageNum,
           },
         })
         .then((response) => {
-          // 請求成功，將資料設置給items陣列
-          this.items = this.items.concat(response.data.data);
-          console.log(response.data.data);
+
+
+        // 請求成功，將資料設置給items陣列
+        response.data.data.forEach((item) => {
+          if (item.dyThread !== null) {
+            this.items.push(item);
+          }
+        })
+          // console.log("-------->>>>>>"+this.items[0].dyThread.createdAt)
+          // console.log("-------->>>>>>"+this.items[1].dyThread.createdAt)
+          // console.log("-------->>>>>>"+this.items[2].dyThread.createdAt)
+          // console.log("-------->>>>>>"+this.items[3].dyThread.createdAt)
+          
+          // console.log(response.data.data);
+          // console.log("111111111111")
+          // console.log(response.data.data[0].dyThread);
+          // console.log("---------")
+          
           this.isLoading = false; // 停止載入狀態
         })
         .catch((error) => {
@@ -106,12 +140,16 @@ export default {
             item.loveStatus = 1;
             item.love++;
           }
-          item = reactive(item);//實現數據的響應式
+          item = reactive(item);
         })
         .catch((error) => {
           console.log(error);
         });
     },
+    showImageDialog(image) {
+      this.selectedImage = image;
+      this.showDialog = true;
+    }
   },
 };
 </script>
@@ -122,13 +160,21 @@ export default {
   background-color: #fff;
   padding: 8px 16px;
 
-  font-family: "ABeeZee";
+  font-family: "微軟正黑體";
   font-size: 19px;
-  font-style: italic;
   font-weight: 400;
   line-height: 22px;
   letter-spacing: 0em;
   text-align: left;
+
+  cursor: pointer;
+
+  display: flex;
+}
+
+.place {
+font-family: "ABeeZee";
+/* font-style: italic; */
 }
 
 .flex-center {
@@ -148,6 +194,11 @@ export default {
   justify-content: flex-start;
   align-items: center;
   /* margin-left: 200px; */
+}
+
+.friend-box {
+  height: 100%;
+  /* background: #1e90ff; */
 }
 
 .friendimg-box {
@@ -173,8 +224,24 @@ export default {
 }
 
 .tags {
-  color: #1da1f2;
-  cursor: pointer;
+    width: 100%;
+}
+
+.tags span {
+    width: 53.48px;
+    height: 24.59px;
+    padding: 4.2969183921813965px 10.74229621887207px 4.2969183921813965px 10.74229621887207px;
+    border-radius: 21.48459243774414px;
+    background-color: #F4F6F8;
+    font-family: Source Sans Pro;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #858EAD;
+    margin-right: 10px;
+    cursor: pointer;
 }
 
 .friend-info span {
@@ -185,13 +252,34 @@ export default {
   color: #5b7083;
 }
 
-.img-box {
+/* .img-box {
   border-radius: 20px;
   width: 628.94px;
   height: 305.2px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+} */
+.img-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 在这里设置你想要的列数 */
+  grid-gap: 10px; 
+  width: 628.94px;
+}
+
+.img-box {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 2/1;
+  border: 0.8px solid #5b7083;
+  border-radius: 8%;
+}
+
+.img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .tweetImg {
@@ -216,7 +304,7 @@ export default {
   color: #1da1f2;
   font-size: 16.063px;
   font-family: "ABeeZee";
-  font-style: italic;
+  /* font-style: italic; */
 }
 
 .active {
