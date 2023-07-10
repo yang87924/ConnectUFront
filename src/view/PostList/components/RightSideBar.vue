@@ -26,7 +26,7 @@
         :key="result"
         class="result-item"
       >
-        {{ result }}
+        {{ result.content }}
       </div>
     </div>
   </div>
