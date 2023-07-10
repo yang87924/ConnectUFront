@@ -62,7 +62,7 @@
 
             <div class="tweets-box" v-if="activeTab === 'recommend'">
                 <!-- 顯示為你推薦的內容 -->
-                <Tweet />
+                <Tweet :results="results"  />
             </div>
             <div class="tweets-box" v-else-if="activeTab === 'following'">
                 <!-- 顯示正在跟隨的內容 -->
@@ -70,7 +70,7 @@
             </div>
         </div>
         <div class="sidebar">
-          <RightSideBar/>
+          <RightSideBar @data-updated="updateData"/>
         </div>
     </div>
 </template>
@@ -99,6 +99,7 @@ export default {
       maxCharacters: 280, // 最大字數限制
       uploadedImages: [], // 上傳的圖片
       userName: "",
+      results: null
     };
   },
 
@@ -206,6 +207,10 @@ export default {
     removeImage(index) {
       this.uploadedImages.splice(index, 1);
     },
+
+    updateData(data) {
+      this.results = data;
+    }
   },
 };
 </script>
