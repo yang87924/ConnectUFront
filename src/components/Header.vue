@@ -26,11 +26,11 @@
                     <span class="material-icons">account_circle</span>
                 </router-link>
             </li>
-            <li class="nav-item flex-center" :class="{ 'active': $route.path === '/article' }">
+            <!-- <li class="nav-item flex-center" :class="{ 'active': $route.path === '/article' }">
                 <router-link to="/article" class="router-link" :class="{ 'active-link': $route.path === '/article' }">
                     <span class="material-icons">mic</span>
                 </router-link>
-            </li>
+            </li> -->
         </ul>
         <div class="user-info flex-between">
             <div class="nav-item flex-center" v-if="userName != null">
