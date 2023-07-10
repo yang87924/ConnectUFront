@@ -4,11 +4,14 @@
       <input
         type="text"
         v-model="query"
-        @input="onInput"
+        @keyup.enter="search"
         placeholder="請輸入關鍵字"
         class="search-input"
       />
-      <div class="search-icon"></div>
+      <button
+        class="search-icon"
+        @click="search"
+      ></button>
     </div>
     <div class="hashtags-container">
       <div
@@ -41,21 +44,29 @@ export default {
   setup(_, { emit }) {
     const query = ref('');
     const results = ref([]);
-    const hashtags = ref(['求職', '運動', '美食','游戲','音樂']); // 标签列表
+    const hashtags = ref(['求職', '運動', '美食', '游戲', '音樂']); // 標籤列表
 
-    const onInput = async () => {
+    const search = async () => {
       if (query.value) {
         try {
-          const response = await axios.get('/dyThreads/search', {
+          console.log('Sending request with query:', query.value); // 顯示送出的查詢
+          const response = await axios.get('http://localhost:8080/dyThreads/search', {
             params: {
-              query: query.value,
+              keyword: query.value, // 將參數名稱從 'query' 改為 'keyword'
             },
           });
-          results.value = response.data;
-
-          emit('update-items', response.data);
+          if (response.data && response.data.data) {
+            results.value = response.data.data;
+            console.log('Received results:', results.value); // 顯示取得的資料
+          } else {
+            results.value = [];
+            console.log('No results found.');
+          }
+          emit('update-items', results.value);
         } catch (error) {
           console.error(error);
+          results.value = [];
+          emit('update-items', []);
         }
       } else {
         results.value = [];
@@ -65,12 +76,14 @@ export default {
 
     const addTagToQuery = (tag) => {
       query.value += `#${tag} `;
+      search(); // 執行搜尋
     };
 
-    return { query, results, hashtags, onInput, addTagToQuery };
+    return { query, results, hashtags, search, addTagToQuery };
   },
 };
 </script>
+
 
 <style scoped>
 .search-container {
@@ -81,11 +94,12 @@ export default {
 
 .search-wrapper {
   position: relative;
+  display: flex;
 }
 
 .search-input {
-  width: 100%;
-  padding: 12px 40px 12px 12px;
+  flex-grow: 1;
+  padding: 12px;
   font-size: 16px;
   border-radius: 4px;
   border: none;
@@ -94,19 +108,8 @@ export default {
   transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-.search-input:focus {
-  outline: none;
-  background-color: #ffffff;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
 .search-icon {
-  position: absolute;
-  top: 50%;
-  right: 10px;
-  transform: translateY(-50%);
-  width: 20px;
-  height: 20px;
+  width: 40px;
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.064.072.098.112l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.096zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>');
   background-position: center;
   background-repeat: no-repeat;
