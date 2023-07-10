@@ -34,7 +34,7 @@
         </ul>
         <div class="user-info flex-between">
             <div class="nav-item flex-center" v-if="userName != null">
-                <span class="material-icons" @click="toggleHeight" >forum</span>
+                <span class="material-icons" @click="toggle" >forum</span>
             </div>
             <div class="outer-border">
                 <div class="user-imgbox ">
@@ -99,7 +99,7 @@
           </div>
       </div> -->
 
-      <div v-if="userName != null" class="chatroom" :style="{ height: chatroomHeight }">
+      <div v-if="userName != null" class="chatroom" :style="{ height: chatroomHeight, width: chatroomWidth }">
           <Chatroom />
       </div>
 
@@ -124,7 +124,9 @@ export default {
             //   isOpen: false,
             isConfirmationDialogVisible: false, // 控制登出確認視窗的顯示狀態
             chatroomHeight: "59px",
-            isHeightPercentage: false
+            chatroomWidth: "30%",
+            isHeightPercentage: false,
+            isWidthPercentage: false
         };
     },
     methods: {
@@ -162,6 +164,18 @@ export default {
             } else {
                 this.chatroomHeight = "59px";
             }
+        },
+        toggleWidth(){
+            this.isWidthPercentage = !this.isWidthPercentage;
+            if (this.isWidthPercentage) {
+                this.chatroomWidth = "40%";
+            } else {
+                this.chatroomWidth = "30%";
+            }
+        },
+        toggle(){
+            this.toggleHeight();
+            this.toggleWidth();
         }
     },
 
@@ -186,15 +200,15 @@ export default {
 </script>
 <style lang="css" scoped>
 .chatroom {
-    right: 10%;
+    right: 0;
     bottom: 0;
-    width: 40%;
-    height: 80px;
+    width: 30%;
+    height: 59px;
     position: fixed;
     z-index: 100;
     display: flex;
     flex-direction: column;
-    transition: height 1s ease;
+    transition: height 1s ease, width 1s ease;
 }
 
 .Chatroom {
