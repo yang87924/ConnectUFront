@@ -5,76 +5,83 @@
             <div class="user-imgbox ">
                 <!-- <img v-if="user.userName !== null" :src="user.avatar" alt="User Photo"> -->
 
-                    <!-- <router-link v-else to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }"> -->
-                    <img src="../assets/img/header/user-photo.svg" alt="" >
-                    <!-- </router-link> -->
-                </div>
+                <!-- <router-link v-else to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }"> -->
+                <img src="../assets/img/header/user-photo.svg" alt="">
+                <!-- </router-link> -->
+            </div>
 
         </div>
         <input type="text" class="post-input" placeholder="Let’s share what going on your mind...">
-        <button @click="showModal" type="submit" class="submit" >Create Post</button>
-        
+        <button @click="showModal" type="submit" class="submit">Create Post</button>
+
         <div v-if="isModalOpen" class="modal">
-           
-        <div class="container">
-            <div class="close-button" @click="closeModal">x</div>
-        <div class="main-content">
-            <div class="page-title">建立文章</div>
-            <select name="articleType" id="articleType" class="article-select">
-                <option value="defualt">請選擇文章板塊</option>
-                <option v-for="category in categories" :key="category.id" :value="category.id">{{ category.name }}</option>
-            </select>
-            <input v-model="abc.title" type="text" class="input-box" placeholder="請輸入文章標題">
-            <div class="edit-toolbox">
-                <span class="material-icons">translate</span>
-                <span class="material-icons">image</span>
-                <span class="material-icons">create</span>
-                <span class="material-icons-round">delete</span>
-            </div>
-            <textarea class="textarea" placeholder="請輸入文章內容....."></textarea>
-            <div class="word-count">0/10000</div>
-            <div class="subtitle">選擇文章標籤(最多 5 個)</div>
-            <div class="tags">
-                <span class="tag">#美食</span>
-                <span class="tag">#生活</span>
-                <span class="tag">#創作</span>
-                <span class="tag">#小說</span>
-                <span class="tag">#插畫</span>
-                <span class="tag">#心情</span>
-                <span class="tag">#區塊鏈</span>
-                <span class="tag">#投資</span>
-                <span class="tag">#生活娛樂</span>
-                <span class="tag">#感情</span>
-            </div>
-            <label for="custom-tag" class="input-label">自訂標籤(最多10個)</label>
-            <input type="text" class="input-box" name="custom-tag">
-            <div class="c-tag-group">
-                <span class="c-tag">#美食</span>
-                <span class="c-tag">#生活</span>
-                <span class="c-tag">#創作</span>
-            </div>
-            <div class="checkbox-block">
-                <div class="checkbox-title">選擇文章種類</div>
-                <input type="checkbox" name="default" class="checkbox">
-                <label for="default" class="checkbox">一般文章</label>
-                <input type="checkbox" name="default" class="checkbox">
-                <label for="default" class="checkbox">訂閱專屬文章</label>
-            </div>
-            <div class="submit-btn">
-                <button @click="createpost" class="submit flex-between">
-                    <span class="material-icons">add</span>
+
+            <div class="container">
+                <div class="close-button" @click="closeModal">x</div>
+                <div class="main-content">
+                    <div class="page-title">建立文章</div>
+
+                    <select name="articleType" id="articleType" class="article-select">
+                        <option value="defualt">請選擇文章板塊</option>
+                        <option v-for="(stuff, id) in categories" :key="id" :value="id">{{ stuff.categoryName }}
+                        </option>
+
+                    </select>
+
+                    <input v-model="abc.title" type="text" class="input-box" placeholder="請輸入文章標題">
+                    <div class="edit-toolbox">
+                        <button @click="decreaseFontSize" class="material-icons">text_decrease</button>
+                        <button @click="increaseFontSize" class="material-icons">text_increase</button>
+                        <button @click="insertImage" class="material-icons">filter</button>
+
+
+                    </div>
+
+
+                    <textarea ref="articleTextarea" class="textarea" placeholder="請輸入文章內容....." v-model="articleContent"
+                        :style="{ fontSize: `${fontSize}px` }"></textarea>
+                    <div v-for="image in insertedImages" :key="image">
+                        <img :src="image" alt="插入的圖片" style="height: 100px;width: 100px;">
+                    </div>
+
+                    <div class="word-count">0/10000</div>
+                    <div class="subtitle">選擇文章標籤(最多 5 個)</div>
+                    <span class="tag" v-for="tag in tags" :key="tag" :class="{ 'selected-tag': selectedTags.includes(tag) }"
+                        @click="toggleTagSelection(tag)">
+                        {{ tag.name }}
+
+
+
+                    </span>
+                    <label style="margin-left: 50px ;" for="custom-tag" class="input-label">自訂標籤(最多10個)</label>
+                    <input type="text" class="input-box" name="custom-tag" v-model="customTag">
+                    <div class="c-tag-group">
+                        <span class="c-tag" v-for="tag in selectedTags" :key="tag">{{ tag }}</span>
+                        <button @click="submitTags">提交標籤</button>
+                    </div>
+                    <div class="checkbox-block">
+                        <div class="checkbox-title">選擇文章種類</div>
+                        <input type="checkbox" name="default" class="checkbox">
+                        <label for="default" class="checkbox">一般文章</label>
+                        <input type="checkbox" name="default" class="checkbox">
+                        <label for="default" class="checkbox">訂閱專屬文章</label>
+                    </div>
+                    <div class="submit-btn">
+                    <button @click="submitForm" class="submit flex-between">
+                     <span class="material-icons">add</span>
                     <span>新增文章</span>
-                   
-                </button>
+                    </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-      </div>
-    </div>
-         
 
-   
-        
+
+
+
+
+
     <div v-for="(item, index) in items" :key="index" class="articleitem">
 
         <div class="newsimg">
@@ -136,6 +143,7 @@ import axios from 'axios';
 export default {
     data() {
         return {
+
             isModalOpen: false,
             categories: [], // 存儲類別資料的陣列
             items: [], // 存放文章的列表
@@ -145,7 +153,13 @@ export default {
             isLoading: true, // 是否正在載入中
             avatar: "",
             userName: "", // 使用者名稱
-        
+            articleContent: '',
+            fontSize: 16,
+            insertedImages: [],
+            tags: [],
+            selectedTags: [],
+            customTag: '',
+
             abc: {
                 content: "",
                 title: "",
@@ -155,34 +169,161 @@ export default {
 
         };
     },
+
+
+
+
     mounted() {
         // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
         this.fetchData();
         this.addScrollListener();
+        this.created()
     },
-    methods: {
-//         fetchCategories() {
-//       // 使用axios或Vue Resource等套件發送資料庫查詢請求
-//       // 在成功獲取資料後，將資料設定給categories陣列
-//       axios.get('類別api')
-//         .then(response => {
-//           this.categories = response.data.data;
-//         })
-//         .catch(error => {
-//           console.error(error);
-//         });
-//     },
-//     closeModal() {
-//       // 實現關閉Modal的邏輯
-//     }
-//   }
 
+    created() {
+        this.fetchCategories();
+        this.fetchTags();
+
+    },
+
+    computed: {
+        dynamicText() {
+            return this.articleContent;
+        },
+    },
+
+    methods: {
+
+        submitForm() {
+    // 構建表單數據
+    const formData = new FormData();
+    formData.append('title', this.abc.title);
+    formData.append('content', this.articleContent);
+    formData.append('category', this.categories);
+    // 添加照片數據（可選）
+    for (let i = 0; i < this.insertedImages.length; i++) {
+      const imageFile = this.insertedImages[i];
+      formData.append('images', imageFile);
+    }
+    
+    // 添加標籤數據（可選）
+    for (let i = 0; i < this.selectedTags.length; i++) {
+      const tag = this.selectedTags[i];
+      formData.append('tags', tag);
+    }
+    
+    // 發送 API 請求
+    axios.post('/threads', formData)
+      .then(response => {
+        // 請求成功，處理返回結果
+        console.log(response.data);
+        // 清空表單數據
+        this.abc.title = '';
+        this.articleContent = '';
+        this.insertedImages = [];
+        this.selectedTags = [];
+      })
+      .catch(error => {
+        // 請求失敗，處理錯誤
+        console.error(error);
+      });
+  },
         
         
         
         
+        toggleTagSelection(tag) {
+            if (this.selectedTags.includes(tag)) {
+                // 如果已選擇，則刪除該標籤
+                this.selectedTags = this.selectedTags.filter((selectedTag) => selectedTag !== tag);
+            } else {
+                // 如果未選擇且未達到最大數量，則添加該標籤
+                if (this.selectedTags.length < 5) {
+                    this.selectedTags.push(tag);
+                }
+            }
+        },
+
+        fetchTags() {
+            // 使用 API 請求從資料庫獲取標籤資料
+            // 請修改以下代碼以符合你的 API 要求
+            axios
+                .get('/threads/HotHashtag')
+                .then(response => {
+                    this.tags = response.data.data;
+                    console.log(4545)// 將資料庫中的標籤資料存儲到 tags 陣列中
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+
+
+
+
+        insertImage() {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = "image/*";
+            input.onchange = (event) => {
+                const file = event.target.files[0];
+                const imageUrl = URL.createObjectURL(file);
+                this.insertedImages.push(imageUrl);
+                this.articleContent += `<div><img src="${imageUrl}" alt="插入的圖片"></div>`;
+                this.$refs.articleTextarea.focus();
+            };
+            input.click();
+        },
+
+
+
+
+
+
+
+        // uploadPhotos() {
+
+
+        //     axios.post('/threads', formData)
+        //         .then(response => {
+        //             console.log(response.data);
+        //         })
+        //         .catch(error => {
+        //             console.error(error);
+        //         });
+        // },
+
+        increaseFontSize() {
+            this.fontSize += 2; // 每次增加 2px
+        },
+        decreaseFontSize() {
+            this.fontSize -= 2; // 每次減小 2px
+        },
+
+
+
+        fetchCategories() {
+            // 使用axios或Vue Resource等套件發送資料庫查詢請求
+            // 在成功獲取資料後，將資料設定給categories陣列
+            axios.get('/category/withCateGoryThreadCount')
+                .then(response => {
+                    this.categories = response.data.data;
+                    console.log("suc", response.data.data)
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        closeModal() {
+            // 實現關閉Modal的邏輯
+        },
+
         showModal() {
             this.isModalOpen = true;
+            this.abc.title = ''; // 清空文章標題
+            this.articleContent = ''; // 清空文章內容
+            this.fontSize = 16; // 重置字體大小
+            console.log(2222)
         },
         closeModal() {
             this.isModalOpen = false;
@@ -224,25 +365,25 @@ export default {
         },
 
         created() {
-    
-    // axios.post('/users/getUserId/0')
-    //   .then(response => {
-    //     console.log(response.data);
-    //     this.userName = response.data.userName;
-    //     this.avatar=response.data.avatar;
-  
-    //   //先放置 圖片
-    //   //   this.avatar = response.data.avatar;
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //     // 處理錯誤
-    //   });
-  
-     
-    },
 
-        
+            // axios.post('/users/getUserId/0')
+            //   .then(response => {
+            //     console.log(response.data);
+            //     this.userName = response.data.userName;
+            //     this.avatar=response.data.avatar;
+
+            //   //先放置 圖片
+            //   //   this.avatar = response.data.avatar;
+            //   })
+            //   .catch(error => {
+            //     console.log(error);
+            //     // 處理錯誤
+            //   });
+
+
+        },
+
+
     },
 };
 </script>
@@ -508,15 +649,16 @@ export default {
 
 .modal {
     position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(201, 192, 211, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999; /* 設置較高的 z-index 值 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(201, 192, 211, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    /* 設置較高的 z-index 值 */
 }
 
 /* .modal-content {
@@ -525,7 +667,7 @@ export default {
   border-radius: 50px;
   width: 500px;
   max-height: 300px; /* 使用 max-height 屬性 */
-  /* font-size: 16px;
+/* font-size: 16px;
   overflow: auto; /* 加上卷軸 */
 
 
@@ -535,9 +677,11 @@ export default {
     display: flex;
     justify-content: center;
     align-items: start;
-    height: 600px; /* 設置元素高度 */
+    height: 600px;
+    /* 設置元素高度 */
     width: 1050px;
-  overflow-y: auto; /* 顯示垂直卷軸 */
+    overflow-y: auto;
+    /* 顯示垂直卷軸 */
 }
 
 .main-content {
@@ -587,7 +731,7 @@ export default {
     border: 1px solid var(--black);
     border-radius: 7.33px;
     padding: 0 15px;
-    
+
 }
 
 .edit-toolbox {
@@ -704,19 +848,22 @@ export default {
 .submit .material-icons {
     margin-right: 8px;
 }
-.close-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 10px;
-  border-radius: 0%;
-  background-color:#800080;
-  color:white;
-  cursor: pointer;
-  border: 5px solid #ca774b;
 
+.close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    border-radius: 0%;
+    background-color: #800080;
+    color: white;
+    cursor: pointer;
+    border: 5px solid #ca774b;
 }
 
+.material-icons small {
 
-
+    width: 10px;
+    height: 10px
+}
 </style>
