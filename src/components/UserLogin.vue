@@ -4,7 +4,7 @@
     <!-- 顶部应用栏 -->
     <v-app-bar color="purple" dark>
       <div class="logo-box">
-                <img src="../assets/img/header/logo.svg" alt="">
+        <img src="../assets/img/header/logo.png" alt="">
             </div>
       <v-spacer></v-spacer>
       <!-- 登录按钮，点击跳转到 "/login" 路由 -->
@@ -272,11 +272,11 @@ html {
 .logo-box {
   display: flex;
   justify-content: center;
-  margin-top: 55px;
+  margin-top: 0px;
 }
 
 .logo-box img {
-  width: 140px; /* 将 logo 的宽度设为 100 像素 */
+  width: 160px; /* 将 logo 的宽度设为 100 像素 */
 }
 
 

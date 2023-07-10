@@ -51,7 +51,7 @@
                         <div class="fan-list-container">
                             <h2 class="fan-list-title">所有追蹤</h2>
                             <ul class="fan-list-items">
-                                <li class="fan-list-item" v-for="follow in follow" :key="follow.id">
+                                <li class="fan-list-item" v-for="follow in follow" :key="follow.userId" @click="redirectToFanPage(follow.userId)">
                                     <img class="fan-avatar" :src="follow.avatar" alt="粉絲頭像">
                                     <span class="fan-name">{{ follow.userName }}</span>
                                 </li>
