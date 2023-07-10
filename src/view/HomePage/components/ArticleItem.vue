@@ -11,7 +11,8 @@
             </div>
 
         </div>
-        <input type="text" class="post-input" placeholder="Let’s share what going on your mind...">
+        <input v-model="newArticleTitle" type="text" class="post-input"
+            placeholder="Let’s share what going on your mind...">
         <button @click="showModal" type="submit" class="submit">Create Post</button>
 
         <div v-if="isModalOpen" class="modal">
@@ -21,24 +22,25 @@
                 <div class="main-content">
                     <div class="page-title">建立文章</div>
 
-                    <select name="articleType" id="articleType" class="article-select">
+                    <select name="articleType" id="articleType" class="article-select" v-model="categoryId">
                         <option value="defualt">請選擇文章板塊</option>
                         <option v-for="(stuff, id) in categories" :key="id" :value="id">{{ stuff.categoryName }}
                         </option>
 
                     </select>
 
-                    <input v-model="abc.title" type="text" class="input-box" placeholder="請輸入文章標題">
+                    <input v-model="newArticleTitle" type="text" class="input-box" placeholder="請輸入文章標題">
                     <div class="edit-toolbox">
                         <button @click="decreaseFontSize" class="material-icons">text_decrease</button>
                         <button @click="increaseFontSize" class="material-icons">text_increase</button>
+                        <input type="file" multiple v-on:change="handleFileChange" />
                         <button @click="insertImage" class="material-icons">filter</button>
 
 
                     </div>
 
 
-                    <textarea ref="articleTextarea" class="textarea" placeholder="請輸入文章內容....." v-model="articleContent"
+                    <textarea ref="articleTextarea" class="textarea" placeholder="請輸入文章內容....." v-model="newArticleContent"
                         :style="{ fontSize: `${fontSize}px` }"></textarea>
                     <div v-for="image in insertedImages" :key="image">
                         <img :src="image" alt="插入的圖片" style="height: 100px;width: 100px;">
@@ -46,18 +48,18 @@
 
                     <div class="word-count">0/10000</div>
                     <div class="subtitle">選擇文章標籤(最多 5 個)</div>
-                    <span class="tag" v-for="tag in tags" :key="tag" :class="{ 'selected-tag': selectedTags.includes(tag) }"
-                        @click="toggleTagSelection(tag)">
+                    <span class="tag" v-for="(tag, index) in tags.slice(0, 10)" :key="index"
+                        :class="{ 'selected-tag': selectedTags.includes(tag) }" @click="toggleTagSelection(tag)">
                         {{ tag.name }}
-
-
-
                     </span>
-                    <label style="margin-left: 50px ;" for="custom-tag" class="input-label">自訂標籤(最多10個)</label>
-                    <input type="text" class="input-box" name="custom-tag" v-model="customTag">
+
+
+                    <!-- <label style="margin-left: 50px ;" for="custom-tag" class="input-label">自訂標籤(最多10個)</label> -->
+
                     <div class="c-tag-group">
-                        <span class="c-tag" v-for="tag in selectedTags" :key="tag">{{ tag }}</span>
-                        <button @click="submitTags">提交標籤</button>
+                        <span style="font-size:10px" class="c-tag" v-for="tag in selectedTags" :key="tag">{{ tag.name
+                        }}</span>
+                        <button @click="submitForm">提交</button>
                     </div>
                     <div class="checkbox-block">
                         <div class="checkbox-title">選擇文章種類</div>
@@ -67,10 +69,10 @@
                         <label for="default" class="checkbox">訂閱專屬文章</label>
                     </div>
                     <div class="submit-btn">
-                    <button @click="submitForm" class="submit flex-between">
-                     <span class="material-icons">add</span>
-                    <span>新增文章</span>
-                    </button>
+                        <button @click="submitForm" class="submit flex-between">
+                            <span class="material-icons">add</span>
+                            <span>新增文章</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -160,15 +162,18 @@ export default {
             selectedTags: [],
             customTag: '',
 
-            abc: {
-                content: "",
-                title: "",
-                categoryId: 2,
 
-            }
+            newArticleTitle: "",
+            categoryId: '',
+            files: [],
+            newArticleContent: "",
+            threadHashtags: []
+
+
 
         };
     },
+
 
 
 
@@ -194,44 +199,62 @@ export default {
 
     methods: {
 
+        handleFileChange(event) {
+            this.selectedImages = event.target.files;
+        },
+
+
         submitForm() {
-    // 構建表單數據
-    const formData = new FormData();
-    formData.append('title', this.abc.title);
-    formData.append('content', this.articleContent);
-    formData.append('category', this.categories);
-    // 添加照片數據（可選）
-    for (let i = 0; i < this.insertedImages.length; i++) {
-      const imageFile = this.insertedImages[i];
-      formData.append('images', imageFile);
-    }
-    
-    // 添加標籤數據（可選）
-    for (let i = 0; i < this.selectedTags.length; i++) {
-      const tag = this.selectedTags[i];
-      formData.append('tags', tag);
-    }
-    
-    // 發送 API 請求
-    axios.post('/threads', formData)
-      .then(response => {
-        // 請求成功，處理返回結果
-        console.log(response.data);
-        // 清空表單數據
-        this.abc.title = '';
-        this.articleContent = '';
-        this.insertedImages = [];
-        this.selectedTags = [];
-      })
-      .catch(error => {
-        // 請求失敗，處理錯誤
-        console.error(error);
-      });
-  },
-        
-        
-        
-        
+
+
+            const formData = new FormData();
+            formData.append('newArticleTitle', this.newArticleTitle);
+            formData.append('newArticleContent', this.newArticleContent);
+            formData.append('categoryId', this.categoryId);
+            for (var i = 0; i < this.selectedImages.length; i++) {
+                var file = this.selectedImages[i];
+                formData.append('file[]', file);
+            };
+            for (var i = 0; i < this.selectedTags.length; i++) {
+                var tag = this.selectedTags[i];
+                formData.append('threadHashtags', tag.name);
+            }
+
+            var entries = formData.entries();
+
+            // 迭代並輸出每個鍵值對
+            for (var pair of entries) {
+                console.log(pair[0] + ": " + pair[1]);
+            }
+
+            axios.post('/threads', formData,{
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+                .then(response => {
+                    // 確認狀態碼
+                    if (response.status === 201) {
+                        // 新增成功
+                        console.log(123);
+                    } else {
+                        // 其他狀態碼處理
+                        console.log(222, response.status);
+                    }
+                })
+                .catch(error => {
+                    // 處理錯誤
+                    console.error(error);
+                });
+
+
+
+        },
+
+
+
+
+
         toggleTagSelection(tag) {
             if (this.selectedTags.includes(tag)) {
                 // 如果已選擇，則刪除該標籤
@@ -248,7 +271,7 @@ export default {
             // 使用 API 請求從資料庫獲取標籤資料
             // 請修改以下代碼以符合你的 API 要求
             axios
-                .get('/threads/HotHashtag')
+                .get('threads/AllHashtag')
                 .then(response => {
                     this.tags = response.data.data;
                     console.log(4545)// 將資料庫中的標籤資料存儲到 tags 陣列中

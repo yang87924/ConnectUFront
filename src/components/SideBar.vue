@@ -248,8 +248,8 @@ export default {
 }
 
 .group {
-    height: 100px;
-    width: 100px;
+    height: 150px;
+    width: 150px;
     position: relative;
     z-index: 1;
     display: flex;
@@ -259,11 +259,12 @@ export default {
 .hash {
     display: flex;
     align-items: center;
+    
 }
 .hash img {
     margin-right: 10px;
-    width: 35px;
-    height: 35px;
+    width: 50px;
+    height: 50px;
 }
 .hashpic {
     margin-right: 10px;
