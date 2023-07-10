@@ -11,7 +11,8 @@
             </div>
 
         </div>
-        <input  v-model="newArticleTitle" type="text" class="post-input" placeholder="Let’s share what going on your mind...">
+        <input v-model="newArticleTitle" type="text" class="post-input"
+            placeholder="Let’s share what going on your mind...">
         <button @click="showModal" type="submit" class="submit">Create Post</button>
 
         <div v-if="isModalOpen" class="modal">
@@ -21,7 +22,7 @@
                 <div class="main-content">
                     <div class="page-title">建立文章</div>
 
-                    <select name="articleType" id="articleType" class="article-select">
+                    <select name="articleType" id="articleType" class="article-select" v-model="categoryId">
                         <option value="defualt">請選擇文章板塊</option>
                         <option v-for="(stuff, id) in categories" :key="id" :value="id">{{ stuff.categoryName }}
                         </option>
@@ -32,13 +33,14 @@
                     <div class="edit-toolbox">
                         <button @click="decreaseFontSize" class="material-icons">text_decrease</button>
                         <button @click="increaseFontSize" class="material-icons">text_increase</button>
+                        <input type="file" multiple v-on:change="handleFileChange" />
                         <button @click="insertImage" class="material-icons">filter</button>
 
 
                     </div>
 
 
-                    <textarea ref="articleTextarea" class="textarea" placeholder="請輸入文章內容....." v-model=" newArticleContent"
+                    <textarea ref="articleTextarea" class="textarea" placeholder="請輸入文章內容....." v-model="newArticleContent"
                         :style="{ fontSize: `${fontSize}px` }"></textarea>
                     <div v-for="image in insertedImages" :key="image">
                         <img :src="image" alt="插入的圖片" style="height: 100px;width: 100px;">
@@ -50,12 +52,14 @@
                         :class="{ 'selected-tag': selectedTags.includes(tag) }" @click="toggleTagSelection(tag)">
                         {{ tag.name }}
                     </span>
+
+
                     <!-- <label style="margin-left: 50px ;" for="custom-tag" class="input-label">自訂標籤(最多10個)</label> -->
 
                     <div class="c-tag-group">
                         <span style="font-size:10px" class="c-tag" v-for="tag in selectedTags" :key="tag">{{ tag.name
                         }}</span>
-                        <button @click="submitTags">提交標籤</button>
+                        <button @click="submitForm">提交</button>
                     </div>
                     <div class="checkbox-block">
                         <div class="checkbox-title">選擇文章種類</div>
@@ -158,19 +162,19 @@ export default {
             selectedTags: [],
             customTag: '',
 
-        pack: {
-        newArticleTitle: 'jj',
-        // category: '',
-        insertedImages: [],
-        newArticleContent: 'gg',
-        tags: [],
-        selectedTags: []
-    },
+
+            newArticleTitle: "",
+            categoryId: '',
+            files: [],
+            newArticleContent: "",
+            threadHashtags: []
+
+
 
         };
     },
 
-    
+
 
 
 
@@ -195,53 +199,58 @@ export default {
 
     methods: {
 
+        handleFileChange(event) {
+            this.selectedImages = event.target.files;
+        },
+
+
         submitForm() {
-            // 構建表單數據
+
+
             const formData = new FormData();
-            formData.append('title', this.pack.newArticleTitle);
-            formData.append('content', this.pack.newArticleContent);
-            // formData.append('category', this.pack.categories);
-
-          
-            // 添加照片數據（可選）
-            for (let i = 0; i < this.insertedImages.length; i++) {
-                const imageFile = this.insertedImages[i];
-                formData.append('image[]', imageFile);
+            formData.append('newArticleTitle', this.newArticleTitle);
+            formData.append('newArticleContent', this.newArticleContent);
+            formData.append('categoryId', this.categoryId);
+            for (var i = 0; i < this.selectedImages.length; i++) {
+                var file = this.selectedImages[i];
+                formData.append('file[]', file);
+            };
+            for (var i = 0; i < this.selectedTags.length; i++) {
+                var tag = this.selectedTags[i];
+                formData.append('threadHashtags', tag.name);
             }
 
-            // 添加標籤數據（可選）
-            for (let i = 0; i < this.selectedTags.length; i++) {
-                const tag = this.selectedTags[i];
-                formData.append('tags', tag);
+            var entries = formData.entries();
+
+            // 迭代並輸出每個鍵值對
+            for (var pair of entries) {
+                console.log(pair[0] + ": " + pair[1]);
             }
-            console.log(title,content,category)
 
-                    // this.newArticleContent = '';
-                    // this.newArticleTitle = '';
-                    // this.insertedImages = [];
-                    // this.selectedTags = [];
-
-            // 發送 API 請求
-            axios.post('/threads', formData)
+            axios.post('/threads', formData,{
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
                 .then(response => {
-                    if (response.status === 200) {
-    console.log('文章建立成功');
-    // 顯示成功訊息或執行後續操作
-  } else {
-    console.log('文章建立失敗');
-    // 顯示錯誤訊息或執行錯誤處理
-  }
-                    
-
-                   
-        
-
+                    // 確認狀態碼
+                    if (response.status === 201) {
+                        // 新增成功
+                        console.log(123);
+                    } else {
+                        // 其他狀態碼處理
+                        console.log(222, response.status);
+                    }
                 })
                 .catch(error => {
-                    // 請求失敗，處理錯誤
+                    // 處理錯誤
                     console.error(error);
                 });
+
+
+
         },
+
 
 
 
