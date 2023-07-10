@@ -10,7 +10,7 @@
     </div>
 
     <div v-show="selectedTab === 'hotTags'" class="hottags1">
-      <div class="a">
+      <!-- <div class="a"> -->
       <!-- <div v-for="item in leaderboardData" :key="item.hashtagId"> -->
       <div v-for="(a, id) in leaderboardData" :key="id" class="group" >
         <div class="hash">
@@ -19,7 +19,7 @@
           <div class="topic">{{ a.name }}{{ id }}</div>
           <div class="num">使用次數{{ a.amount }}</div>
           </div>
-        </div>
+        <!-- </div> -->
       </div> 
 
 
@@ -121,6 +121,28 @@ export default {
           this.isLoading = false; // 停止載入狀態
         });
     },
+
+
+
+fetchData() {
+      // 發送 HTTP GET 請求到後端 API 獲取資料
+      axios
+        .get('/threads/HotHashtag')  // 請根據實際的 API 端點進行更新
+        .then(response => {
+
+          console.log("happy", response)
+          // 請求成功，將資料設置給 leaderboardData 陣列
+          this.leaderboardData = response.data.data;
+          console.log(this.leaderboardData);
+          this.isLoading = false; // 停止載入狀態
+        })
+        .catch(error => {
+          // 請求失敗，處理錯誤
+          console.error(error);
+          this.isLoading = false; // 停止載入狀態
+        });
+    },
+
   },
 
 };
@@ -218,6 +240,7 @@ export default {
     letter-spacing: 0px;
     text-align:center;
     color:darkorange;
+    width:100px
     
     
 
@@ -240,11 +263,20 @@ export default {
   font-weight: 600;
   letter-spacing: 0em;
   color:#b581e0;
-  margin-left: 50px;
-  padding-left: 40px;
+  width:100px;
+  text-align:right;
  
   
 }
+
+/* .num {
+  font-family: 'Source Sans Pro';
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0em;
+  color: #b581e0;
+  width: 100px;
+} */
 
 .btn {
   padding: 20px 20px;
