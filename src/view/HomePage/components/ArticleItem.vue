@@ -211,18 +211,16 @@ export default {
             formData.append('title', this.newArticleTitle);
             formData.append('content', this.newArticleContent);
             formData.append('categoryId', this.categoryId);
-            formData.append('threadHashtags', this.selectedTags );
-            formData.append('files', this.files)
+           
 
-
-            // for (var i = 0; i < this.selectedImages.length; i++) {
-            //     var file = this.selectedImages[i];
-            //     formData.append('files', file);
-            // };
-            // for (var i = 0; i < this.selectedTags.length; i++) {
-            //     var tag = this.selectedTags[i]
-            //     formData.append('threadHashtags', tag );
-            // }
+            for (var i = 0; i < this.selectedImages.length; i++) {
+                var file = this.selectedImages[i];
+                formData.append('files', file);
+            };
+            for (var i = 0; i < this.selectedTags.length; i++) {
+                var tag = this.selectedTags[i]
+                formData.append('threadHashtags', tag.name );
+            }
 
             var entries = formData.entries();
 
