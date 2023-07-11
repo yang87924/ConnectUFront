@@ -488,14 +488,14 @@ export default {
 .uploaded-image-container {
   width: 100%;
   height: 250px;
-  background: #1da1f2;
+  /* background: #1da1f2; */ /* for demo */
   /* display: flex; */
 }
 
 .image-preview {
   /* display: flex; */
   align-items: center;
-  background: #ad1a1a;
+  /* background: #ad1a1a; /*  /* for demo */
 }
 
 .image-preview-box {

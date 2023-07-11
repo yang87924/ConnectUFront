@@ -51,7 +51,7 @@
                         <div class="fan-list-container">
                             <h2 class="fan-list-title">所有追蹤</h2>
                             <ul class="fan-list-items">
-                                <li class="fan-list-item" v-for="follow in follow" :key="follow.id">
+                                <li class="fan-list-item" v-for="follow in follow" :key="follow.userId" @click="redirectToFanPage(follow.userId)">
                                     <img class="fan-avatar" :src="follow.avatar" alt="粉絲頭像">
                                     <span class="fan-name">{{ follow.userName }}</span>
                                 </li>
@@ -125,7 +125,7 @@ export default {
             avatar: '',
             profile: '',
             title: '',
-            activeTab: '',
+            activeTab: '文章',
             followedByCount: '',
             followingCount: '',
 
@@ -154,7 +154,7 @@ export default {
 
         
   fetchFansData() {
-      axios.get('/users/following')
+      axios.get(`/users/following`)
         .then(response => {
             this.fans = response.data.data;
             console.log(this.fans);
@@ -164,7 +164,7 @@ export default {
     },
 
     fetchFollowData() {
-      axios.get('/users/followedBy')
+      axios.get(`/users/followedBy`)
         .then(response => {
             this.follow = response.data.data;
             console.log(this.follow);
