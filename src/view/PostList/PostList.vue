@@ -70,7 +70,8 @@
             </div>
         </div>
         <div class="sidebar">
-          <RightSideBar @data-updated="updateData"/>
+          <!-- 添加监听 update-items 事件的代码 -->
+      <RightSideBar @update-items="updateItems" />
         </div>
     </div>
 </template>
@@ -131,6 +132,11 @@ export default {
       // 處理錯誤
     });
     },
+
+     // 添加一个新的方法来处理 update-items 事件
+  updateItems(newItems) {
+    this.results = newItems; // 更新 results
+  },
     sendTweet() {
       // 在此處執行發送推文的邏輯
       // 可以使用 this.tweetContent 獲取推文內容，this.uploadedImages 獲取上傳的圖片，然後進行相關處理

@@ -59,6 +59,7 @@ import axios from "axios";
 import { reactive } from "vue";//在 Vue 3 中引入 reactive 函數的語法
 
 export default {
+  props: ['results'],
   data() {
     return {
       items: [], // 存放動態的列表
@@ -68,6 +69,16 @@ export default {
       showDialog: false,
       selectedImage: ""
     };
+  },
+  watch: {
+    results: {  // 当父组件传递的搜索结果更新时，使用watch来监听
+      handler(newVal, oldVal) {
+        if(newVal.length > 0) {
+          this.items = newVal;  // 更新items
+        }
+      },
+      deep: true,
+    },
   },
   mounted() {
     // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
