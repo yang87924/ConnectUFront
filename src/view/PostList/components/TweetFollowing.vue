@@ -17,11 +17,11 @@
             </div>
 
               <div>
-              <!-- <div class="img-container" v-if="item.picture != ''">
-                <div class="img-box" v-for="(picture, index) in item.picture.split('▲')" :key="index">
+              <div class="img-container" v-if="item.dyThread.picture != null">
+                <div class="img-box" v-for="(picture, index) in item.dyThread.picture.split('▲')" :key="index">
                   <img :src="picture" alt="Picture" @click="showImageDialog(picture)">
                 </div>
-              </div> -->
+              </div>
     
               <v-dialog v-model="showDialog" max-width="500px">
                 <v-card>
