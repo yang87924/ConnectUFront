@@ -208,17 +208,21 @@ export default {
 
 
             const formData = new FormData();
-            formData.append('newArticleTitle', this.newArticleTitle);
-            formData.append('newArticleContent', this.newArticleContent);
+            formData.append('title', this.newArticleTitle);
+            formData.append('content', this.newArticleContent);
             formData.append('categoryId', this.categoryId);
-            for (var i = 0; i < this.selectedImages.length; i++) {
-                var file = this.selectedImages[i];
-                formData.append('file[]', file);
-            };
-            for (var i = 0; i < this.selectedTags.length; i++) {
-                var tag = this.selectedTags[i];
-                formData.append('threadHashtags', tag.name);
-            }
+            formData.append('threadHashtags', this.selectedTags );
+            formData.append('files', this.files)
+
+
+            // for (var i = 0; i < this.selectedImages.length; i++) {
+            //     var file = this.selectedImages[i];
+            //     formData.append('files', file);
+            // };
+            // for (var i = 0; i < this.selectedTags.length; i++) {
+            //     var tag = this.selectedTags[i]
+            //     formData.append('threadHashtags', tag );
+            // }
 
             var entries = formData.entries();
 
