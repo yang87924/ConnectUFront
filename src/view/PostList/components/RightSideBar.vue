@@ -23,7 +23,7 @@
         {{ tag }}
       </div>
     </div>
-    <div v-if="results.length" class="results-container animate__animated animate__fadeIn">
+    <!-- <div v-if="results.length" class="results-container animate__animated animate__fadeIn">
       <div
         v-for="result in results"
         :key="result"
@@ -31,7 +31,7 @@
       >
         {{ result.content }}
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -76,7 +76,7 @@ export default {
 
     const addTagToQuery = (tag) => {
       query.value += `#${tag} `;
-      search(); // 執行搜尋
+      // search(); // 執行搜尋
     };
 
     return { query, results, hashtags, search, addTagToQuery };

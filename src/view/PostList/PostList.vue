@@ -70,7 +70,8 @@
             </div>
         </div>
         <div class="sidebar">
-          <RightSideBar @data-updated="updateData"/>
+          <!-- 添加监听 update-items 事件的代码 -->
+      <RightSideBar @update-items="updateItems" />
         </div>
     </div>
 </template>
@@ -131,6 +132,11 @@ export default {
       // 處理錯誤
     });
     },
+
+     // 添加一个新的方法来处理 update-items 事件
+  updateItems(newItems) {
+    this.results = newItems; // 更新 results
+  },
     sendTweet() {
       // 在此處執行發送推文的邏輯
       // 可以使用 this.tweetContent 獲取推文內容，this.uploadedImages 獲取上傳的圖片，然後進行相關處理
@@ -524,11 +530,23 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   padding: 10px 20px;
-  background-color:#f4a03a;
+  background: linear-gradient(45deg, #d28537, #e6e6e6, #880eda);
+  background-size: 400% 400%;
   color: white;
   font-weight: bold;
   border-radius: 5px;
   z-index: 9999;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
 }
 
 
