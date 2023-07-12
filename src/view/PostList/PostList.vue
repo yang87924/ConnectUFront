@@ -530,11 +530,23 @@ export default {
   left: 50%;
   transform: translateX(-50%);
   padding: 10px 20px;
-  background-color:#f4a03a;
+  background: linear-gradient(45deg, #d28537, #e6e6e6, #880eda);
+  background-size: 400% 400%;
   color: white;
   font-weight: bold;
   border-radius: 5px;
   z-index: 9999;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
 }
 
 
