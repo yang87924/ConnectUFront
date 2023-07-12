@@ -265,27 +265,48 @@ export default {
                 }
             })
                 .then(response => {
-                    // 確認狀態碼
-                    if (response.status === 200) {
-
-                        this.closeModal();
-                        
-                        this.showSuccessMessage = true;
-                        
 
 
+                    this.closeModal();
+                    
+                    this.showSuccessMessage = true;
+                    setTimeout(() => {
+                        this.showSuccessMessage = false;
+                        location.reload(); // 刷新页面
+                    }, 2000)
 
-                        setTimeout(() => {
-                            location.reload();
-                            this.showSuccessMessage = false;
-                            
-                        }, 3000);
+                    // this.closeModal();
+                    // location.reload();
+                    // this.showSuccessMessage = true;
+                    // setTimeout(() => {
 
+                    // this.showSuccessMessage = flase;
 
-                    } else {
-                        console.log("fail")
-                    }
+                    //     }, 5000);為什麼這個不行？？
+
                 })
+
+
+
+
+                // 確認狀態碼
+                //     if (response.status === 200) {
+
+                //         this.closeModal();
+                //         location.reload();
+                //         this.showSuccessMessage = true;
+
+                //         setTimeout(() => {
+
+                //             this.showSuccessMessage = flase;
+
+                //         }, 2000);
+
+
+                //     } else {
+                //         console.log("fail")
+                //     }
+                // })
 
 
                 .catch(error => {
