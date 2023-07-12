@@ -6,7 +6,7 @@
                 <!-- <img v-if="user.userName !== null" :src="user.avatar" alt="User Photo"> -->
 
                 <!-- <router-link v-else to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }"> -->
-                <img src="../assets/img/header/user-photo.svg" alt="">
+                <img src="../../../assets/img/header/user-photo.svg" alt="">
                 <!-- </router-link> -->
             </div>
 
@@ -70,18 +70,27 @@
                     </div>
                     <div class="submit-btn">
                         <button @click="submitForm" class="submit flex-between">
-                            <span class="material-icons">add</span>
+
                             <span>新增文章</span>
+
                         </button>
+
+
                     </div>
+
                 </div>
+
+
+
             </div>
+
         </div>
+
     </div>
 
 
 
-
+    <div style="padding-top:35px" v-if="showSuccessMessage" class="success-message">新增文章成功！</div>
 
 
     <div v-for="(item, index) in items" :key="index" class="articleitem">
@@ -89,7 +98,9 @@
         <div class="newsimg">
             <img :src="item.picture" alt="" class="newspic">
             <div class="top">
-                <div class="word">{{ item.title }}</div>
+                <router-link :to="{ name: 'ArticlePage', params: { threadId: item.threadId } }">
+                    <div class="word">{{ item.title }}</div>
+                </router-link>
                 <div class="icon"><img src="../../../assets/img/HomePage/ArticleItem/Love.svg" alt=""></div>
             </div>
             <div class="tags">
@@ -101,9 +112,12 @@
             <div class="person">
                 <img :src="item.user.avatar" alt="" class="avatar">
                 <div class="name-area">
+                    <button style="width:300px ;margin-left:200px" @click="deleteItem(threadId)">刪除</button>
                     <div class="name">{{ item.user.userName }}</div>
+
                     <div class="time">{{ item.createdAt }}</div>
                 </div>
+
             </div>
 
 
@@ -146,6 +160,7 @@ export default {
     data() {
         return {
 
+            showSuccessMessage: false,
             isModalOpen: false,
             categories: [], // 存儲類別資料的陣列
             items: [], // 存放文章的列表
@@ -199,6 +214,21 @@ export default {
 
     methods: {
 
+        deleteItem() {
+            // 执行删除 API 的逻辑
+            axios.delete('/threads/deleteByThreadId/${threadId}')
+                .then(response => {
+                    // 删除成功的处理逻辑
+                    console.log('删除成功');
+                })
+                .catch(error => {
+                    // 处理删除失败的情况
+                    console.error('删除失败', error);
+                });
+        },
+
+
+
         handleFileChange(event) {
             this.selectedImages = event.target.files;
         },
@@ -211,7 +241,7 @@ export default {
             formData.append('title', this.newArticleTitle);
             formData.append('content', this.newArticleContent);
             formData.append('categoryId', this.categoryId);
-           
+
 
             for (var i = 0; i < this.selectedImages.length; i++) {
                 var file = this.selectedImages[i];
@@ -219,7 +249,7 @@ export default {
             };
             for (var i = 0; i < this.selectedTags.length; i++) {
                 var tag = this.selectedTags[i]
-                formData.append('threadHashtags', tag.name );
+                formData.append('threadHashtags', tag.name);
             }
 
             var entries = formData.entries();
@@ -229,29 +259,46 @@ export default {
                 console.log(pair[0] + ": " + pair[1]);
             }
 
-            axios.post('/threads', formData,{
+            axios.post('/threads', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             })
                 .then(response => {
                     // 確認狀態碼
-                    if (response.status === 201) {
-                        // 新增成功
-                        console.log(123);
+                    if (response.status === 200) {
+
+                        this.closeModal();
+                        
+                        this.showSuccessMessage = true;
+                        
+
+
+
+                        setTimeout(() => {
+                            location.reload();
+                            this.showSuccessMessage = false;
+                            
+                        }, 3000);
+
+
                     } else {
-                        // 其他狀態碼處理
-                        console.log(222, response.status);
+                        console.log("fail")
                     }
                 })
+
+
                 .catch(error => {
                     // 處理錯誤
-                    console.error(error);
                 });
 
 
 
+
+
         },
+
+
 
 
 
@@ -339,9 +386,7 @@ export default {
                     console.error(error);
                 });
         },
-        closeModal() {
-            // 實現關閉Modal的邏輯
-        },
+
 
         showModal() {
             this.isModalOpen = true;
@@ -351,8 +396,11 @@ export default {
             console.log(2222)
         },
         closeModal() {
+
             this.isModalOpen = false;
+
         },
+
 
         fetchData() {
             // 發送 HTTP GET 請求到後端 API 獲取資料
@@ -367,6 +415,7 @@ export default {
                     this.items = this.items.concat(response.data.data);
                     console.log(response.data.data);
                     this.isLoading = false; // 停止載入狀態
+
                 })
                 .catch(error => {
                     // 請求失敗，處理錯誤
@@ -508,10 +557,12 @@ export default {
 
 .word {
     font-family: 'Source Sans Pro';
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 600;
     line-height: 26px;
     letter-spacing: 0em;
+    /* text-decoration: none;  */
+
 }
 
 .icon {
@@ -890,5 +941,32 @@ export default {
 
     width: 10px;
     height: 10px
+}
+
+.success-message {
+    height: 100px;
+    position: fixed;
+    color: #F4F6F8;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    background: linear-gradient(45deg, #d28537, #e6e6e6, #880eda);
+    background-size: 400% 400%;
+    font-weight: bold;
+    border-radius: 5px;
+    z-index: 9999;
+
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
 }
 </style>

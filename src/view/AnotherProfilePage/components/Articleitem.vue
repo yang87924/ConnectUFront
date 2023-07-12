@@ -1,0 +1,371 @@
+<template >
+
+    <div v-for="(item, index) in items" :key="index" class="articleitem">
+
+        <div class="newsimg">
+            <img :src="item.picture" alt="" class="newspic">
+            <div class="top">
+                <router-link :to="{ name: 'ArticlePage', params: { threadId: item.threadId } }">
+                    <div class="word">{{ item.title }}</div>
+                </router-link>
+                <div class="icon"><img src="../../../assets/img/HomePage/ArticleItem/Love.svg" alt=""></div>
+            </div>
+            <div class="tags">
+                <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
+                </div>
+           
+        </div>
+        <div class="data">
+            <div class="person">
+                    <img :src="item.user.avatar" alt="" class="avatar">
+                    <div class="name-area">
+                        <div class="name">{{ item.user.userName }}</div>
+                        <div class="time">{{ item.createdAt }}</div>
+                    </div>
+                </div>
+   
+
+                <div class="content">{{ item.content }}</div>
+            
+     <div>
+
+        
+
+
+     </div>       
+            
+            <div class="down">
+               
+            <div>
+                <div class="num">
+                    <!-- <img src="../../../assets/img/HomePage/ArticleItem/like1.svg" alt="按讚圖片" class="licon1"/> -->
+                    <i class="fas fa-heart"></i>
+                    <span class="text1" style="font-weight: bold; font-size: 20px;color: blueviolet;">{{ item.love }}</span>
+                    <!-- <img src="../../../assets/img/HomePage/ArticleItem/mess.svg" alt="留言" class="licon2"/> -->
+                    <i class="far fa-comments"></i>
+                    <span class="text2" style="font-weight: bold; font-size: 20px;color: blueviolet;" >{{ item.replyCount }}</span>
+                    <!-- <span>收藏{{ item.loveStatus }}</span> -->
+             
+                </div>
+            </div>
+            </div>
+        </div>
+
+    </div>
+    <div v-if="isLoading" class="loading">
+        <div class="loader"></div>
+    </div>
+</template>
+<script>
+import axios from 'axios';
+export default {
+    data() {
+        return {
+            items: [], // 存放文章的列表
+            newArticleTitle: '', // 新文章的標題
+            newArticleContent: '', // 新文章的內容
+            pageNum: 1, // 目前頁數
+            isLoading: true, // 是否正在載入中
+        };
+    },
+    mounted() {
+        // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
+        this.fetchData();
+        this.addScrollListener();
+    },
+    methods: {
+        fetchData() {
+            // 發送 HTTP GET 請求到後端 API 獲取資料
+            axios
+            axios.get(`/threads/userThread/${this.$route.params.id}`, {
+                    params: {
+                        pageNum: this.pageNum,
+                    },
+                })
+                .then(response => {
+                    // 請求成功，將資料設置給items陣列
+                    this.items = this.items.concat(response.data.data);
+                    console.log(response.data.data);
+                    this.isLoading = false; // 停止載入狀態
+                })
+                .catch(error => {
+                    // 請求失敗，處理錯誤
+                    console.error(error);
+                    this.isLoading = false; // 停止載入狀態
+                });
+        },
+        addData() {
+            this.pageNum++; // 增加頁數
+            this.isLoading = true; // 開始載入狀態
+            this.fetchData();
+        },
+        addScrollListener() {
+            window.addEventListener('scroll', () => {
+                const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+                const offset = 5; // 設置一個偏移值
+                if (scrollTop + clientHeight + offset >= scrollHeight) {
+                    this.addData();
+                }
+            });
+        },
+    },
+};
+</script>
+<style lang="css" scoped>
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loader {
+    border: 16px solid #f3f3f3;
+    /* Light grey */
+    border-top: 16px solid #3498db;
+    /* Blue */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+}
+
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* or any other value that suits your needs */
+}
+
+.content {
+    font-family: 'Source Sans Pro';
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #333;
+    margin-top: 10px;
+    margin-left: 30px;
+    font-family: "Microsoft JhengHei", Arial, sans-serif;
+}
+
+.down {
+    margin-top: 20px;
+    display: flex;
+    align-items: right;
+    justify-content: space-between;
+
+
+}
+
+.person {
+    height: 100px;
+    width: 200px;
+    display: flex;
+    align-items: center;
+
+
+}
+
+.avatar {
+    height: 50px;
+    width: 50px;
+    clip-path: circle(50% at center);
+
+}
+
+.articleitem {
+    width: 100%;
+    display: flex;
+    box-shadow: 4px 4px rgba(0, 0, 0, 0.25);
+    padding-left: 20px;
+    
+    /* padding-top: 21.48459243774414px; */
+    border-radius: 17.187673568725586px;
+    margin-bottom: 20px;
+}
+
+
+
+
+.top {
+    display: flex;
+    margin-top: 5px;
+    width: 100%;
+    justify-content: space-between;
+
+}
+
+.data {
+    width: 60%;
+    margin-left: 30px;
+
+}
+
+.word {
+    font-family: 'Source Sans Pro';
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 26px;
+    letter-spacing: 0em;
+}
+
+.icon {
+    margin-top: -3px;
+}
+
+.tags {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.time {
+    font-family: 'Source Sans Pro';
+    font-size: 8px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #97989D;
+    margin-left: 8px;
+}
+
+.num span {
+    font-family: 'Source Sans Pro';
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #97989D;
+    margin-left: 8px;
+
+}
+
+.num {
+    padding-left: 30px;
+    padding-bottom: 50px;
+}
+
+.tags span {
+    width: 200px;
+    height: 24.59px;
+    padding: 4.2969183921813965px 10.74229621887207px 4.2969183921813965px 10.74229621887207px;
+    border-radius: 21.48459243774414px;
+    background-color: #F4F6F8;
+    font-family: Source Sans Pro;
+    font-size: 1px;
+    font-weight: 600;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #858EAD;
+    margin-right: 10px;
+}
+
+.newsimg {
+
+    height: 150px;
+    width: 150px;
+
+    box-shadow: 5px 5px rgba(0, 0, 0, 0.25);
+    border-radius: 10%;
+    margin: 10px 0px 10px 0px;
+    
+
+
+}
+
+.newspic {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    border-radius: 10%;
+}
+
+.create-post {
+    padding: 24px;
+    margin-bottom: 100px;
+}
+
+.memoji-box {
+    height: 43px;
+    width: 43px;
+    border-radius: 50%;
+    background-color: #F9DFC0;
+    margin-right: 20px;
+}
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-post .post-input {
+    border: none;
+    border-radius: 6.44px;
+    background-color: #F4F6F8;
+    padding: 13px;
+    width: 100%;
+}
+.create-post .submit {
+    padding: 12px 17px;
+    margin-left: 20px;
+    border: none;
+    border-radius: 6.44px;
+    background-color: var(--button-default);
+    font-family: 'Rubik';
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 21px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #FFF;
+}
+.fa-comments{
+
+    padding-left: 50px;
+    font-size: 25px;
+}
+.fa-heart{
+
+    font-size: 25px;
+
+}
+
+.licon2{
+
+width: 30px; 
+height: 30px;
+margin-right: 30px;
+
+
+}
+.text1{
+margin-left: 10px;
+text-align: center;
+padding-right: 100px;
+padding-bottom: 70px;
+}
+.text2{
+margin-left: 100px;
+text-align: center;
+
+padding-bottom: 70px;
+}
+
+
+
+
+</style>

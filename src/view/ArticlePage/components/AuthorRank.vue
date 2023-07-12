@@ -9,7 +9,7 @@
             <div class="rank-content">
                 <div class="name">真正有影</div>
                 <div class="comment flex-start">
-                    <img src="../../../assets/img/article/Rectangle 32.svg" alt="">
+                    <img src="../../../assets/img/article/Rectangle32.svg" alt="">
                     <span class="txt">UIHUT • Sylhet, Bangladesh</span>
                 </div>
                 <div class="tags">
@@ -27,7 +27,7 @@
             <div class="rank-content">
                 <div class="name">你好世界</div>
                 <div class="comment flex-start">
-                    <img src="../../../assets/img/article/Rectangle 33.svg" alt="">
+                    <img src="../../../assets/img/article/Rectangle33.svg" alt="">
                     <span class="txt">Dribbble • Austin, Texas, USA</span>
                 </div>
                 <div class="tags">
@@ -44,7 +44,7 @@
             <div class="rank-content">
                 <div class="name">契卡契卡</div>
                 <div class="comment flex-start">
-                    <img src="../../../assets/img/article/Rectangle 34.svg" alt="">
+                    <img src="../../../assets/img/article/Rectangle34.svg" alt="">
                     <span class="txt">Behance • Sab jose, Califonia, USA</span>
                 </div>
                 <div class="tags">
