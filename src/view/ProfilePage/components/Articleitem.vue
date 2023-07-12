@@ -1,81 +1,274 @@
 <template >
+    <div v-for="(item, index) in items" :key="index" class="articleitem">
 
-<div v-for="(item, index) in items" :key="index" class="articleitem">
+        <div class="newsimg">
+            <img :src="item.picture" alt="" class="newspic">
+            <div class="top">
+                <router-link :to="{ name: 'ArticlePage', params: { threadId: item.threadId } }">
+                <div class="word">{{ item.title }}</div>
+                </router-link>
+                <div class="icon"><img src="../../../assets/img/HomePage/ArticleItem/Love.svg" alt=""></div>
+            </div>
+            <div class="tags">
+                <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
+            </div>
 
-<div class="newsimg">
-    <img :src="item.picture" alt="" class="newspic">
-    <div class="top">
-        <router-link :to="{ name: 'ArticlePage', params: { threadId: item.threadId } }">
-        <div class="word">{{ item.title }}</div>
-        </router-link>
-        <div class="icon"><img src="../../../assets/img/HomePage/ArticleItem/Love.svg" alt=""></div>
-    </div>
-    <div class="tags">
-        <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
-    </div>
-
-</div>
-<div class="data">
-    <div class="person">
-        <img :src="item.user.avatar" alt="" class="avatar">
-        <div class="name-area">
-            <div class="name">{{ item.user.userName }}</div>
-            <div class="time">{{ item.createdAt }}</div>
         </div>
-    </div>
+        <div class="data">
+            <div class="person">
+                <img :src="item.user.avatar" alt="" class="avatar">
+                <div class="name-area">
+                    <div class="name">{{ item.user.userName }}</div>
+                    <div class="time">{{ item.createdAt }}</div>
+                </div>
+            </div>
 
 
-    <div class="content">{{ item.content }}</div>
+            <div class="content">{{ item.content }}</div>
 
-    <div>
-
-
+            <div>
 
 
-    </div>
 
-    <div class="down">
-
-        <div>
-            <div class="num">
-                <!-- <img src="../../../assets/img/HomePage/ArticleItem/like1.svg" alt="按讚圖片" class="licon1"/> -->
-                <i class="fas fa-heart"></i>
-                <span class="text1" style="font-weight: bold; font-size: 20px;color: blueviolet;">{{ item.love
-                }}</span>
-                <!-- <img src="../../../assets/img/HomePage/ArticleItem/mess.svg" alt="留言" class="licon2"/> -->
-                <i class="far fa-comments"></i>
-                <span class="text2" style="font-weight: bold; font-size: 20px;color: blueviolet;">{{
-                    item.replyCount }}</span>
-                <!-- <span>收藏{{ item.loveStatus }}</span> -->
 
             </div>
-        </div>
-    </div>
-</div>
 
-</div>
-<div v-if="isLoading" class="loading">
-<div class="loader"></div>
-</div>
+            <div class="down">
+
+                <div>
+                    <div class="num">
+                        <!-- <img src="../../../assets/img/HomePage/ArticleItem/like1.svg" alt="按讚圖片" class="licon1"/> -->
+                        <i class="fas fa-heart"></i>
+                        <span class="text1" style="font-weight: bold; font-size: 20px;color: blueviolet;">{{ item.love
+                        }}</span>
+                        <!-- <img src="../../../assets/img/HomePage/ArticleItem/mess.svg" alt="留言" class="licon2"/> -->
+                        <i class="far fa-comments"></i>
+                        <span class="text2" style="font-weight: bold; font-size: 20px;color: blueviolet;">{{
+                            item.replyCount }}</span>
+                        <!-- <span>收藏{{ item.loveStatus }}</span> -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div v-if="isLoading" class="loading">
+        <div class="loader"></div>
+    </div>
 </template>
 <script>
 import axios from 'axios';
 export default {
     data() {
         return {
+
+            isModalOpen: false,
+            categories: [], // 存儲類別資料的陣列
             items: [], // 存放文章的列表
             newArticleTitle: '', // 新文章的標題
             newArticleContent: '', // 新文章的內容
             pageNum: 1, // 目前頁數
             isLoading: true, // 是否正在載入中
+            avatar: "",
+            userName: "", // 使用者名稱
+            articleContent: '',
+            fontSize: 16,
+            insertedImages: [],
+            tags: [],
+            selectedTags: [],
+            customTag: '',
+
+
+            newArticleTitle: "",
+            categoryId: '',
+            files: [],
+            newArticleContent: "",
+            threadHashtags: []
+
+
+
         };
     },
+
+
+
+
+
     mounted() {
         // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
         this.fetchData();
         this.addScrollListener();
+        this.created()
     },
+
+    created() {
+        this.fetchCategories();
+        this.fetchTags();
+
+    },
+
+    computed: {
+        dynamicText() {
+            return this.articleContent;
+        },
+    },
+
     methods: {
+
+        handleFileChange(event) {
+            this.selectedImages = event.target.files;
+        },
+
+
+        submitForm() {
+
+
+            const formData = new FormData();
+            formData.append('title', this.newArticleTitle);
+            formData.append('content', this.newArticleContent);
+            formData.append('categoryId', this.categoryId);
+            for (var i = 0; i < this.selectedImages.length; i++) {
+                var file = this.selectedImages[i];
+                formData.append('files', file);
+            };
+            for (var i = 0; i < this.selectedTags.length; i++) {
+                var tag = this.selectedTags[i];
+                formData.append('threadHashtags', tag.name);
+            }
+
+            var entries = formData.entries();
+
+            // 迭代並輸出每個鍵值對
+            for (var pair of entries) {
+                console.log(pair[0] + ": " + pair[1]);
+            }
+
+            axios.post('/threads', formData,{
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+                .then(response => {
+                    // 確認狀態碼
+                    if (response.status === 201) {
+                        // 新增成功
+                        console.log(123);
+                    } else {
+                        // 其他狀態碼處理
+                        console.log(222, response.status);
+                    }
+                })
+                .catch(error => {
+                    // 處理錯誤
+                    console.error(error);
+                });
+
+
+
+        },
+
+
+
+
+
+        toggleTagSelection(tag) {
+            if (this.selectedTags.includes(tag)) {
+                // 如果已選擇，則刪除該標籤
+                this.selectedTags = this.selectedTags.filter((selectedTag) => selectedTag !== tag);
+            } else {
+                // 如果未選擇且未達到最大數量，則添加該標籤
+                if (this.selectedTags.length < 5) {
+                    this.selectedTags.push(tag);
+                }
+            }
+        },
+
+        fetchTags() {
+            // 使用 API 請求從資料庫獲取標籤資料
+            // 請修改以下代碼以符合你的 API 要求
+            axios
+                .get('threads/AllHashtag')
+                .then(response => {
+                    this.tags = response.data.data;
+                    console.log(4545)// 將資料庫中的標籤資料存儲到 tags 陣列中
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+
+
+
+
+        insertImage() {
+            const input = document.createElement("input");
+            input.type = "file";
+            input.accept = "image/*";
+            input.onchange = (event) => {
+                const file = event.target.files[0];
+                const imageUrl = URL.createObjectURL(file);
+                this.insertedImages.push(imageUrl);
+                this.articleContent += `<div><img src="${imageUrl}" alt="插入的圖片"></div>`;
+                this.$refs.articleTextarea.focus();
+            };
+            input.click();
+        },
+
+
+
+
+
+
+
+        // uploadPhotos() {
+
+
+        //     axios.post('/threads', formData)
+        //         .then(response => {
+        //             console.log(response.data);
+        //         })
+        //         .catch(error => {
+        //             console.error(error);
+        //         });
+        // },
+
+        increaseFontSize() {
+            this.fontSize += 2; // 每次增加 2px
+        },
+        decreaseFontSize() {
+            this.fontSize -= 2; // 每次減小 2px
+        },
+
+
+
+        fetchCategories() {
+            // 使用axios或Vue Resource等套件發送資料庫查詢請求
+            // 在成功獲取資料後，將資料設定給categories陣列
+            axios.get('/category/withCateGoryThreadCount')
+                .then(response => {
+                    this.categories = response.data.data;
+                    console.log("suc", response.data.data)
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        },
+        closeModal() {
+            // 實現關閉Modal的邏輯
+        },
+
+        showModal() {
+            this.isModalOpen = true;
+            this.abc.title = ''; // 清空文章標題
+            this.articleContent = ''; // 清空文章內容
+            this.fontSize = 16; // 重置字體大小
+            console.log(2222)
+        },
+        closeModal() {
+            this.isModalOpen = false;
+        },
+
         fetchData() {
             // 發送 HTTP GET 請求到後端 API 獲取資料
             axios
@@ -110,6 +303,27 @@ export default {
                 }
             });
         },
+
+        created() {
+
+            // axios.post('/users/getUserId/0')
+            //   .then(response => {
+            //     console.log(response.data);
+            //     this.userName = response.data.userName;
+            //     this.avatar=response.data.avatar;
+
+            //   //先放置 圖片
+            //   //   this.avatar = response.data.avatar;
+            //   })
+            //   .catch(error => {
+            //     console.log(error);
+            //     // 處理錯誤
+            //   });
+
+
+        },
+
+
     },
 };
 </script>
