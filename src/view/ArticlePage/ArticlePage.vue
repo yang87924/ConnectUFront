@@ -81,9 +81,6 @@ import HotArticle from './components/HotArticle.vue'
 
 export default {
     components: {
-        SideBar,
-        AuthorRank,
-        HotArticle,
     },
 
     methods: {
@@ -130,6 +127,7 @@ export default {
             loves: '',
         }
     },
+    
 
     created() {
         axios.get(`/threads/${this.$route.params.threadId}`)

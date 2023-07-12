@@ -1,42 +1,58 @@
 <template lang="">
-    <div class="tweet flex-center" v-for="(item, index) in items" :key="index">
-        <div class="friendimg-box" >
-            <img :src="item.user.avatar" alt="friend">
-        </div>
-        <div class="content">
-            <div class="friend-info">
-                <span class="name">{{ item.user.userName }}</span>
-                <span class="place">{{ item.createdAt }}</span>
-            </div>
-            <div class="txt">{{ item.content }}</div>
-            <div class="tags">
-                <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
-            </div>
-            <div class="img-box" :style="{ backgroundImage: `url(${item.picture})` }"></div>
-            <div class="flex-start">
-                <div class="fn flex-center">
-                    <span class="material-icons">chat_bubble_outline</span>
-                    <span class="fn-txt">{{ item.replyCount }}</span>
-                </div>
-                <!-- <div class="fn flex-center">
-                    <span class="material-icons">autorenew</span>
-                    <span class="fn-txt">12</span>
-                </div> -->
-                <div class="fn flex-center">
-                    <span class="material-icons" :class="{ active: item.loveStatus }" @click="toggleLove(item)">thumb_up</span>
-                    <span class="fn-txt">{{ item.love }}</span>
-                </div>
+  <div class="tweet " v-for="(item, index) in items" :key="index">
+    <div class="friend-box">
+      <div class="friendimg-box" >
+          <img :src="item.user.avatar" alt="friend">
+      </div>
 
-                <!-- <div class="fn flex-center active">
-                    <span class="material-icons">ios_share</span>
-                    <span class="fn-txt">61</span>
-                </div> -->
-            </div>
-            <div class="show">
-                Show this thread
-            </div>
-        </div>
     </div>
+      <div class="content">
+          <div class="friend-info">
+              <span class="name">{{ item.user.userName }}</span>
+              <span class="place">{{ item.createdAt }}</span>
+          </div>
+          <div class="txt">{{ item.content }}</div>
+          <div class="tags">
+              <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
+          </div>
+
+            <div>
+            <div class="img-container" v-if="item.picture != ''">
+              <div class="img-box" v-for="(picture, index) in item.picture.split('▲')" :key="index">
+                <img :src="picture" alt="Picture" @click="showImageDialog(picture)">
+              </div>
+            </div>
+  
+            <v-dialog v-model="showDialog" max-width="500px">
+              <v-card>
+                <v-img :src="selectedImage" alt="Full Image"></v-img>
+              </v-card>
+            </v-dialog>
+          </div>
+          <div class="flex-start">
+              <div class="fn flex-center">
+                  <span class="material-icons">chat_bubble_outline</span>
+                  <span class="fn-txt">{{ item.replyCount }}</span>
+              </div>
+              <!-- <div class="fn flex-center">
+                  <span class="material-icons">autorenew</span>
+                  <span class="fn-txt">12</span>
+              </div> -->
+              <div class="fn flex-center">
+                  <span class="material-icons" :class="{ active: item.loveStatus }" @click="toggleLove(item)">thumb_up</span>
+                  <span class="fn-txt">{{ item.love }}</span>
+              </div>
+
+              <!-- <div class="fn flex-center active">
+                  <span class="material-icons">ios_share</span>
+                  <span class="fn-txt">61</span>
+              </div> -->
+          </div>
+          <div class="show">
+              Show this thread
+          </div>
+      </div>
+  </div>
 </template>
 <script>
 import axios from "axios";
@@ -123,13 +139,21 @@ export default {
   background-color: #fff;
   padding: 8px 16px;
 
-  font-family: "ABeeZee";
+  font-family: "微軟正黑體";
   font-size: 19px;
-  font-style: italic;
   font-weight: 400;
   line-height: 22px;
   letter-spacing: 0em;
   text-align: left;
+
+  cursor: pointer;
+
+  display: flex;
+}
+
+.place {
+font-family: "ABeeZee";
+/* font-style: italic; */
 }
 
 .flex-center {
@@ -149,6 +173,11 @@ export default {
   justify-content: flex-start;
   align-items: center;
   /* margin-left: 200px; */
+}
+
+.friend-box {
+  height: 100%;
+  /* background: #1e90ff; */
 }
 
 .friendimg-box {
@@ -202,13 +231,34 @@ export default {
   color: #5b7083;
 }
 
-.img-box {
+/* .img-box {
   border-radius: 20px;
   width: 628.94px;
   height: 305.2px;
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+} */
+.img-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 在这里设置你想要的列数 */
+  grid-gap: 10px; 
+  width: 628.94px;
+}
+
+.img-box {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 2/1;
+  border: 0.8px solid #5b7083;
+  border-radius: 8%;
+}
+
+.img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .tweetImg {
@@ -233,7 +283,7 @@ export default {
   color: #1da1f2;
   font-size: 16.063px;
   font-family: "ABeeZee";
-  font-style: italic;
+  /* font-style: italic; */
 }
 
 .active {
