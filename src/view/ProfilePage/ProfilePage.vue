@@ -296,7 +296,7 @@ export default {
 
 .countbar {
     position: relative;
-    margin-top: -260px;
+    margin-top: -220px;
     left: 300px;
     display: flex;
 
@@ -491,9 +491,11 @@ export default {
 
 .content-box {
     width: calc(291.5px + 48.72px * 2);
+    height: 200px;
 }
 
 .username {
+    height: 70px;
     font-family: 'Inter';
     font-size: 45px;
     font-weight: 700;
@@ -505,6 +507,7 @@ export default {
 
 .slogan-box {
     margin: 0 auto 16px;
+    height: 50px;
 }
 
 .slogan {
@@ -548,7 +551,7 @@ export default {
 }
 
 .follow{
-    top: 145px;
+    top: 135px;
     left:-130px;
     position: relative;
     display: flex;
@@ -580,6 +583,14 @@ export default {
     background-color: var(--black);
     color: #FFF;
     margin-right: 10px;
+}
+
+.button-box {
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
 }
 
 .button-box .profile-button {
