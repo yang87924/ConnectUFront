@@ -26,7 +26,7 @@
             </div>
             <div class="article-content">
                 {{content}}
-                <div class="photo-box">
+                <div v-for="picture in pictureArray" :key="picture" class="photo-box">
                     <img :src="picture" alt="">
                 </div>
             </div>
@@ -125,6 +125,7 @@ export default {
             userName: '',
             replyName: '',
             loves: '',
+            pictureArray: [],
         }
     },
     
@@ -149,6 +150,7 @@ export default {
                 this.hotScore = res.data.data.hotScore
                 this.avatar = res.data.data.user.avatar;
                 this.userName = res.data.data.user.userName;
+                this.pictureArray = res.data.data.pictureArray;
             })
             .then(err => {
                 console.log(err)
