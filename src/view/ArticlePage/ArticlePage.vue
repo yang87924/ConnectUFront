@@ -33,7 +33,10 @@
                 </div>
             </div>
                 <div class="foot-bar">
-                    <button class="small-button" @click="increaseLove"><img src="../../assets/img/article/heart-regular.svg" alt=""></button>
+                    <button class="small-button" @click="increaseLove">
+                        <img v-if="loveStatus === 0" src="../../assets/img/article/heart-regular.svg" alt="">
+                        <img v-if="loveStatus === 1" src="../../assets/img/article/heart-solid.svg" alt="">
+                    </button>
                     <div>{{love}}</div>
                     <button class="small-button"><img src="../../assets/img/article/message-regular.svg" alt=""></button>
                     <div>{{replyCount}}</div>
@@ -87,36 +90,32 @@ export default {
 
     methods: {
         increaseLove() {
-        const action = this.loveStatus === 0 ? 'like' : 'unlike';
+            const action = this.loveStatus === 0 ? 'like' : 'unlike';
 
-        axios.put(`threads/toggleUserLove/${this.$route.params.threadId}`, {
-        action: action
-        })
-        .then(res => {
-            if (res.data.code === 20031) {
-                this.loveStatus = res.data.data.loveStatus;
-                this.love = res.data.data.love;
-            } else {
-                console.error(res.data.msg);
-            }
-        })
-        .catch(err => {
-            onsole.error(err);
-        });
-    }
+            axios.put(`threads/toggleUserLove/${this.$route.params.threadId}`, {
+                action: action
+            })
+            .then(res => {
+                if (res.data.code === 20031) {
+                    this.loveStatus = res.data.data.loveStatus;
+                    this.love = res.data.data.love;
+                } else {
+                    console.error(res.data.msg);
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
+        },
 
-    
-},
-
-methods: {
-    showPrevious() {
+        showPrevious() {
             if (this.currentIndex === 0) {
                 this.currentIndex = this.pictureArray.length - 1;
             } else {
                 this.currentIndex--;
             }
         },
-        // 切换到下一张图片
+
         showNext() {
             if (this.currentIndex === this.pictureArray.length - 1) {
                 this.currentIndex = 0;
@@ -124,8 +123,7 @@ methods: {
                 this.currentIndex++;
             }
         }
-    
-},
+    },
 
     data() {
         return {
