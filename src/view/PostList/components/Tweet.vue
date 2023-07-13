@@ -9,7 +9,9 @@
                 <span class="place">{{ item.createdAt }}</span>
             </div>
             <div class="txt">{{ item.content }}</div>
-            <div class="tags">#追星</div>
+            <div class="tags">
+                <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
+            </div>
             <div class="img-box" :style="{ backgroundImage: `url(${item.picture})` }"></div>
             <div class="flex-start">
                 <div class="fn flex-center">
@@ -21,10 +23,10 @@
                     <span class="fn-txt">12</span>
                 </div> -->
                 <div class="fn flex-center">
-                    <!-- <span class="material-icons" :class="{ active: isLoved }" @click="toggleLove(scope.row)">thumb_up</span> -->
-                    <span class="material-icons"  @click="toggleLove(scope.row)">thumb_up</span>
+                    <span class="material-icons" :class="{ active: item.loveStatus }" @click="toggleLove(item)">thumb_up</span>
                     <span class="fn-txt">{{ item.love }}</span>
                 </div>
+
                 <!-- <div class="fn flex-center active">
                     <span class="material-icons">ios_share</span>
                     <span class="fn-txt">61</span>
@@ -37,165 +39,190 @@
     </div>
 </template>
 <script>
-import axios from 'axios';
+import axios from "axios";
+import { reactive } from "vue";//在 Vue 3 中引入 reactive 函數的語法
 
 export default {
-    data() {
-        return {
-            items: [], // 存放動態的列表
-            pageNum: 1, // 目前頁數
-            isLoading: true, // 是否正在載入中
-            isLoved: false, //是否有按讚
-        };
+  data() {
+    return {
+      items: [], // 存放動態的列表
+      pageNum: 1, // 目前頁數
+      isLoading: true, // 是否正在載入中
+      loveStatus: false, //使用者是否有按讚
+    };
+  },
+  mounted() {
+    // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
+    this.fetchData();
+    this.addScrollListener();
+  },
+  //-----
+  methods: {
+    fetchData() {
+      // 發送 HTTP GET 請求到後端 API 獲取資料
+      axios
+        .get("/dyThreads/pageDyThread", {
+          params: {
+            pageNum: this.pageNum,
+          },
+        })
+        .then((response) => {
+          // 請求成功，將資料設置給items陣列
+          this.items = this.items.concat(response.data.data);
+          console.log(response.data.data);
+          this.isLoading = false; // 停止載入狀態
+        })
+        .catch((error) => {
+          // 請求失敗，處理錯誤
+          console.error(error);
+          this.isLoading = false; // 停止載入狀態
+        });
     },
-    mounted() {
-        // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
-        this.fetchData();
-        // 在組件載入後，執行非同步行為獲取資料並匯入到items陣列中
-        this.addScrollListener();
+    addData() {
+      this.pageNum++; // 增加頁數
+      this.isLoading = true; // 開始載入狀態
+      this.fetchData();
     },
-    //-----
-    methods: {
-        fetchData() {
-            // 發送 HTTP GET 請求到後端 API 獲取資料
-            axios.get('/dyThreads/pageDyThread', {
-                params: {
-                    pageNum: this.pageNum,
-                },
-            })
-                .then(response => {
-                    // 請求成功，將資料設置給items陣列
-                    this.items = this.items.concat(response.data.data);
-                    console.log(response.data.data);
-                    this.isLoading = false; // 停止載入狀態
-                })
-                .catch(error => {
-                    // 請求失敗，處理錯誤
-                    console.error(error);
-                    this.isLoading = false; // 停止載入狀態
-                });
-        },
-        addData() {
-            this.pageNum++; // 增加頁數
-            this.isLoading = true; // 開始載入狀態
-            this.fetchData();
-        },
-        addScrollListener() {
-            window.addEventListener('scroll', () => {
-                const {scrollTop, clientHeight, scrollHeight} = document.documentElement;
-                const offset = 5; // 設置一個偏移值
-                if (scrollTop + clientHeight + offset >= scrollHeight) {
-                    this.addData();
-                }
-            });
-        },
-        toggleLove() {
-            axios.put("dyThreads/toggleUserLove/"+row.id)
-            .then((response) => {
-                console.log(response.data);
-            })
-            .catch((error) => {
-            console.log(error);
-            // 處理錯誤
-            });
-            // this.isLoved = !this.isLoved;
+    addScrollListener() {
+      window.addEventListener("scroll", () => {
+        const { scrollTop, clientHeight, scrollHeight } =
+          document.documentElement;
+        const offset = 5; // 設置一個偏移值
+        if (scrollTop + clientHeight + offset >= scrollHeight) {
+          this.addData();
         }
-    }
-}
+      });
+    },
+
+    toggleLove(item) {
+      const loveId = item.dyThreadId;
+      axios
+        .put("dyThreads/toggleUserLove/" + loveId)
+        .then((response) => {
+          console.log(response.data);
+          if (item.loveStatus === 1) {
+            item.loveStatus = 0;
+            item.love--;
+          } else {
+            item.loveStatus = 1;
+            item.love++;
+          }
+          item = reactive(item);//實現數據的響應式
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
+};
 </script>
 <style lang="css" scoped>
 .tweet {
-    border-top: 1px solid #EBEEF0;
-    width: auto;
-    background-color: #FFF;
-    padding: 8px 16px;
+  border-top: 1px solid #ebeef0;
+  width: auto;
+  background-color: #fff;
+  padding: 8px 16px;
 
-    font-family: 'ABeeZee';
-    font-size: 19px;
-    font-style: italic;
-    font-weight: 400;
-    line-height: 22px;
-    letter-spacing: 0em;
-    text-align: left;
+  font-family: "ABeeZee";
+  font-size: 19px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: 0em;
+  text-align: left;
 }
 
 .flex-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .flex-between {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .flex-start {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    /* margin-left: 200px; */
-    
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  /* margin-left: 200px; */
 }
 
 .friendimg-box {
-    width: 60.55px;
-    height: 60.55px;
-    margin-right: 12px;
-    margin-bottom: auto;
+  width: 60.55px;
+  height: 60.55px;
+  margin-right: 12px;
+  margin-bottom: auto;
 }
 
 .friendimg-box img {
-    border-radius: 50%;
-    width: 55px;
-    height: 55px;
-    object-fit: cover;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  object-fit: cover;
 }
 
 .content {
-    width: 100%;
+  width: 100%;
 }
 
 .content div {
-    margin-bottom: 12px;
+  margin-bottom: 12px;
 }
 
 .tags {
-    color: #1DA1F2;
+    width: 100%;
+}
+
+.tags span {
+    width: 53.48px;
+    height: 24.59px;
+    padding: 4.2969183921813965px 10.74229621887207px 4.2969183921813965px 10.74229621887207px;
+    border-radius: 21.48459243774414px;
+    background-color: #F4F6F8;
+    font-family: Source Sans Pro;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #858EAD;
+    margin-right: 10px;
     cursor: pointer;
 }
 
 .friend-info span {
-    margin-right: 8px;
+  margin-right: 8px;
 }
 
 .place {
-    color: #5B7083;
+  color: #5b7083;
 }
 
 .img-box {
-    border-radius: 20px;
-    width: 628.94px;
-    height: 305.2px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
+  border-radius: 20px;
+  width: 628.94px;
+  height: 305.2px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
-
 .tweetImg {
-    width: 100%;
+  width: 100%;
 }
 
 .fn {
-    color: #5B7083;
-    margin-right: 70px;
-    margin-left: 150px;
+  color: #5b7083;
+  margin-right: 70px;
+  margin-left: 150px;
 }
 
 .fn span:not(:last-child) {
-    margin-right: 8px;
+  margin-right: 8px;
 }
 
 /* .active {
@@ -203,13 +230,13 @@ export default {
 } */
 
 .show {
-    color: #1DA1F2;
-    font-size: 16.063px;
-    font-family: 'ABeeZee';
-    font-style: italic;
+  color: #1da1f2;
+  font-size: 16.063px;
+  font-family: "ABeeZee";
+  font-style: italic;
 }
 
 .active {
-  color: #1E90FF;
+  color: #1e90ff;
 }
 </style>

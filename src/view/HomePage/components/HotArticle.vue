@@ -1,43 +1,15 @@
-<template lang="">
+<template>
     <div class="hot-article">
         <div class="title">熱門文章</div>
-        <div class="podcast flex-between">
+        <div class="podcast flex-between" v-for="(item, index) in hotThreads.slice(0, 3)" :key="index">
             <div class="img-box">
-                <img src="../../../assets/img/article/Rectangle 54.svg" alt="">
+                <img :src="item.picture" alt="" class="avatar">
             </div>
             <div class="content">
                 <div class="txt-box flex-between">
-                    <div class="txt">Selling a Business and Scaling <br> Another Amidst Tragedy.</div>
+                    <div class="txt">{{item.title}}<br> {{item.categoryName}}</div>
                 </div>
-                <div class="comment">by Michele Hansen</div>
-            </div>
-            <div class="arrow">
-                <span class="material-icons-round">arrow_forward</span>
-            </div>
-        </div>
-        <div class="podcast flex-between">
-            <div class="img-box">
-                <img src="../../../assets/img/article/Rectangle 54.svg" alt="">
-            </div>
-            <div class="content">
-                <div class="txt-box flex-between">
-                    <div class="txt">Selling a Business and Scaling <br> Another Amidst Tragedy.</div>
-                </div>
-                <div class="comment">by Michele Hansen</div>
-            </div>
-            <div class="arrow">
-                <span class="material-icons-round">arrow_forward</span>
-            </div>
-        </div>
-        <div class="podcast flex-between">
-            <div class="img-box">
-                <img src="../../../assets/img/article/Rectangle 54.svg" alt="">
-            </div>
-            <div class="content">
-                <div class="txt-box flex-between">
-                    <div class="txt">Selling a Business and Scaling <br> Another Amidst Tragedy.</div>
-                </div>
-                <div class="comment">by Michele Hansen</div>
+                <div class="comment">作者： {{item.user.userName}}</div>
             </div>
             <div class="arrow">
                 <span class="material-icons-round">arrow_forward</span>
@@ -45,14 +17,41 @@
         </div>
     </div>
 </template>
-<script>
-export default {
 
+<script>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+
+export default {
+    setup() {
+        const hotThreads = ref([])
+
+        onMounted(async () => {
+            try {
+                const response = await axios.get('/threads/hotThread');
+                hotThreads.value = response.data.data; // Assuming the response has the structure of {data: {data: []}}
+            } catch (error) {
+                console.error(error);
+            }
+        });
+
+        return {
+            hotThreads
+        }
+    }
 }
 </script>
+
 <style lang="css" scoped>
 .hot-article {
     width: 100%;
+    background: #FFFFFF;
+    /* mix-blend-mode: luminosity; */
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 24.286739349365234px;
+    padding-left: 30px;
+    padding-top: 10px;
+    padding-bottom: 50px;
 }
 
 .title {
@@ -107,5 +106,10 @@ export default {
 .arrow {
     color: #97989D;
     margin-left: auto;
+}
+
+.avatar {
+    width: 60px;
+    height: 60px;
 }
 </style>

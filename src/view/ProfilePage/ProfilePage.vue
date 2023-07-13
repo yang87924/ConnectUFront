@@ -6,26 +6,26 @@
                 <div class="setting">
                     <button class="edit-button" @click="toggleEditList">編輯個人檔案</button>
                     <div v-if="showEditList" class="edit-list" v-click-outside="hideFanList">
-                       <div class="edit-list-container">
-                        <h2 class="edit-list-title">編輯個人檔案</h2>
-                        <form @submit="submitForm">
-                            <ul class="edit-list-items">
-                                <li class="edit-list-item">
-                                    <label for="avatar">修改大頭貼：</label>
-                                    <input type="file" id="avatar" accept="image/*" ref="avatarInput">
-                                </li>
-                                <li class="edit-list-item">
-                                    <label for="username">修改會員名稱：</label>
-                                    <input type="text" id="userName" v-model="userName">
-                                  </li>
-                                  <li class="edit-list-item">
-                                    <label for="profile">修改個人簡介：</label>
-                                    <input type="text" id="profile" v-model="profile">
-                                  </li>
-                            </ul>
-                            <button type="submit">提交</button>
-                        </form>
-                       </div>
+                        <div class="edit-list-container">
+                            <h2 class="edit-list-title">編輯個人檔案</h2>
+                            <form @submit="submitForm">
+                                <ul class="edit-list-items">
+                                    <li class="edit-list-item">
+                                        <label for="avatar">修改大頭貼：</label>
+                                        <input type="file" id="avatar" accept="image/*" ref="avatarInput">
+                                    </li>
+                                    <li class="edit-list-item">
+                                        <label for="username">修改會員名稱：</label>
+                                        <input type="text" id="userName" v-model="userName">
+                                    </li>
+                                    <li class="edit-list-item">
+                                        <label for="profile">修改個人簡介：</label>
+                                        <input type="text" id="profile" v-model="profile">
+                                    </li>
+                                </ul>
+                                <button type="submit">提交</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -37,112 +37,106 @@
                             <h1>{{ userName }}</h1>         
                         </div>
                         <div class="slogan-box flex-center">
-                            <span class="slogan">
-                                {{ profile }}
-                            </span>
-							</div>
-							<div class="button-box flex-center">
-								<button class="profile-button">建立新文章</button> <button class="profile-button">發佈動態</button> 
-							</div>
-						</div>
-					</div>
-<div class="countbar">
-        <button class="fans-button" @click="toggleFanList">追蹤<br>555</button>
-        <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
-            <div class="fan-list-container">
-                <h2 class="fan-list-title">追蹤列表</h2>
-                <ul class="fan-list-items">
-                    <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
-                        <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
-                        <span class="fan-name">{{ fan.name }}</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <button class="fans-button" @click="toggleFanList">粉絲<br>222</button>
-        <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
-            <div class="fan-list-container">
-                <h2 class="fan-list-title">粉絲列表</h2>
-                <ul class="fan-list-items">
-                    <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
-                        <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
-                        <span class="fan-name">{{ fan.name }}</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        
-        <button class="fans-button" @click="toggleFanList">訂閱<br>123</button>
-        <div v-if="showFanList" class="fan-list">
-            <div class="fan-list-container">
-                <h2 class="fan-list-title">訂閱列表</h2>
-                <ul class="fan-list-items">
-                    <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
-                        <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
-                        <span class="fan-name">{{ fan.name }}</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
-</div>
-                <div class="floow">
-                    <button class="floow-button">追蹤</button>
-
-                    <button class="floow-button">私訊</button>
+                            <span class="slogan">{{ profile }}</span>
+                        </div>
+                        <div class="button-box flex-center">
+                            <button class="profile-button">建立新文章</button> 
+                            <button class="profile-button">發佈動態</button> 
+                        </div>
+                    </div>
                 </div>
-
+                <div class="countbar">
+                    <button class="fans-button" @click="toggleFollowList">追蹤<br>{{followedByCount}}</button>
+                    <div v-if="showFollowList" class="fan-list" v-click-outside="hideFollowList">
+                        <div class="fan-list-container">
+                            <h2 class="fan-list-title">所有追蹤</h2>
+                            <ul class="fan-list-items">
+                                <li class="fan-list-item" v-for="follow in follow" :key="follow.id">
+                                    <img class="fan-avatar" :src="follow.avatar" alt="粉絲頭像">
+                                    <span class="fan-name">{{ follow.userName }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="fans-button" @click="toggleFanList">粉絲<br>{{followingCount}}</button>
+                    <div v-if="showFanList" class="fan-list" v-click-outside="hideFanList">
+                        <div class="fan-list-container">
+                            <h2 class="fan-list-title">所有粉絲</h2>
+                            <ul class="fan-list-items">
+                                <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
+                                    <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
+                                    <span class="fan-name">{{ fan.userName }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="fans-button" @click="toggleSubList">訂閱<br>123</button>
+                    <div v-if="showSubList" class="fan-list" v-click-outside="hideSubList">
+                        <div class="fan-list-container">
+                            <h2 class="fan-list-title">所有訂閱</h2>
+                            <ul class="fan-list-items">
+                                <li class="fan-list-item" v-for="fan in fans" :key="fan.id">
+                                    <img class="fan-avatar" :src="fan.avatar" alt="粉絲頭像">
+                                    <span class="fan-name">{{ fan.userName }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="follow">
+                    <button class="follow-button">追蹤</button>
+                    <button class="follow-button">私訊</button>
+                </div>
             </div>
-                <ul class="nav flex-between">
-                    <button class="nav-item" :class="{ active: activeTab === '文章' }" @click="activeTab = '文章'">文章</button>
-                    <button class="nav-item" :class="{ active: activeTab === '動態' }" @click="activeTab = '動態'">動態</button>
-                    <button class="nav-item" :class="{ active: activeTab === '收藏' }" @click="activeTab = '收藏'">收藏</button>
-                </ul>
-
-                <div v-if="activeTab === '文章'">
+            <ul class="nav flex-between">
+                <button class="nav-item" :class="{ active: activeTab === '文章' }" @click="activeTab = '文章'">文章</button>
+                <button class="nav-item" :class="{ active: activeTab === '動態' }" @click="activeTab = '動態'">動態</button>
+                <button class="nav-item" :class="{ active: activeTab === '收藏' }" @click="activeTab = '收藏'">收藏</button>
+            </ul>
+            <div v-if="activeTab === '文章'" class="tab-content">
                 <div class="article-box flex-start">
-    
-                <div class="img-box">
-                    <img src="../../assets/img/profile/article_img.svg" alt="文章縮圖">
-                </div>
-                <div class="article-content">
-                    <div class="title">{{ title }}</div>
-                    <div class="tags flex-start">
-                        <div class="tag">finance</div>
-                        <div class="tag">bitcoin</div>
-                        <div class="tag">crypto</div>
+                    <div class="img-box">
+                        <img src="../../assets/img/profile/article_img.svg" alt="文章縮圖">
                     </div>
-                    <div class="info-box flex-between">
-                        <div class="author-info flex-start">
-                            <div class="memoji-box flex-center">
-                                <img src="../../assets/img/profile/memoji.svg" alt="">
-                            </div>
-                            <div class="author">
-                                <div class="name">Pavel Gvay</div>
-                                <div class="publish-time">3 weeks ago</div>
-                            </div>
+                    <div class="article-content">
+                        <div class="title">{{ title }}</div>
+                        <div class="tags flex-start">
+                            <div class="tag">finance</div>
+                            <div class="tag">bitcoin</div>
+                            <div class="tag">crypto</div>
                         </div>
-                        <div class="data-info flex-between">
-                            <div class="count">651,324 Views</div>
-                            <div class="count">36,6545 Likes</div>
-                            <div class="count">56 comments</div>
+                        <div class="info-box flex-between">
+                            <div class="author-info flex-start">
+                                <div class="memoji-box flex-center">
+                                    <img src="../../assets/img/profile/memoji.svg" alt="">
+                                </div>
+                                <div class="author">
+                                    <div class="name">Pavel Gvay</div>
+                                    <div class="publish-time">3 weeks ago</div>
+                                </div>
+                            </div>
+                            <div class="data-info flex-between">
+                                <div class="count">651,324 Views</div>
+                                <div class="count">36,6545 Likes</div>
+                                <div class="count">56 comments</div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div v-if="activeTab === '動態'" class="tab-content">
+                <Tweet />
+            </div>
+            <div v-if="activeTab === '收藏'" class="tab-content">
+                <!-- 顯示收藏內容 -->
+            </div>
         </div>
-    </div>
-    <div v-if="activeTab === '動態'">
-      <!-- 顯示動態內容 -->
-    </div>
-
-    <div v-if="activeTab === '收藏'">
-      <!-- 顯示收藏內容 -->
-    </div>
     </div>
 </template>
 <script>
 
 import axios from 'axios';
+import Tweet from './components/MyProfilePage.vue';
 import VueClickOutside from 'v-click-outside';
 
 export default {
@@ -155,35 +149,82 @@ export default {
         return {
             userId: '',
             userName: '',
-            vatar: '',
+            avatar: '',
             profile: '',
             title: '',
             activeTab: '',
+            followedByCount: '',
+            followingCount: '',
 
-            fans: [
-        { id: 1, name: '粉絲1', avatar: 'avatar1.jpg' },
-        { id: 2, name: '粉絲2', avatar: 'avatar2.jpg' },
-        { id: 3, name: '粉絲3', avatar: 'avatar3.jpg' },
-      ],
+            fans: [],
+            follow: [],
             showFanList: false ,
             showFollowers: false,
             showFans: false,
             showSubscribers: false,
             showEditList: false,
+            showSubList: false,
+            showFollowList: false,
         };
     },
 
-    methods: {
-    toggleFanList() {
-      this.showFanList = !this.showFanList;
+    components: {
+        Tweet,
     },
+
+    methods: {
+
+        
+  fetchFansData() {
+      axios.get('/users/following')
+        .then(response => {
+            this.fans = response.data.data;
+            console.log(this.fans);
+        })
+            .catch(error => {
+        });
+    },
+
+    fetchFollowData() {
+      axios.get('/users/followedBy')
+        .then(response => {
+            this.follow = response.data.data;
+            console.log(this.follow);
+        })
+            .catch(error => {
+            console.log(error);
+        });
+    },
+
+
     hideFanList() {
       this.showFanList = false;
       this.showEditList = false;
     },
+    hideSubList() {
+      this.showSubList = false;
+    },
+    hideFollowList() {
+      this.showFollowList = false;
+    },
     toggleEditList() {
       this.showEditList = !this.showEditList;
     },
+    toggleSubList() {
+      this.showSubList = !this.showSubList;
+    },
+    toggleFollowList() {
+      this.showFollowList = !this.showFollowList;
+      if (this.showFollowList && this.follow.length === 0) {
+        this.fetchFollowData();
+        }
+    },
+    toggleFanList() {
+        this.showFanList = !this.showFanList;
+        if (this.showFanList && this.fans.length === 0) {
+        this.fetchFansData();
+        }
+},
 
     
     submitForm(event) {
@@ -191,6 +232,7 @@ export default {
         setTimeout(() => {
         location.reload();
       }, 1000);
+      
   event.preventDefault();
 
   const formData = new FormData();
@@ -234,6 +276,8 @@ export default {
                 this.userName = response.data.userName;
                 this.avatar = response.data.avatar;
                 this.profile = response.data.profile;
+                this.followingCount = response.data.followingCount;
+                this.followedByCount = response.data.followedByCount;
             })
             .catch(error => {
                 console.log(error);
@@ -263,6 +307,11 @@ export default {
 </script>
 <style lang="css" scoped>
 
+.tab-content {
+    width: 900px;  /* 更改這個數值到你想要的寬度 */
+    height: 500px; /* 更改這個數值到你想要的高度 */
+}
+
 .backimg {
     width: 897px;
 }
@@ -288,16 +337,18 @@ export default {
 }
 
 .fan-list-container {
-  width: 600px;
-  margin: 0 auto; /* 添加此行，使用margin: 0 auto; 将内容水平置中 */
+    width: 600px;
+    margin: 0 auto; /* 添加此行，使用margin: 0 auto; 将内容水平置中 */
     padding: 20px;
     display: flex; /* 添加此行，使用flex布局 */
     flex-direction: column; /* 添加此行，使内容垂直方向上居中 */
     align-items: center; /* 添加此行，使内容水平方向上居中 */
+    max-height: 800px; /* 设置最大高度，根据需要进行调整 */
+    overflow-y: scroll; /* 添加垂直滚动条 */
 }
 
 .fan-list-title {
-  font-size: 18px;
+  font-size: 40px;
   font-weight: bold;
   margin-bottom: 10px;
 }
@@ -310,14 +361,14 @@ export default {
 }
 
 .fan-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 10px;
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
+  margin-right: 100px;
 }
 
 .fan-name {
-  font-size: 14px;
+  font-size: 30px;
   font-weight: bold;
 }
 
@@ -518,7 +569,7 @@ export default {
     color: #FFF;
 }
 
-.floow{
+.follow{
     top: 145px;
     left:-130px;
     position: relative;
@@ -526,7 +577,7 @@ export default {
     justify-content: space-between;
 }
 
-.floow-button {
+.follow-button {
     margin-left: 30PX;
     padding: 8px 30px;
     border: 4px solid lightgrey;
