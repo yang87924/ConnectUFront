@@ -26,8 +26,10 @@
             </div>
             <div class="article-content">
                 {{content}}
-                <div v-for="picture in pictureArray" :key="picture" class="photo-box">
-                    <img :src="picture" alt="">
+                <div class="slideshow-container">
+                    <img v-for="(picture, index) in pictureArray" :key="index" :src="picture" :alt="index" :class="{ active: index === currentIndex }">
+                    <a class="prev" @click="showPrevious">&#10094;</a>
+                    <a class="next" @click="showNext">&#10095;</a>
                 </div>
             </div>
                 <div class="foot-bar">
@@ -102,6 +104,27 @@ export default {
             onsole.error(err);
         });
     }
+
+    
+},
+
+methods: {
+    showPrevious() {
+            if (this.currentIndex === 0) {
+                this.currentIndex = this.pictureArray.length - 1;
+            } else {
+                this.currentIndex--;
+            }
+        },
+        // 切换到下一张图片
+        showNext() {
+            if (this.currentIndex === this.pictureArray.length - 1) {
+                this.currentIndex = 0;
+            } else {
+                this.currentIndex++;
+            }
+        }
+    
 },
 
     data() {
@@ -126,6 +149,7 @@ export default {
             replyName: '',
             loves: '',
             pictureArray: [],
+            currentIndex: 0,
         }
     },
     
@@ -174,6 +198,54 @@ export default {
 }
 </script>
 <style lang="css" scoped>
+
+.slideshow-container {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    width: 500px;
+    height: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.slideshow-container img {
+    width: 100%;
+    height: auto;
+    display: none;
+}
+
+.slideshow-container img.active {
+    display: block;
+}
+
+.prev,
+.next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 10px;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: opacity 0.3s;
+    background-color: #000; /* 背景色 */
+    border: none; /* 边框 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* 阴影 */
+}
+
+.prev:hover,
+.next:hover {
+    opacity: 0.7;
+}
+
+.prev {
+    left: 10px;
+}
+
+.next {
+    right: 10px;
+}
 
 .avatar-img-box {
     border-radius: 50%;
