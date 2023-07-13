@@ -26,7 +26,19 @@ window.googleSignInPromise = new Promise((resolve) => {
   };
 });
 
-
+//在所有的請求中加入token
+axios.interceptors.request.use(
+  config => {
+    const token = localStorage.getItem('jwt');
+    if (token) {
+      config.headers['Authorization'] = 'Bearer ' + token;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
 
 
 createApp(App).use(router).use(vuetify).mount('#app')

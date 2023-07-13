@@ -96,6 +96,9 @@
 import SplineComponent from "./SplineComponent.vue";
 import axios from "axios";
 
+
+
+
 export default {
   components: {
     "spline-component": SplineComponent,
@@ -116,7 +119,13 @@ export default {
         const response = await axios.post("/users/login", {
           email: this.email,
           password: this.password,
-        });
+        },
+//         {
+//   headers: {
+//     'Authorization': `Bearer ${localStorage.getItem('jwt')}`
+//   }
+// }
+);
         this.loginResponse = response.data.msg;
         // 根据响应码改变登入提示類型
         this.loginAlertType =
