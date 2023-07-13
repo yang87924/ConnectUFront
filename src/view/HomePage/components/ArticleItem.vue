@@ -97,12 +97,7 @@
 
         <div class="newsimg">
             <img :src="item.picture" alt="" class="newspic">
-            <div class="top">
-                <router-link :to="{ name: 'ArticlePage', params: { threadId: item.threadId } }">
-                    <div class="word">{{ truncateTitle (item.title, 10)   }}</div>
-                </router-link>
-                <div class="icon"><img src="../../../assets/img/HomePage/ArticleItem/Love.svg" alt=""></div>
-            </div>
+            
             <div class="tags">
                 <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
             </div>
@@ -113,16 +108,26 @@
                 <img :src="item.user.avatar" alt="" class="avatar">
                 <div class="name-area">
                     <button style="width:300px ;margin-left:200px" @click="deleteItem(threadId)">刪除</button>
-                    <div class="name">{{ item.user.userName }}</div>
+                    <div class="name" style="padding-left: 20px;">{{ item.user.userName }}</div>
+                    <div class="time" style="padding-left: 10px">{{ item.createdAt }}</div>
+                    <div class="top">
+                <router-link :to="{ name: 'ArticlePage', params: { threadId: item.threadId } }">
+                    <div class="word">{{ truncateTitle (item.title, 10)   }}</div>
+                    
+                </router-link>
+                <div class="icon"><img src="../../../assets/img/HomePage/ArticleItem/Love.svg" alt=""></div>
+            </div>
 
-                    <div class="time">{{ item.createdAt }}</div>
+                   
                 </div>
 
             </div>
 
 
             <div class="content">{{ truncateText(item.content, 100)   }}</div>
-
+            <div class="tagsarea">
+                <div class="tags" v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</div>
+            </div>   
             <div>
 
 
@@ -135,7 +140,7 @@
                 <div>
                     <div class="num">
                         <!-- <img src="../../../assets/img/HomePage/ArticleItem/like1.svg" alt="按讚圖片" class="licon1"/> -->
-                        <i class="fas fa-heart"></i>
+                        <i class="fas fa-heart" style="margin-bottom: 0px;"></i>
                         <span class="text1" style="font-weight: bold; font-size: 20px;color: blueviolet;">{{ item.love
                         }}</span>
                         <!-- <img src="../../../assets/img/HomePage/ArticleItem/mess.svg" alt="留言" class="licon2"/> -->
@@ -628,10 +633,13 @@ truncateText(text, maxLength) {
 
 .word {
     font-family: 'Source Sans Pro';
-    font-size: 15px;
+    font-size: 20px;
+    color:orange;
     font-weight: 600;
     line-height: 26px;
     letter-spacing: 0em;
+    margin-top: 20px;
+    padding-left: 50px;
     /* text-decoration: none;  */
 
 }
@@ -641,10 +649,11 @@ truncateText(text, maxLength) {
 }
 
 .tags {
-    width: 100%;
+    width:100px ;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-left: 0px;
 }
 
 .time {
@@ -672,8 +681,9 @@ truncateText(text, maxLength) {
 
 .num {
     padding-left: 30px;
-    padding-bottom: 50px;
+    padding-bottom: 25px;
 }
+
 
 .tags span {
     width: 200px;
@@ -918,15 +928,27 @@ truncateText(text, maxLength) {
 }
 
 .tags {
-    font-family: Inter;
-    font-size: 16px;
-    font-weight: 300;
-    line-height: 24px;
-    letter-spacing: 0em;
-    text-align: start;
-    margin: 8px auto 20px;
+    border-radius: 10px;
+        background-color: #ffffff;
+        font-family: Source Sans Pro;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 15px;
+        letter-spacing: 0em;
+        text-align: left;
+        color: #858EAD;
+        margin-right: 10px;
+    
+   
+    
 }
 
+.tagsarea{
+
+
+display: flex;
+
+}
 .tags .tag {
     margin-right: 16px;
 }
@@ -1040,4 +1062,8 @@ truncateText(text, maxLength) {
         background-position: 100% 50%;
     }
 }
+
+
+
+
 </style>
