@@ -81,9 +81,6 @@ import HotArticle from './components/HotArticle.vue'
 
 export default {
     components: {
-        SideBar,
-        AuthorRank,
-        HotArticle,
     },
 
     methods: {
@@ -130,6 +127,7 @@ export default {
             loves: '',
         }
     },
+    
 
     created() {
         axios.get(`/threads/${this.$route.params.threadId}`)
@@ -189,8 +187,8 @@ export default {
 }
 
 .photo-box img {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .comment-body-down {

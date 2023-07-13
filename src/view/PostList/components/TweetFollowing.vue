@@ -17,11 +17,11 @@
             </div>
 
               <div>
-              <!-- <div class="img-container" v-if="item.picture != ''">
-                <div class="img-box" v-for="(picture, index) in item.picture.split('▲')" :key="index">
+              <div class="img-container" v-if="item.dyThread.picture != null">
+                <div class="img-box" v-for="(picture, index) in item.dyThread.picture.split('▲')" :key="index">
                   <img :src="picture" alt="Picture" @click="showImageDialog(picture)">
                 </div>
-              </div> -->
+              </div>
     
               <v-dialog v-model="showDialog" max-width="500px">
                 <v-card>
@@ -81,7 +81,7 @@ export default {
       axios
         .get("/firendship", {
           params: {
-            pageNum: this.pageNum,
+            pageNum: 2
           },
         })
         .then((response) => {
@@ -117,16 +117,18 @@ export default {
       this.fetchData();
     },
     addScrollListener() {
+      let isBottomReached = false; // 標誌是否滾動到底部
+
       window.addEventListener("scroll", () => {
-        const { scrollTop, clientHeight, scrollHeight } =
-          document.documentElement;
+        const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
         const offset = 5; // 設置一個偏移值
-        if (scrollTop + clientHeight + offset >= scrollHeight) {
+
+        if (scrollTop + clientHeight + offset >= scrollHeight && !isBottomReached) {
+          isBottomReached = true; // 設置標誌為 true，避免再次觸發
           this.addData();
         }
       });
     },
-
     toggleLove(item) {
       const loveId = item.dyThreadId;
       axios

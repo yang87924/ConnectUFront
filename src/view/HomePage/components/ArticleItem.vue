@@ -99,7 +99,7 @@
             <img :src="item.picture" alt="" class="newspic">
             <div class="top">
                 <router-link :to="{ name: 'ArticlePage', params: { threadId: item.threadId } }">
-                    <div class="word">{{ item.title }}</div>
+                    <div class="word">{{ truncateTitle (item.title, 10)   }}</div>
                 </router-link>
                 <div class="icon"><img src="../../../assets/img/HomePage/ArticleItem/Love.svg" alt=""></div>
             </div>
@@ -121,7 +121,7 @@
             </div>
 
 
-            <div class="content">{{ item.content }}</div>
+            <div class="content">{{ truncateText(item.content, 100)   }}</div>
 
             <div>
 
@@ -206,14 +206,64 @@ export default {
 
     },
 
-    computed: {
-        dynamicText() {
-            return this.articleContent;
-        },
-    },
+//     computed: {
+        
+
+//    truncateText(text, maxLength) {
+//     if (text.length <= maxLength) {
+//       return text;
+//     } else {
+//       return text.slice(0, maxLength) + '...';
+//     }
+//   }
+//     },
 
     methods: {
 
+        truncateText(text, maxLength) {
+    if (text.length <= maxLength) {
+      return text;
+    } else {
+      return text.slice(0, maxLength) + '...';
+    }
+  },
+
+  truncateTitle(text, maxLength){
+    if (text.length <= maxLength) {
+      return text;
+    } else {
+      return text.slice(0, maxLength) + '...';
+    }
+
+
+  },
+        
+        
+truncateText(text, maxLength) {
+    if (text.length <= maxLength) {
+      return text;
+    } else {
+      return text.slice(0, maxLength) + '...';
+    }
+  },
+
+  truncateTitle(text, maxLength){
+    if (text.length <= maxLength) {
+      return text;
+    } else {
+      return text.slice(0, maxLength) + '...';
+    }
+
+
+  },
+       
+        
+        
+        
+        
+        
+        
+        
         deleteItem() {
             // 执行删除 API 的逻辑
             axios.delete('/threads/deleteByThreadId/${threadId}')
@@ -578,7 +628,7 @@ export default {
 
 .word {
     font-family: 'Source Sans Pro';
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 600;
     line-height: 26px;
     letter-spacing: 0em;
