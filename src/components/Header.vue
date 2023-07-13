@@ -22,8 +22,11 @@
                 </router-link>
             </li>
             <li class="nav-item flex-center" :class="{ 'active': $route.path === '/profile' }">
-                <router-link to="/profile" class="router-link" :class="{ 'active-link': $route.path === '/profile' }">
+                <router-link v-if="userName" to="/profile" class="router-link" :class="{ 'active-link': $route.path === '/profile' }">
                     <span class="material-icons">account_circle</span>
+                </router-link>
+                <router-link v-else to="/UserLogin" class="router-link" :class="{ 'active-link': $route.path === '/UserLogin' }">
+                <span class="material-icons">account_circle</span>
                 </router-link>
             </li>
             <!-- <li class="nav-item flex-center" :class="{ 'active': $route.path === '/article' }">
