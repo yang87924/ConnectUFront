@@ -277,7 +277,7 @@ export default {
             };
             for (var i = 0; i < this.selectedTags.length; i++) {
                 var tag = this.selectedTags[i]
-                formData.append('threadHashtags', tag.name);
+                formData.append('threadHashtags', tag);
             }
 
             var entries = formData.entries();
