@@ -155,7 +155,6 @@ export default {
     created() {
         axios.get(`/threads/${this.$route.params.threadId}`)
             .then(res => {
-                console.log(res.data)
                 this.title = res.data.data.title
                 this.content = res.data.data.content
                 this.picture = res.data.data.picture
@@ -180,7 +179,6 @@ export default {
 
             axios.get(`/replys/${this.$route.params.threadId}`)
             .then(res => {
-                console.log(res.data)
                 this.comments = res.data.data;
                 this.replyName = res.data.data.user.userName;
                 this.replyavatar = res.data.data.user.avatar;

@@ -146,7 +146,6 @@ export default {
             //清除session資料
             axios.post("users/invalidate")
                 .then((response) => {
-                    console.log(response.data);
                     // this.userName = "";
                 })
                 .catch((error) => {
@@ -187,7 +186,6 @@ export default {
         // 在組件創建時使用 Axios，並傳遞使用者 ID
         axios.post('/users/getUserId/0')
             .then(response => {
-                console.log(response.data);
                 this.userName = response.data.userName;
                 this.avatar = response.data.avatar;
 
