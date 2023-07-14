@@ -92,20 +92,13 @@
 
     <div style="padding-top:35px" v-if="showSuccessMessage" class="success-message">新增文章成功！</div>
 
-
+    
     <div v-for="(item, index) in items" :key="index" class="articleitem">
 
         <div class="newsimg">
             <img :src="item.picture" alt="" class="newspic">
-            <div class="top">
-                <router-link :to="{ name: 'ArticlePage', params: { threadId: item.threadId } }">
-                    <div class="word">{{ truncateTitle (item.title, 10)   }}</div>
-                </router-link>
-                <div class="icon"><img src="../../../assets/img/HomePage/ArticleItem/Love.svg" alt=""></div>
-            </div>
-            <div class="tags">
-                <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
-            </div>
+            
+
 
         </div>
         <div class="data">
@@ -113,16 +106,28 @@
                 <img :src="item.user.avatar" alt="" class="avatar">
                 <div class="name-area">
                     <button style="width:300px ;margin-left:200px" @click="deleteItem(threadId)">刪除</button>
-                    <div class="name">{{ item.user.userName }}</div>
+                    <div class="name" style="padding-left: 20px;">{{ item.user.userName }}</div>
+                    <div class="time" style="padding-left: 10px">{{ item.createdAt }}</div>
+                    <div class="top">
+                <router-link :to="{ name: 'ArticlePage', params: { threadId: item.threadId } }">
+   
+                    <div class="word"  >{{ truncateTitle (item.title, 10)   }}</div>
+                    
+                </router-link>
+                <div class="icon"><img src="../../../assets/img/HomePage/ArticleItem/Love.svg" alt=""></div>
+            </div>
 
-                    <div class="time">{{ item.createdAt }}</div>
+                   
                 </div>
 
             </div>
 
-
-            <div class="content">{{ truncateText(item.content, 100)   }}</div>
-
+            <router-link :to="{ name: 'ArticlePage', params: { threadId: item.threadId } }">
+            <div class="content">{{ truncateText(item.content, 20)   }}</div>
+        </router-link>
+            <div class="tagsarea">
+                <span class="tags" v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
+            </div>   
             <div>
 
 
@@ -135,7 +140,7 @@
                 <div>
                     <div class="num">
                         <!-- <img src="../../../assets/img/HomePage/ArticleItem/like1.svg" alt="按讚圖片" class="licon1"/> -->
-                        <i class="fas fa-heart"></i>
+                        <i class="fas fa-heart" style="margin-bottom: 0px;"></i>
                         <span class="text1" style="font-weight: bold; font-size: 20px;color: blueviolet;">{{ item.love
                         }}</span>
                         <!-- <img src="../../../assets/img/HomePage/ArticleItem/mess.svg" alt="留言" class="licon2"/> -->
@@ -176,6 +181,8 @@ export default {
             tags: [],
             selectedTags: [],
             customTag: '',
+            //Comment/Uncomment
+            selectedImages: [],
 
 
             newArticleTitle: "",
@@ -239,6 +246,28 @@ export default {
   },
         
         
+truncateText(text, maxLength) {
+    if (text.length <= maxLength) {
+      return text;
+    } else {
+      return text.slice(0, maxLength) + '...';
+    }
+  },
+
+  truncateTitle(text, maxLength){
+    if (text.length <= maxLength) {
+      return text;
+    } else {
+      return text.slice(0, maxLength) + '...';
+    }
+
+
+  },
+       
+        
+        
+        
+        
         
         
         
@@ -258,7 +287,11 @@ export default {
 
 
         handleFileChange(event) {
-            this.selectedImages = event.target.files;
+            //Switch Comments
+            this.selectedImages.push(event.target.files[0]);
+            console.log(event.target.files[0]);
+            // this.selectedImages = event.target.files;
+
         },
 
 
@@ -271,13 +304,21 @@ export default {
             formData.append('categoryId', this.categoryId);
 
 
+            //Uncomment/Comment
             for (var i = 0; i < this.selectedImages.length; i++) {
                 var file = this.selectedImages[i];
-                formData.append('files', file);
+                formData.append('files'+i, file);
             };
+
+            //Comment/ Uncomment
+            // var file = this.selectedImages;
+            // formData.append('files', file);
+
+
+
             for (var i = 0; i < this.selectedTags.length; i++) {
                 var tag = this.selectedTags[i]
-                formData.append('threadHashtags', tag);
+                formData.append('threadHashtags', tag.name);
             }
 
             var entries = formData.entries();
@@ -546,8 +587,8 @@ export default {
     font-weight: 400;
     line-height: 24px;
     color: #333;
-    margin-top: 10px;
-    margin-left: 30px;
+    margin-top: 20px;
+    margin-left: 50px;
     font-family: "Microsoft JhengHei", Arial, sans-serif;
 }
 
@@ -606,11 +647,14 @@ export default {
 
 .word {
     font-family: 'Source Sans Pro';
-    font-size: 15px;
+    font-size: 20px;
+    color:orange;
     font-weight: 600;
     line-height: 26px;
     letter-spacing: 0em;
-    /* text-decoration: none;  */
+    margin-top: 20px;
+    padding-left: 0px;
+    text-decoration: none; 
 
 }
 
@@ -619,10 +663,12 @@ export default {
 }
 
 .tags {
-    width: 100%;
+    width:50px ;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-left: 50px;
+    margin-top: 10px;
 }
 
 .time {
@@ -650,10 +696,11 @@ export default {
 
 .num {
     padding-left: 30px;
-    padding-bottom: 50px;
+    padding-bottom: 25px;
 }
 
-.tags span {
+
+/* .tags span {
     width: 200px;
     height: 24.59px;
     padding: 4.2969183921813965px 10.74229621887207px 4.2969183921813965px 10.74229621887207px;
@@ -667,7 +714,7 @@ export default {
     text-align: left;
     color: #858EAD;
     margin-right: 10px;
-}
+} */
 
 .newsimg {
 
@@ -896,18 +943,45 @@ export default {
 }
 
 .tags {
-    font-family: Inter;
-    font-size: 16px;
-    font-weight: 300;
-    line-height: 24px;
+    /* border-radius: 10px;
+        background-color: #ffffff;
+        font-family: Source Sans Pro;
+        font-size: 15px;
+        font-weight: 600;
+        line-height: 15px;
+        /* letter-spacing: 0em; */
+        /* text-align: left; */
+        /* color: #858EAD; */
+        /* margin-right: 10px; */
+        /* width:100% */ 
+        width: 60px;
+    height: 24.59px;
+    /* padding: 4.2969183921813965px 10.74229621887207px 4.2969183921813965px 10.74229621887207px; */
+    border-radius: 21.48459243774414px;
+    background-color: #F4F6F8;
+    font-family: Source Sans Pro;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 15px;
     letter-spacing: 0em;
-    text-align: start;
-    margin: 8px auto 20px;
+    text-align: left;
+    color: #858EAD;
+    margin-right: 10px;
+    cursor: pointer;
+   
+    
 }
 
-.tags .tag {
-    margin-right: 16px;
+.tagsarea{
+
+display: flex;
+
+width:100%
+
 }
+/* .tags .tag {
+    margin-right: 16px;
+} */
 
 .input-label {
     font-family: 'Inter';
@@ -1018,4 +1092,8 @@ export default {
         background-position: 100% 50%;
     }
 }
+
+
+
+
 </style>
