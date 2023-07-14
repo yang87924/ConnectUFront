@@ -34,7 +34,7 @@
                         <button @click="decreaseFontSize" class="material-icons">text_decrease</button>
                         <button @click="increaseFontSize" class="material-icons">text_increase</button>
                         <input type="file" multiple v-on:change="handleFileChange" />
-                        <button @click="insertImage" class="material-icons">filter</button>
+                        <button style="display: none" @click="insertImage" class="material-icons">filter</button>
 
 
                     </div>
@@ -59,7 +59,7 @@
                     <div class="c-tag-group">
                         <span style="font-size:10px" class="c-tag" v-for="tag in selectedTags" :key="tag">{{ tag.name
                         }}</span>
-                        <button @click="submitForm">提交</button>
+                       
                     </div>
                     <div class="checkbox-block">
                         <div class="checkbox-title">選擇文章種類</div>
@@ -96,7 +96,7 @@
     <div v-for="(item, index) in items" :key="index" class="articleitem">
 
         <div class="newsimg">
-            <img :src="item.picture" alt="" class="newspic">
+            <img :src="item.pictureArray[0]" alt="" class="newspic">
             
 
 
@@ -303,12 +303,14 @@ truncateText(text, maxLength) {
             formData.append('content', this.newArticleContent);
             formData.append('categoryId', this.categoryId);
 
-
+            // console.log(this.selectedImages.length)
             //Uncomment/Comment
             for (var i = 0; i < this.selectedImages.length; i++) {
                 var file = this.selectedImages[i];
-                formData.append('files'+i, file);
+                formData.append('file'+i, file);
+                // console.log()
             };
+            
 
             //Comment/ Uncomment
             // var file = this.selectedImages;
@@ -1092,6 +1094,9 @@ width:100%
     100% {
         background-position: 100% 50%;
     }
+}
+.button.material-icons {
+  display: none;
 }
 
 
