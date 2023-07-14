@@ -92,15 +92,13 @@
 
     <div style="padding-top:35px" v-if="showSuccessMessage" class="success-message">新增文章成功！</div>
 
-
+    
     <div v-for="(item, index) in items" :key="index" class="articleitem">
 
         <div class="newsimg">
             <img :src="item.picture" alt="" class="newspic">
             
-            <div class="tags">
-                <span v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
-            </div>
+
 
         </div>
         <div class="data">
@@ -112,7 +110,8 @@
                     <div class="time" style="padding-left: 10px">{{ item.createdAt }}</div>
                     <div class="top">
                 <router-link :to="{ name: 'ArticlePage', params: { threadId: item.threadId } }">
-                    <div class="word">{{ truncateTitle (item.title, 10)   }}</div>
+   
+                    <div class="word"  >{{ truncateTitle (item.title, 10)   }}</div>
                     
                 </router-link>
                 <div class="icon"><img src="../../../assets/img/HomePage/ArticleItem/Love.svg" alt=""></div>
@@ -123,10 +122,11 @@
 
             </div>
 
-
-            <div class="content">{{ truncateText(item.content, 100)   }}</div>
+            <router-link :to="{ name: 'ArticlePage', params: { threadId: item.threadId } }">
+            <div class="content">{{ truncateText(item.content, 20)   }}</div>
+        </router-link>
             <div class="tagsarea">
-                <div class="tags" v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</div>
+                <span class="tags" v-for="tag in item.hashtags" :key="tag">{{ tag.name }}</span>
             </div>   
             <div>
 
@@ -181,6 +181,8 @@ export default {
             tags: [],
             selectedTags: [],
             customTag: '',
+            //Comment/Uncomment
+            selectedImages: [],
 
 
             newArticleTitle: "",
@@ -285,7 +287,11 @@ truncateText(text, maxLength) {
 
 
         handleFileChange(event) {
-            this.selectedImages = event.target.files;
+            //Switch Comments
+            this.selectedImages.push(event.target.files[0]);
+            console.log(event.target.files[0]);
+            // this.selectedImages = event.target.files;
+
         },
 
 
@@ -298,10 +304,18 @@ truncateText(text, maxLength) {
             formData.append('categoryId', this.categoryId);
 
 
+            //Uncomment/Comment
             for (var i = 0; i < this.selectedImages.length; i++) {
                 var file = this.selectedImages[i];
-                formData.append('files', file);
+                formData.append('files'+i, file);
             };
+
+            //Comment/ Uncomment
+            // var file = this.selectedImages;
+            // formData.append('files', file);
+
+
+
             for (var i = 0; i < this.selectedTags.length; i++) {
                 var tag = this.selectedTags[i]
                 formData.append('threadHashtags', tag.name);
@@ -327,7 +341,7 @@ truncateText(text, maxLength) {
                     this.showSuccessMessage = true;
                     setTimeout(() => {
                         this.showSuccessMessage = false;
-                        location.reload(); // 刷新页面
+                        // location.reload(); // 刷新页面
                     }, 2000)
 
                     // this.closeModal();
@@ -573,8 +587,8 @@ truncateText(text, maxLength) {
     font-weight: 400;
     line-height: 24px;
     color: #333;
-    margin-top: 10px;
-    margin-left: 30px;
+    margin-top: 20px;
+    margin-left: 50px;
     font-family: "Microsoft JhengHei", Arial, sans-serif;
 }
 
@@ -639,8 +653,8 @@ truncateText(text, maxLength) {
     line-height: 26px;
     letter-spacing: 0em;
     margin-top: 20px;
-    padding-left: 50px;
-    /* text-decoration: none;  */
+    padding-left: 0px;
+    text-decoration: none; 
 
 }
 
@@ -649,11 +663,12 @@ truncateText(text, maxLength) {
 }
 
 .tags {
-    width:100px ;
+    width:50px ;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-left: 0px;
+    margin-left: 50px;
+    margin-top: 10px;
 }
 
 .time {
@@ -685,7 +700,7 @@ truncateText(text, maxLength) {
 }
 
 
-.tags span {
+/* .tags span {
     width: 200px;
     height: 24.59px;
     padding: 4.2969183921813965px 10.74229621887207px 4.2969183921813965px 10.74229621887207px;
@@ -699,7 +714,7 @@ truncateText(text, maxLength) {
     text-align: left;
     color: #858EAD;
     margin-right: 10px;
-}
+} */
 
 .newsimg {
 
@@ -928,30 +943,45 @@ truncateText(text, maxLength) {
 }
 
 .tags {
-    border-radius: 10px;
+    /* border-radius: 10px;
         background-color: #ffffff;
         font-family: Source Sans Pro;
         font-size: 15px;
         font-weight: 600;
         line-height: 15px;
-        letter-spacing: 0em;
-        text-align: left;
-        color: #858EAD;
-        margin-right: 10px;
-    
+        /* letter-spacing: 0em; */
+        /* text-align: left; */
+        /* color: #858EAD; */
+        /* margin-right: 10px; */
+        /* width:100% */ 
+        width: 60px;
+    height: 24.59px;
+    /* padding: 4.2969183921813965px 10.74229621887207px 4.2969183921813965px 10.74229621887207px; */
+    border-radius: 21.48459243774414px;
+    background-color: #F4F6F8;
+    font-family: Source Sans Pro;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #858EAD;
+    margin-right: 10px;
+    cursor: pointer;
    
     
 }
 
 .tagsarea{
 
-
 display: flex;
 
+width:100%
+
 }
-.tags .tag {
+/* .tags .tag {
     margin-right: 16px;
-}
+} */
 
 .input-label {
     font-family: 'Inter';
