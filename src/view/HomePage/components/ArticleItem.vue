@@ -352,6 +352,7 @@ truncateText(text, maxLength) {
                     // this.showSuccessMessage = flase;
 
                     //     }, 5000);為什麼這個不行？？
+                    //9huhij
 
                 })
 
