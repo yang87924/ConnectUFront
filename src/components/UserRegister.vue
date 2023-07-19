@@ -114,7 +114,6 @@ export default {
         } else {
           this.loading = false; // 登入失败，设置 loading 为 false
         }
-        console.log("Registered:", response.data.msg + response.data.code); // 在控制台打印 RegisteredResponse
       } catch (error) {
         console.log(error)
         this.loading = false

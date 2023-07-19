@@ -140,7 +140,6 @@ export default {
         } else {
           this.loading = false; // 登入失败，设置 loading 为 false
         }
-        console.log("Logged in: " + response.data.msg + response.data.code);
       } catch (error) {
         this.loading = false; // 登入失败，设置 loading 为 false
         this.loginResponse = error.message;
@@ -149,7 +148,6 @@ export default {
 
     //第三方登入google
     async handleCredentialResponse(response) {
-      console.log(response);
       const id_token = response.credential;
       let formData = new FormData(); // 建立新的 FormData 實例
       formData.append("credential", id_token); // 將資料附加到 formData 上
@@ -160,7 +158,6 @@ export default {
             "Content-Type": "multipart/form-data",
           },
         });
-        console.log(response);
         // 根据响应码改变登入提示類型
         this.loginAlertType =
           response.data.code === 20051 ? "success" : "error";

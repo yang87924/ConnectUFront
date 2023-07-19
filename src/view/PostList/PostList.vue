@@ -120,7 +120,6 @@ export default {
       // 在組件創建時使用 Axios，並傳遞使用者 ID
   axios.post('/users/getUserId/0')
     .then(response => {
-      console.log(response.data);
       this.userName = response.data.userName;
       this.avatar=response.data.avatar;
 
@@ -140,8 +139,6 @@ export default {
     sendTweet() {
       // 在此處執行發送推文的邏輯
       // 可以使用 this.tweetContent 獲取推文內容，this.uploadedImages 獲取上傳的圖片，然後進行相關處理
-      console.log("Sending tweet:", this.tweetContent);
-      console.log("Uploaded images:", this.uploadedImages);
       // 清空推文內容和圖片
       this.tweetContent = "";
       this.uploadedImages = [];
@@ -166,11 +163,9 @@ export default {
           },
         })
         .then((response) => {
-          console.log(response.data);
           for (const entry of formData.entries()) {
             const [name, value] = entry;
             if (value instanceof File) {
-              console.log(`File Name: ${name}`, value.name);
             }
           }
           // 清空推文内容和图片
@@ -190,7 +185,6 @@ export default {
           console.log(error);
           // 在錯誤回應後進行相應處理
         });
-      console.log("FormData:", formData);
     },
 
 

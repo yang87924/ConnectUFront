@@ -141,12 +141,10 @@ export default {
         axios.post(`/users/followIfNot/${this.$route.params.id}`)
             .then(response => {
                 if(response.data.code === 20031) {
-                    console.log("跟隨成功");
                     // Update the follower count
                     this.followingCount++;
                     this.isFollowing = true;
                 } else if(response.data.code === 20030) {
-                    console.log("取消追隨");
                     // Update the follower count
                     this.followingCount--;
                     this.isFollowing = false;
@@ -163,7 +161,6 @@ fetchFansData() {
     axios.get(`/users/following/${this.$route.params.id}`)
       .then(response => {
           this.fans = response.data.data;
-          console.log(this.fans);
       })
           .catch(error => {
       });
@@ -173,7 +170,6 @@ fetchFansData() {
     axios.get(`/users/followedBy/${this.$route.params.id}`)
       .then(response => {
           this.follow = response.data.data;
-          console.log(this.follow);
       })
           .catch(error => {
           console.log(error);
@@ -232,7 +228,6 @@ axios.put('/users', formData, {
   }
 })
   .then(response => {
-    console.log(response.data);
   })
   .catch(error => {
     console.log(error);
@@ -255,7 +250,6 @@ axios.put('/users', formData, {
       // 在組件創建時使用 Axios，並傳遞使用者 ID
       axios.get(`/users/${this.$route.params.id}`)
           .then(response => {
-              console.log(response.data);
               this.userId = response.data.data.userId;
               this.userName = response.data.data.userName;
               this.avatar = response.data.data.avatar;

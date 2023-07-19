@@ -42,12 +42,10 @@ export default {
     // 查詢流行趨勢的API
         axios.get('/dyThreads/dyHotHashtag')
             .then(response => {
-                console.log('流行趨勢：', response.data.data);
                 // console.log(response.data);
                 if (response.data.data && response.data.data.length > 0) {
                     this.items = this.items.concat(response.data.data);
                 } else {
-                    console.log('回應資料無效或沒有文章資料');
                     this.item = '找不到流行趨勢';
                 }
             })

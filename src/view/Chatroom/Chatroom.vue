@@ -124,24 +124,28 @@ export default {
                 self.userName = res.data.userName;
                 userName = res.data.userName;
                 self.myAvatar = res.data.avatar;
-                console.log("success......." + userName);
                 $("#userName").html(" 用戶：" + userName + "<span style='float: right;color: green'>在線</span>");
             })
             .catch(error => {
                 console.error(error);
             });
-        const ws = new WebSocket("ws://localhost:8080/chat");
+        // const ws = new WebSocket("ws://localhost:8080/chat");
+        const ws = new WebSocket("wss://connectu.life:8080/chat");
+
+        const keepAliveInterval = 20000; // 20 seconds
+        let keepAliveTimer;
+
         ws.onopen = function () {
-            console.log("on open..." + userName);
+            keepAliveTimer = setInterval(() => {
+                ws.send('ping');
+            }, keepAliveInterval);
             $("#userName").html(" 用戶：" + userName + "<span style='float: right;color: green'>在線</span>");
         };
 
         ws.onmessage = function (evt) {
 
-            console.log("on message...");
             const dataStr = evt.data;
             const res = JSON.parse(dataStr);
-            console.log(res);
             if (res.system) {
                 const names = res.message;
                 let userList = [];
@@ -159,14 +163,13 @@ export default {
                     sender: res.fromName,
                     content: res.message
                 }
-                console.log("smg....."+msg);
                 self.messages.push(msg);
             }
 
         };
 
         ws.onclose = function () {
-            console.log("on close...");
+            clearInterval(keepAliveTimer);
             $("#userName").html(" 用户：" + userName + "<span style='float: right;color: red'>離線</span>");
         };
 

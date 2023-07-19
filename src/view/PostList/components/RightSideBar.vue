@@ -49,18 +49,15 @@ export default {
     const search = async () => {
       if (query.value) {
         try {
-          console.log('Sending request with query:', query.value); // 顯示送出的查詢
-          const response = await axios.get('http://localhost:8080/dyThreads/search', {
+          const response = await axios.get('/dyThreads/search', {
             params: {
               keyword: query.value, // 將參數名稱從 'query' 改為 'keyword'
             },
           });
           if (response.data && response.data.data) {
             results.value = response.data.data;
-            console.log('Received results:', results.value); // 顯示取得的資料
           } else {
             results.value = [];
-            console.log('No results found.');
           }
           emit('update-items', results.value);
         } catch (error) {

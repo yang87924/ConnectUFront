@@ -108,11 +108,8 @@ export default {
       axios
         .get('/threads/HotHashtag')  // 請根據實際的 API 端點進行更新
         .then(response => {
-
-          console.log("happy", response)
-          // 請求成功，將資料設置給 leaderboardData 陣列
+            // 請求成功，將資料設置給 leaderboardData 陣列
           this.leaderboardData = response.data.data;
-          console.log(this.leaderboardData);
           this.isLoading = false; // 停止載入狀態
         })
         .catch(error => {
@@ -130,10 +127,8 @@ fetchData() {
         .get('/threads/HotHashtag')  // 請根據實際的 API 端點進行更新
         .then(response => {
 
-          console.log("happy", response)
           // 請求成功，將資料設置給 leaderboardData 陣列
           this.leaderboardData = response.data.data;
-          console.log(this.leaderboardData);
           this.isLoading = false; // 停止載入狀態
         })
         .catch(error => {

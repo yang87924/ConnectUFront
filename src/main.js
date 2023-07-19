@@ -11,7 +11,8 @@ import 'animate.css';
 
 
 axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'http://localhost:8080';
+// axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = 'https://connectu.life:8080';
 //第三方登入icon
 import '@mdi/font/css/materialdesignicons.css'
 

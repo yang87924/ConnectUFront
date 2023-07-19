@@ -134,7 +134,6 @@ export default {
       axios
         .put("dyThreads/toggleUserLove/" + loveId)
         .then((response) => {
-          console.log(response.data);
           if (item.loveStatus === 1) {
             item.loveStatus = 0;
             item.love--;

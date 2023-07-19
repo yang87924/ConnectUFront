@@ -157,7 +157,6 @@ export default {
       axios.get(`/users/following`)
         .then(response => {
             this.fans = response.data.data;
-            console.log(this.fans);
         })
             .catch(error => {
         });
@@ -167,7 +166,6 @@ export default {
       axios.get(`/users/followedBy`)
         .then(response => {
             this.follow = response.data.data;
-            console.log(this.follow);
         })
             .catch(error => {
             console.log(error);
@@ -226,7 +224,6 @@ export default {
     }
   })
     .then(response => {
-      console.log(response.data);
     })
     .catch(error => {
       console.log(error);
@@ -249,7 +246,6 @@ export default {
         // 在組件創建時使用 Axios，並傳遞使用者 ID
         axios.post('/users/getUserId/0')
             .then(response => {
-                console.log(response.data);
                 this.userId = response.data.userId;
                 this.userName = response.data.userName;
                 this.avatar = response.data.avatar;
@@ -265,19 +261,16 @@ export default {
         // 查詢使用者文章的API
         axios.get('/threads/userThread/0')
             .then(response => {
-                console.log('文章資料：', response.data.data);
                 // console.log(response.data);
                 if (response.data.data && response.data.data.length > 0) {
                     this.title = response.data.data[0].title;
 
                     this.activeTab = '文章';
                 } else {
-                    console.log('回應資料無效或沒有文章資料');
                     this.title = '找不到文章';
                 }
             })
             .catch(error => {
-                console.log('發生錯誤：', error);
                 this.title = '找不到文章';
             });
     }

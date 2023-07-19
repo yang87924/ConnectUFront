@@ -276,7 +276,6 @@ truncateText(text, maxLength) {
             axios.delete('/threads/deleteByThreadId/${threadId}')
                 .then(response => {
                     // 删除成功的处理逻辑
-                    console.log('删除成功');
                 })
                 .catch(error => {
                     // 处理删除失败的情况
@@ -289,7 +288,6 @@ truncateText(text, maxLength) {
         handleFileChange(event) {
             //Switch Comments
             this.selectedImages.push(event.target.files[0]);
-            console.log(event.target.files[0]);
             // this.selectedImages = event.target.files;
 
         },
@@ -327,7 +325,6 @@ truncateText(text, maxLength) {
 
             // 迭代並輸出每個鍵值對
             for (var pair of entries) {
-                console.log(pair[0] + ": " + pair[1]);
             }
 
             axios.post('/threads', formData, {
@@ -416,7 +413,6 @@ truncateText(text, maxLength) {
                 .get('threads/AllHashtag')
                 .then(response => {
                     this.tags = response.data.data;
-                    console.log(4545)// 將資料庫中的標籤資料存儲到 tags 陣列中
                 })
                 .catch(error => {
                     console.error(error);
@@ -473,7 +469,6 @@ truncateText(text, maxLength) {
             axios.get('/category/withCateGoryThreadCount')
                 .then(response => {
                     this.categories = response.data.data;
-                    console.log("suc", response.data.data)
                 })
                 .catch(error => {
                     console.error(error);
@@ -486,7 +481,6 @@ truncateText(text, maxLength) {
             this.abc.title = ''; // 清空文章標題
             this.articleContent = ''; // 清空文章內容
             this.fontSize = 16; // 重置字體大小
-            console.log(2222)
         },
         closeModal() {
 
@@ -506,7 +500,6 @@ truncateText(text, maxLength) {
                 .then(response => {
                     // 請求成功，將資料設置給items陣列
                     this.items = this.items.concat(response.data.data);
-                    console.log(response.data.data);
                     this.isLoading = false; // 停止載入狀態
 
                 })

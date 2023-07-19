@@ -87,7 +87,6 @@ export default {
         .then((response) => {
           // 請求成功，將資料設置給items陣列
           this.items = this.items.concat(response.data.data);
-          console.log(response.data.data);
           this.isLoading = false; // 停止載入狀態
         })
         .catch((error) => {
@@ -117,7 +116,6 @@ export default {
       axios
         .put("dyThreads/toggleUserLove/" + loveId)
         .then((response) => {
-          console.log(response.data);
           if (item.loveStatus === 1) {
             item.loveStatus = 0;
             item.love--;

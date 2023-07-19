@@ -69,7 +69,6 @@
         axios
           .post('/threads', this.abc)
           .then(response => {
-            console.log(response);
           })
           .catch(error => {
             console.error(error);
