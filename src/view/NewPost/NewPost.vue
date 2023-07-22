@@ -1,60 +1,83 @@
-<template lang="">
+<template>
     <div class="container">
-        <div class="main-content">
-            <div class="page-title">建立文章</div>
-            <select name="articleType" id="articleType" class="article-select">
-                <option value="defualt">請選擇文章板塊</option>
-            </select>
-            <input type="text" class="input-box" placeholder="請輸入文章標題">
-            <div class="edit-toolbox">
-                <span class="material-icons">translate</span>
-                <span class="material-icons">image</span>
-                <span class="material-icons">create</span>
-                <span class="material-icons-round">delete</span>
-            </div>
-            <textarea class="textarea" placeholder="請輸入文章內容....."></textarea>
-            <div class="word-count">0/10000</div>
-            <div class="subtitle">選擇文章標籤(最多 5 個)</div>
-            <div class="tags">
-                <span class="tag">#美食</span>
-                <span class="tag">#生活</span>
-                <span class="tag">#創作</span>
-                <span class="tag">#小說</span>
-                <span class="tag">#插畫</span>
-                <span class="tag">#心情</span>
-                <span class="tag">#區塊鏈</span>
-                <span class="tag">#投資</span>
-                <span class="tag">#生活娛樂</span>
-                <span class="tag">#感情</span>
-            </div>
-            <label for="custom-tag" class="input-label">自訂標籤(最多10個)</label>
-            <input type="text" class="input-box" name="custom-tag">
-            <div class="c-tag-group">
-                <span class="c-tag">#美食</span>
-                <span class="c-tag">#生活</span>
-                <span class="c-tag">#創作</span>
-            </div>
-            <div class="checkbox-block">
-                <div class="checkbox-title">選擇文章種類</div>
-                <input type="checkbox" name="default" class="checkbox">
-                <label for="default" class="checkbox">一般文章</label>
-                <input type="checkbox" name="default" class="checkbox">
-                <label for="default" class="checkbox">訂閱專屬文章</label>
-            </div>
-            <div class="submit-btn">
-                <button class="submit flex-between">
-                    <span class="material-icons">add</span>
-                    <span>新增文章</span>
-                </button>
-            </div>
+      <div class="main-content">
+        <div class="page-title">建立文章</div>
+        <select name="articleType" id="articleType" class="article-select">
+          <option value="defualt">請選擇文章板塊</option>
+        </select>
+        <input v-model="abc.title" type="text" class="input-box" placeholder="請輸入文章標題">
+        <div class="edit-toolbox">
+          <span class="material-icons">translate</span>
+          <span class="material-icons">image</span>
+          <span class="material-icons">create</span>
+          <span class="material-icons-round">delete</span>
         </div>
+        <textarea class="textarea" placeholder="請輸入文章內容....."></textarea>
+        <div class="word-count">0/10000</div>
+        <div class="subtitle">選擇文章標籤(最多 5 個)</div>
+        <div class="tags">
+          <span class="tag">#美食</span>
+          <span class="tag">#生活</span>
+          <span class="tag">#創作</span>
+          <span class="tag">#小說</span>
+          <span class="tag">#插畫</span>
+          <span class="tag">#心情</span>
+          <span class="tag">#區塊鏈</span>
+          <span class="tag">#投資</span>
+          <span class="tag">#生活娛樂</span>
+          <span class="tag">#感情</span>
+        </div>
+        <label for="custom-tag" class="input-label">自訂標籤(最多10個)</label>
+        <input type="text" class="input-box" name="custom-tag">
+        <div class="c-tag-group">
+          <span class="c-tag">#美食</span>
+          <span class="c-tag">#生活</span>
+          <span class="c-tag">#創作</span>
+        </div>
+        <div class="checkbox-block">
+          <div class="checkbox-title">選擇文章種類</div>
+          <input type="checkbox" name="default" class="checkbox">
+          <label for="default" class="checkbox">一般文章</label>
+          <input type="checkbox" name="default" class="checkbox">
+          <label for="default" class="checkbox">訂閱專屬文章</label>
+        </div>
+        <div class="submit-btn">
+          <button @click="createpost" class="submit flex-between">
+            <span class="material-icons">add</span>
+            <span>新增文章</span>
+          </button>
+        </div>
+      </div>
     </div>
-</template>
-<script>
-export default {
-
-}
-</script>
+  </template>
+  
+  <script>
+  import axios from 'axios';
+  
+  export default {
+    data() {
+      return {
+        abc: {
+          content: "happy",
+          title: "",
+          categoryId: 2,
+        },
+      };
+    },
+    methods: {
+      createpost() {
+        axios
+          .post('/threads', this.abc)
+          .then(response => {
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      },
+    },
+  };
+  </script>
+  
 <style lang="css" scoped>
 .container {
     display: flex;
